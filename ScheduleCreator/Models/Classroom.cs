@@ -30,8 +30,7 @@ namespace ScheduleCreator.Models
         public System.DateTime availableToTime { get; set; }
         public string active { get; set; }
     
-        public virtual Classroom Classroom1 { get; set; }
-        public virtual Classroom Classroom2 { get; set; }
+        public virtual Building Building { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Section> Sections { get; set; }
     }

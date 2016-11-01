@@ -14,9 +14,18 @@ namespace ScheduleCreator.Models
     
     public partial class Building
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Building()
+        {
+            this.Classrooms = new HashSet<Classroom>();
+        }
+    
         public int building_id { get; set; }
         public string buildingPrefix { get; set; }
         public string buildingName { get; set; }
         public string campusPrefix { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Classroom> Classrooms { get; set; }
     }
 }

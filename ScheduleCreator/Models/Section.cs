@@ -27,15 +27,15 @@ namespace ScheduleCreator.Models
         public string semesterType { get; set; }
         public Nullable<int> semesterYear { get; set; }
         public string crn { get; set; }
-        public string weekdays { get; set; }
+        public string daysTaught { get; set; }
         public System.DateTime courseStartTime { get; set; }
         public System.DateTime courseEndTime { get; set; }
         public string block { get; set; }
         public string courseType { get; set; }
         public string pay { get; set; }
         public int sectionCapacity { get; set; }
-        public Nullable<decimal> load { get; set; }
-        public Nullable<decimal> overload { get; set; }
+        public Nullable<decimal> creditLoad { get; set; }
+        public Nullable<decimal> creditOverload { get; set; }
         public string comments { get; set; }
     
         public virtual Classroom Classroom { get; set; }
