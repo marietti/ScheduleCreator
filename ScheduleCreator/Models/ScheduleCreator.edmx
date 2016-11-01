@@ -1,0 +1,764 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ScheduleCreaterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="building_id" />
+          </Key>
+          <Property Name="building_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="buildingPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="buildingName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="campusPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Classroom">
+          <Key>
+            <PropertyRef Name="classroom_id" />
+          </Key>
+          <Property Name="classroom_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="building_id" Type="int" Nullable="false" />
+          <Property Name="buildingPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="roomNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="classroomCapacity" Type="int" Nullable="false" />
+          <Property Name="computers" Type="int" Nullable="false" />
+          <Property Name="availableFromTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="availableToTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="active" Type="nvarchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="department_id" Type="int" Nullable="false" />
+          <Property Name="coursePrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="courseNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="courseName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="defaultCredits" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="active" Type="nvarchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="department_id" />
+          </Key>
+          <Property Name="department_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="departmentName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="instructor_id" />
+          </Key>
+          <Property Name="instructor_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="instructorFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="instructorLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="hoursRequired" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="active" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="InstructorDepartment">
+          <Key>
+            <PropertyRef Name="instructorDepartment_id" />
+          </Key>
+          <Property Name="instructorDepartment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="department_id" Type="int" Nullable="false" />
+          <Property Name="instructor_id" Type="int" Nullable="false" />
+          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InstructorRelease">
+          <Key>
+            <PropertyRef Name="instructorRelease_id" />
+          </Key>
+          <Property Name="instructorRelease_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="instructor_id" Type="int" Nullable="false" />
+          <Property Name="semester_id" Type="int" Nullable="false" />
+          <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="semesterType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="semesterYear" Type="int" Nullable="false" />
+          <Property Name="releaseDescription" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="totalReleaseHours" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="section_id" />
+          </Key>
+          <Property Name="section_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="classroom_id" Type="int" />
+          <Property Name="instructor_id" Type="int" />
+          <Property Name="semester_id" Type="int" />
+          <Property Name="coursePrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="courseNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="buildingPrefix" Type="nvarchar" MaxLength="10" />
+          <Property Name="roomNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" />
+          <Property Name="semesterType" Type="nvarchar" MaxLength="10" />
+          <Property Name="semesterYear" Type="int" />
+          <Property Name="crn" Type="nvarchar" MaxLength="10" />
+          <Property Name="weekdays" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="courseStartTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="courseEndTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="block" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="courseType" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="pay" Type="nvarchar" MaxLength="50" />
+          <Property Name="sectionCapacity" Type="int" Nullable="false" />
+          <Property Name="load" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="overload" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="comments" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Semester">
+          <Key>
+            <PropertyRef Name="semester_id" />
+          </Key>
+          <Property Name="semester_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="semesterType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="semesterYear" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="endDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Classroom_Building_id">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="1" />
+          <End Role="Classroom1" Type="Self.Classroom" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="classroom_id" />
+            </Principal>
+            <Dependent Role="Classroom1">
+              <PropertyRef Name="classroom_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_Department_id">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="department_id" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorDepartment_Department_id">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="department_id" />
+            </Principal>
+            <Dependent Role="InstructorDepartment">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorDepartment_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="InstructorDepartment">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorRelease_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorRelease" Type="Self.InstructorRelease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="InstructorRelease">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorRelease_Semester_id">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
+          <End Role="InstructorRelease" Type="Self.InstructorRelease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="semester_id" />
+            </Principal>
+            <Dependent Role="InstructorRelease">
+              <PropertyRef Name="semester_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Classroom_id">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="classroom_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="classroom_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Course_id">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Semester_id">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="semester_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="semester_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleCreaterModelStoreContainer">
+          <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Classroom" EntityType="Self.Classroom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instructor" EntityType="Self.Instructor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InstructorDepartment" EntityType="Self.InstructorDepartment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InstructorRelease" EntityType="Self.InstructorRelease" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Semester" EntityType="Self.Semester" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Classroom_Building_id" Association="Self.FK_Classroom_Building_id">
+            <End Role="Classroom" EntitySet="Classroom" />
+            <End Role="Classroom1" EntitySet="Classroom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_Department_id" Association="Self.FK_Course_Department_id">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Course" EntitySet="Course" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorDepartment_Department_id" Association="Self.FK_InstructorDepartment_Department_id">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="InstructorDepartment" EntitySet="InstructorDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorDepartment_Instructor_id" Association="Self.FK_InstructorDepartment_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="InstructorDepartment" EntitySet="InstructorDepartment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorRelease_Instructor_id" Association="Self.FK_InstructorRelease_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="InstructorRelease" EntitySet="InstructorRelease" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorRelease_Semester_id" Association="Self.FK_InstructorRelease_Semester_id">
+            <End Role="Semester" EntitySet="Semester" />
+            <End Role="InstructorRelease" EntitySet="InstructorRelease" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Classroom_id" Association="Self.FK_Section_Classroom_id">
+            <End Role="Classroom" EntitySet="Classroom" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Course_id" Association="Self.FK_Section_Course_id">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Instructor_id" Association="Self.FK_Section_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructor" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Semester_id" Association="Self.FK_Section_Semester_id">
+            <End Role="Semester" EntitySet="Semester" />
+            <End Role="Section" EntitySet="Section" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScheduleCreaterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="building_id" />
+          </Key>
+          <Property Name="building_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="buildingPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="buildingName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="campusPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Classroom">
+          <Key>
+            <PropertyRef Name="classroom_id" />
+          </Key>
+          <Property Name="classroom_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="building_id" Type="Int32" Nullable="false" />
+          <Property Name="buildingPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="classroomCapacity" Type="Int32" Nullable="false" />
+          <Property Name="computers" Type="Int32" Nullable="false" />
+          <Property Name="availableFromTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="availableToTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="active" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Classroom1" Relationship="Self.FK_Classroom_Building_id" FromRole="Classroom" ToRole="Classroom1" />
+          <NavigationProperty Name="Classroom2" Relationship="Self.FK_Classroom_Building_id" FromRole="Classroom1" ToRole="Classroom" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Classroom_id" FromRole="Classroom" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="department_id" Type="Int32" Nullable="false" />
+          <Property Name="coursePrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="defaultCredits" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Course_Department_id" FromRole="Course" ToRole="Department" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Course_id" FromRole="Course" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="department_id" />
+          </Key>
+          <Property Name="department_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="departmentName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Department_id" FromRole="Department" ToRole="Course" />
+          <NavigationProperty Name="InstructorDepartments" Relationship="Self.FK_InstructorDepartment_Department_id" FromRole="Department" ToRole="InstructorDepartment" />
+        </EntityType>
+        <EntityType Name="Instructor">
+          <Key>
+            <PropertyRef Name="instructor_id" />
+          </Key>
+          <Property Name="instructor_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="instructorFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="instructorLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="hoursRequired" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="InstructorDepartments" Relationship="Self.FK_InstructorDepartment_Instructor_id" FromRole="Instructor" ToRole="InstructorDepartment" />
+          <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Instructor_id" FromRole="Instructor" ToRole="InstructorRelease" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Instructor_id" FromRole="Instructor" ToRole="Section" />
+        </EntityType>
+        <EntityType Name="InstructorDepartment">
+          <Key>
+            <PropertyRef Name="instructorDepartment_id" />
+          </Key>
+          <Property Name="instructorDepartment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="department_id" Type="Int32" Nullable="false" />
+          <Property Name="instructor_id" Type="Int32" Nullable="false" />
+          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_InstructorDepartment_Department_id" FromRole="InstructorDepartment" ToRole="Department" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_InstructorDepartment_Instructor_id" FromRole="InstructorDepartment" ToRole="Instructor" />
+        </EntityType>
+        <EntityType Name="InstructorRelease">
+          <Key>
+            <PropertyRef Name="instructorRelease_id" />
+          </Key>
+          <Property Name="instructorRelease_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="instructor_id" Type="Int32" Nullable="false" />
+          <Property Name="semester_id" Type="Int32" Nullable="false" />
+          <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="semesterType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="semesterYear" Type="Int32" Nullable="false" />
+          <Property Name="releaseDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="totalReleaseHours" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_InstructorRelease_Instructor_id" FromRole="InstructorRelease" ToRole="Instructor" />
+          <NavigationProperty Name="Semester" Relationship="Self.FK_InstructorRelease_Semester_id" FromRole="InstructorRelease" ToRole="Semester" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="section_id" />
+          </Key>
+          <Property Name="section_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="classroom_id" Type="Int32" />
+          <Property Name="instructor_id" Type="Int32" />
+          <Property Name="semester_id" Type="Int32" />
+          <Property Name="coursePrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="buildingPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="semesterType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="semesterYear" Type="Int32" />
+          <Property Name="crn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="weekdays" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseStartTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="courseEndTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="block" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sectionCapacity" Type="Int32" Nullable="false" />
+          <Property Name="load" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="overload" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="comments" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Classroom" Relationship="Self.FK_Section_Classroom_id" FromRole="Section" ToRole="Classroom" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Section_Course_id" FromRole="Section" ToRole="Course" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_Section_Instructor_id" FromRole="Section" ToRole="Instructor" />
+          <NavigationProperty Name="Semester" Relationship="Self.FK_Section_Semester_id" FromRole="Section" ToRole="Semester" />
+        </EntityType>
+        <EntityType Name="Semester">
+          <Key>
+            <PropertyRef Name="semester_id" />
+          </Key>
+          <Property Name="semester_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="semesterType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="semesterYear" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Semester_id" FromRole="Semester" ToRole="InstructorRelease" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Semester_id" FromRole="Semester" ToRole="Section" />
+        </EntityType>
+        <Association Name="FK_Classroom_Building_id">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="1" />
+          <End Role="Classroom1" Type="Self.Classroom" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="classroom_id" />
+            </Principal>
+            <Dependent Role="Classroom1">
+              <PropertyRef Name="classroom_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Classroom_id">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="classroom_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="classroom_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Course_Department_id">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Course" Type="Self.Course" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="department_id" />
+            </Principal>
+            <Dependent Role="Course">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Course_id">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorDepartment_Department_id">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="department_id" />
+            </Principal>
+            <Dependent Role="InstructorDepartment">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorDepartment_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="InstructorDepartment">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorRelease_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
+          <End Role="InstructorRelease" Type="Self.InstructorRelease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="InstructorRelease">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Instructor_id">
+          <End Role="Instructor" Type="Self.Instructor" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instructor">
+              <PropertyRef Name="instructor_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorRelease_Semester_id">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
+          <End Role="InstructorRelease" Type="Self.InstructorRelease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="semester_id" />
+            </Principal>
+            <Dependent Role="InstructorRelease">
+              <PropertyRef Name="semester_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Section_Semester_id">
+          <End Role="Semester" Type="Self.Semester" Multiplicity="0..1" />
+          <End Role="Section" Type="Self.Section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semester">
+              <PropertyRef Name="semester_id" />
+            </Principal>
+            <Dependent Role="Section">
+              <PropertyRef Name="semester_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScheduleCreaterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Buildings" EntityType="Self.Building" />
+          <EntitySet Name="Classrooms" EntityType="Self.Classroom" />
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Instructors" EntityType="Self.Instructor" />
+          <EntitySet Name="InstructorDepartments" EntityType="Self.InstructorDepartment" />
+          <EntitySet Name="InstructorReleases" EntityType="Self.InstructorRelease" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="Semesters" EntityType="Self.Semester" />
+          <AssociationSet Name="FK_Classroom_Building_id" Association="Self.FK_Classroom_Building_id">
+            <End Role="Classroom" EntitySet="Classrooms" />
+            <End Role="Classroom1" EntitySet="Classrooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Classroom_id" Association="Self.FK_Section_Classroom_id">
+            <End Role="Classroom" EntitySet="Classrooms" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Course_Department_id" Association="Self.FK_Course_Department_id">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Course" EntitySet="Courses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Course_id" Association="Self.FK_Section_Course_id">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorDepartment_Department_id" Association="Self.FK_InstructorDepartment_Department_id">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="InstructorDepartment" EntitySet="InstructorDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorDepartment_Instructor_id" Association="Self.FK_InstructorDepartment_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="InstructorDepartment" EntitySet="InstructorDepartments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorRelease_Instructor_id" Association="Self.FK_InstructorRelease_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="InstructorRelease" EntitySet="InstructorReleases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Instructor_id" Association="Self.FK_Section_Instructor_id">
+            <End Role="Instructor" EntitySet="Instructors" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorRelease_Semester_id" Association="Self.FK_InstructorRelease_Semester_id">
+            <End Role="Semester" EntitySet="Semesters" />
+            <End Role="InstructorRelease" EntitySet="InstructorReleases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Section_Semester_id" Association="Self.FK_Section_Semester_id">
+            <End Role="Semester" EntitySet="Semesters" />
+            <End Role="Section" EntitySet="Sections" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ScheduleCreaterModelStoreContainer" CdmEntityContainer="ScheduleCreaterEntities">
+          <EntitySetMapping Name="Buildings">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Building">
+              <MappingFragment StoreEntitySet="Building">
+                <ScalarProperty Name="building_id" ColumnName="building_id" />
+                <ScalarProperty Name="buildingPrefix" ColumnName="buildingPrefix" />
+                <ScalarProperty Name="buildingName" ColumnName="buildingName" />
+                <ScalarProperty Name="campusPrefix" ColumnName="campusPrefix" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classrooms">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Classroom">
+              <MappingFragment StoreEntitySet="Classroom">
+                <ScalarProperty Name="classroom_id" ColumnName="classroom_id" />
+                <ScalarProperty Name="building_id" ColumnName="building_id" />
+                <ScalarProperty Name="buildingPrefix" ColumnName="buildingPrefix" />
+                <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+                <ScalarProperty Name="classroomCapacity" ColumnName="classroomCapacity" />
+                <ScalarProperty Name="computers" ColumnName="computers" />
+                <ScalarProperty Name="availableFromTime" ColumnName="availableFromTime" />
+                <ScalarProperty Name="availableToTime" ColumnName="availableToTime" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="coursePrefix" ColumnName="coursePrefix" />
+                <ScalarProperty Name="courseNumber" ColumnName="courseNumber" />
+                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
+                <ScalarProperty Name="courseName" ColumnName="courseName" />
+                <ScalarProperty Name="defaultCredits" ColumnName="defaultCredits" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
+                <ScalarProperty Name="departmentName" ColumnName="departmentName" />
+                <ScalarProperty Name="maxCreditsAllowed" ColumnName="maxCreditsAllowed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instructors">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Instructor">
+              <MappingFragment StoreEntitySet="Instructor">
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
+                <ScalarProperty Name="instructorFirstName" ColumnName="instructorFirstName" />
+                <ScalarProperty Name="instructorLastName" ColumnName="instructorLastName" />
+                <ScalarProperty Name="hoursRequired" ColumnName="hoursRequired" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstructorDepartments">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.InstructorDepartment">
+              <MappingFragment StoreEntitySet="InstructorDepartment">
+                <ScalarProperty Name="instructorDepartment_id" ColumnName="instructorDepartment_id" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
+                <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstructorReleases">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.InstructorRelease">
+              <MappingFragment StoreEntitySet="InstructorRelease">
+                <ScalarProperty Name="instructorRelease_id" ColumnName="instructorRelease_id" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="semester_id" ColumnName="semester_id" />
+                <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
+                <ScalarProperty Name="semesterType" ColumnName="semesterType" />
+                <ScalarProperty Name="semesterYear" ColumnName="semesterYear" />
+                <ScalarProperty Name="releaseDescription" ColumnName="releaseDescription" />
+                <ScalarProperty Name="totalReleaseHours" ColumnName="totalReleaseHours" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Section">
+              <MappingFragment StoreEntitySet="Section">
+                <ScalarProperty Name="section_id" ColumnName="section_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="classroom_id" ColumnName="classroom_id" />
+                <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
+                <ScalarProperty Name="semester_id" ColumnName="semester_id" />
+                <ScalarProperty Name="coursePrefix" ColumnName="coursePrefix" />
+                <ScalarProperty Name="courseNumber" ColumnName="courseNumber" />
+                <ScalarProperty Name="buildingPrefix" ColumnName="buildingPrefix" />
+                <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+                <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
+                <ScalarProperty Name="semesterType" ColumnName="semesterType" />
+                <ScalarProperty Name="semesterYear" ColumnName="semesterYear" />
+                <ScalarProperty Name="crn" ColumnName="crn" />
+                <ScalarProperty Name="weekdays" ColumnName="weekdays" />
+                <ScalarProperty Name="courseStartTime" ColumnName="courseStartTime" />
+                <ScalarProperty Name="courseEndTime" ColumnName="courseEndTime" />
+                <ScalarProperty Name="block" ColumnName="block" />
+                <ScalarProperty Name="courseType" ColumnName="courseType" />
+                <ScalarProperty Name="pay" ColumnName="pay" />
+                <ScalarProperty Name="sectionCapacity" ColumnName="sectionCapacity" />
+                <ScalarProperty Name="load" ColumnName="load" />
+                <ScalarProperty Name="overload" ColumnName="overload" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Semesters">
+            <EntityTypeMapping TypeName="ScheduleCreaterModel.Semester">
+              <MappingFragment StoreEntitySet="Semester">
+                <ScalarProperty Name="semester_id" ColumnName="semester_id" />
+                <ScalarProperty Name="semesterType" ColumnName="semesterType" />
+                <ScalarProperty Name="semesterYear" ColumnName="semesterYear" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

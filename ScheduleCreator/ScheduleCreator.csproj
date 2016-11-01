@@ -52,6 +52,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -174,8 +176,50 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Building.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classroom.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Course.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Department.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Instructor.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InstructorDepartment.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InstructorRelease.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ScheduleCreator.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScheduleCreator.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScheduleCreator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScheduleCreator.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScheduleCreator.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Section.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Semester.cs">
+      <DependentUpon>ScheduleCreator.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -186,8 +230,25 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\ScheduleCreator.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ScheduleCreator.edmx</DependentUpon>
+      <LastGenOutput>ScheduleCreator.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ScheduleCreator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ScheduleCreator.edmx</DependentUpon>
+      <LastGenOutput>ScheduleCreator.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="Models\ScheduleCreator.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ScheduleCreator.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ScheduleCreator.edmx.diagram">
+      <DependentUpon>ScheduleCreator.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -245,6 +306,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
