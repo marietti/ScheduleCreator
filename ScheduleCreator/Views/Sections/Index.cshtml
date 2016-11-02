@@ -1,0 +1,159 @@
+﻿@model IEnumerable<ScheduleCreator.Models.Section>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.coursePrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.buildingPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.roomNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.crn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.daysTaught)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseEndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.block)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sectionCapacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creditLoad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creditOverload)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Classroom.buildingPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.coursePrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Semester.semesterType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.coursePrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.buildingPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.roomNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.crn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.daysTaught)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseStartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseEndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.block)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sectionCapacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creditLoad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.creditOverload)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Classroom.buildingPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.coursePrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Instructor.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester.semesterType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.section_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.section_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.section_id })
+        </td>
+    </tr>
+}
+
+</table>

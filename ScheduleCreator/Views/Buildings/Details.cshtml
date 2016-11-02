@@ -1,0 +1,42 @@
+﻿@model ScheduleCreator.Models.Building
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Building</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.buildingPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.buildingName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.buildingName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.campusPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.campusPrefix)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.building_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

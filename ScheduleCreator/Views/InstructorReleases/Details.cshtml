@@ -1,0 +1,74 @@
+﻿@model ScheduleCreator.Models.InstructorRelease
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InstructorRelease</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.releaseDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.releaseDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalReleaseHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalReleaseHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instructor.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester.semesterType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.instructorRelease_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

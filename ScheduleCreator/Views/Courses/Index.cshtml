@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ScheduleCreator.Models.Course>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.coursePrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.departmentPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.courseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.defaultCredits)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.departmentPrefix)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.coursePrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.departmentPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.courseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.defaultCredits)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.departmentPrefix)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.course_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.course_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.course_id })
+        </td>
+    </tr>
+}
+
+</table>

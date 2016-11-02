@@ -1,0 +1,74 @@
+﻿@model ScheduleCreator.Models.Course
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.coursePrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.coursePrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.departmentPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departmentPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.defaultCredits)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.defaultCredits)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department.departmentPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.departmentPrefix)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.course_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

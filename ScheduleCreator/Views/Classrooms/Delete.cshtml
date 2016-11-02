@@ -1,0 +1,88 @@
+﻿@model ScheduleCreator.Models.Classroom
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Classroom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.buildingPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.roomNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roomNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.classroomCapacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.classroomCapacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.computers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.computers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.availableFromTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableFromTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.availableToTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableToTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Building.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Building.buildingPrefix)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

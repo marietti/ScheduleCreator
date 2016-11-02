@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ScheduleCreator.Models.InstructorDepartment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.departmentPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.departmentPrefix)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.departmentPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.departmentPrefix)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Instructor.instructorWNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.instructorDepartment_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.instructorDepartment_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.instructorDepartment_id })
+        </td>
+    </tr>
+}
+
+</table>

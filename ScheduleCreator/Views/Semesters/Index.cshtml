@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ScheduleCreator.Models.Semester>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.startDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.endDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.startDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.endDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.semester_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.semester_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.semester_id })
+        </td>
+    </tr>
+}
+
+</table>

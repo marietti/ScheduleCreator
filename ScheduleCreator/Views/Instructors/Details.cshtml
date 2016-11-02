@@ -1,0 +1,58 @@
+﻿@model ScheduleCreator.Models.Instructor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Instructor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.hoursRequired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hoursRequired)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.instructor_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

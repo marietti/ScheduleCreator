@@ -1,0 +1,194 @@
+﻿@model ScheduleCreator.Models.Section
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Section</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.coursePrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.coursePrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.buildingPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.roomNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roomNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.crn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.crn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.daysTaught)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.daysTaught)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.block)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.block)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sectionCapacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sectionCapacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creditLoad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creditLoad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creditOverload)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creditOverload)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Classroom.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Classroom.buildingPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.coursePrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course.coursePrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instructor.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester.semesterType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.section_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

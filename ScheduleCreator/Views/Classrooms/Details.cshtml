@@ -1,0 +1,82 @@
+﻿@model ScheduleCreator.Models.Classroom
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Classroom</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.buildingPrefix)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.roomNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roomNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.classroomCapacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.classroomCapacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.computers)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.computers)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.availableFromTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableFromTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.availableToTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.availableToTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Building.buildingPrefix)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Building.buildingPrefix)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.classroom_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
