@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ScheduleCreator.Models.InstructorRelease>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.releaseDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.totalReleaseHours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Semester.semesterType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.semesterYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.releaseDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.totalReleaseHours)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Instructor.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semester.semesterType)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.instructorRelease_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.instructorRelease_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.instructorRelease_id })
+        </td>
+    </tr>
+}
+
+</table>

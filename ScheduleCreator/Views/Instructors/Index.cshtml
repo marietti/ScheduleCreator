@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ScheduleCreator.Models.Instructor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.instructorLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hoursRequired)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.active)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorWNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.instructorLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hoursRequired)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.instructor_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.instructor_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.instructor_id })
+        </td>
+    </tr>
+}
+
+</table>

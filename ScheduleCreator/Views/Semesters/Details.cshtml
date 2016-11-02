@@ -1,0 +1,50 @@
+﻿@model ScheduleCreator.Models.Semester
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Semester</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.endDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.endDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.semester_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

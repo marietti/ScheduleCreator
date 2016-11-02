@@ -1,0 +1,80 @@
+﻿@model ScheduleCreator.Models.InstructorRelease
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>InstructorRelease</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.semesterYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.semesterYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.releaseDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.releaseDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.totalReleaseHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.totalReleaseHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Instructor.instructorWNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester.semesterType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semester.semesterType)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
