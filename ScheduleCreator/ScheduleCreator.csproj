@@ -235,6 +235,29 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\calendar.css" />
+    <Content Include="Content\calendar.min.css" />
+    <Content Include="Content\Calendar Stuff\.gitignore" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap2\css\bootstrap-responsive.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap2\css\bootstrap.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap2\img\glyphicons-halflings-white.png" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap2\img\glyphicons-halflings.png" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap2\js\bootstrap.min.js" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap-theme.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap-theme.min.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap.min.css" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\js\bootstrap.js" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\js\bootstrap.min.js" />
+    <Content Include="Content\Calendar Stuff\components\jquery\jquery.min.js" />
+    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\jstz.js" />
+    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\jstz.min.js" />
+    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\LICENCE.txt" />
+    <Content Include="Content\Calendar Stuff\components\underscore\underscore-min.js" />
+    <Content Include="Content\Calendar Stuff\Gruntfile.js" />
+    <Content Include="Content\Calendar Stuff\index-bs3.html" />
+    <Content Include="Content\Calendar Stuff\index.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -249,6 +272,7 @@
       <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
       <LastGenOutput>ScheduleCreatorModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
@@ -258,7 +282,21 @@
     <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
       <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Calendar Stuff\.bower.json" />
+    <Content Include="Content\Calendar Stuff\bower.json" />
+    <Content Include="Content\Calendar Stuff\composer.json" />
+    <Content Include="Content\Calendar Stuff\CONTRIBUTING.md" />
+    <Content Include="Content\Calendar Stuff\events.json.php" />
+    <Content Include="Content\Calendar Stuff\LICENSE" />
+    <Content Include="Content\Calendar Stuff\package.json" />
+    <Content Include="Content\Calendar Stuff\README.md" />
+    <Content Include="Content\Calendar Stuff\.bowerrc" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\calendar.js" />
+    <Content Include="Scripts\calendar.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -270,7 +308,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Content\Course_Scheduler.html" />
+    <Content Include="Content\Course_Scheduler2.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -353,6 +391,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Calendar Stuff\css\" />
+    <Folder Include="Content\Calendar Stuff\img\" />
+    <Folder Include="Content\Calendar Stuff\js\" />
+    <Folder Include="Content\Calendar Stuff\less\" />
+    <Folder Include="Content\Calendar Stuff\tmpls\" />
+    <Folder Include="img\" />
+    <Folder Include="Scripts\language\" />
+    <Folder Include="Views\tmpls\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
