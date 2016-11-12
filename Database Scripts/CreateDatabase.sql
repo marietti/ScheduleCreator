@@ -2,19 +2,19 @@
 USE master;
 
 -- Drop the database if it exists
-IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreater')
-    DROP DATABASE ScheduleCreater;
+--IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreator')
+--    DROP DATABASE ScheduleCreator;
 
-CREATE DATABASE [ScheduleCreater]
- ON  PRIMARY
-( NAME = N'ScheduleCreater', FILENAME =
- N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreater.mdf',
- SIZE = 5120KB , FILEGROWTH = 1024KB )
- LOG ON
-( NAME = N'ScheduleCreater_log', FILENAME =
-N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreater_log.ldf',
-SIZE = 2048KB , FILEGROWTH = 10%);
-GO
+--CREATE DATABASE [ScheduleCreator]
+-- ON  PRIMARY
+--( NAME = N'ScheduleCreator', FILENAME =
+-- N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator.mdf',
+-- SIZE = 5120KB , FILEGROWTH = 1024KB )
+-- LOG ON
+--( NAME = N'ScheduleCreator_log', FILENAME =
+--N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator_log.ldf',
+--SIZE = 2048KB , FILEGROWTH = 10%);
+--GO
 
 --Since we're creating the constraints after the tables are created, we can create the tables in any order
 --Any foreign key that references another table can't be created until the table it's referencing has been created
@@ -23,7 +23,8 @@ GO
 --Prime tables need to be dropped last (Everything that is dependent on them needs to be dropped first)
 
 -- Make sure we are attached to the correct database
-USE ScheduleCreater;
+--USE ScheduleCreator;
+USE [3750User];
 
 -- Drop tables if they exist
 -- Tables must be dropped in order
