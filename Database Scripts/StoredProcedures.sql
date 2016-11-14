@@ -1,18 +1,24 @@
 --USE ScheduleCreator
 USE [3750User]
 
+--- Delete Test Data
+DELETE Instructor WHERE instructorWNumber = 'W0100007';
+DELETE InstructorDepartment WHERE instructorWNumber = 'W0100007';
+
 -------------------------------------------------------------------------------
 ---   Functions
 -------------------------------------------------------------------------------
 
----   udf_getInstructorID   ---------------------------------------------------
+---   udf_getInstructorID   ---------------------------------------------------
+
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
     WHERE SPECIFIC_NAME = 'udf_getInstructorID'
 	)
     DROP FUNCTION udf_getInstructorID;
-GO
+GO
+
 CREATE FUNCTION dbo.udf_getInstructorID
     (@instructorWNumber nvarchar(9))
 RETURNS int
@@ -20,9 +26,9 @@ AS
 BEGIN
     DECLARE @instructor_id int;
 
-    SELECT @instructor_id = @instructor_id
+    SELECT @instructor_id = instructor_id
     FROM Instructor
-    WHERE @instructorWNumber = @instructorWNumber;
+    WHERE instructorWNumber = @instructorWNumber;
     RETURN @instructor_id
 END
 GO
@@ -36,7 +42,8 @@ IF EXISTS (
     WHERE SPECIFIC_NAME = 'udf_getDepartmentID'
 	)
     DROP FUNCTION udf_getDepartmentID;
-GO
+GO
+
 CREATE FUNCTION dbo.udf_getDepartmentID
     (@departmentPrefix nvarchar(10))
 RETURNS int
@@ -44,11 +51,13 @@ AS
 BEGIN
     DECLARE @department_id int;
 
-    SELECT @department_id = @department_id
-    FROM Department    WHERE departmentPrefix = @departmentPrefix;
+    SELECT @department_id = department_id
+    FROM Department
+    WHERE departmentPrefix = @departmentPrefix;
     RETURN @department_id
 END
 GO
+
 
 ---   udf_getCourseID   -------------------------------------------------------
 
@@ -58,7 +67,8 @@ IF EXISTS (
     WHERE SPECIFIC_NAME = 'udf_getCourseID'
 	)
     DROP FUNCTION udf_getCourseID;
-GO
+GO
+
 CREATE FUNCTION dbo.udf_getCourseID
     (@coursePrefix nvarchar(10),
 	 @courseNumber nvarchar(10))
@@ -67,12 +77,14 @@ AS
 BEGIN
     DECLARE @course_id int;
 
-    SELECT @course_id = @course_id
-    FROM Course    WHERE coursePrefix = @coursePrefix AND
+    SELECT @course_id = course_id
+    FROM Course
+    WHERE coursePrefix = @coursePrefix AND
 		  courseNumber = @courseNumber;
     RETURN @course_id
 END
 GO
+
 
 ---   udf_getClassroomID   ----------------------------------------------------
 
@@ -82,7 +94,8 @@ IF EXISTS (
     WHERE SPECIFIC_NAME = 'udf_getClassroomID'
 	)
     DROP FUNCTION udf_getClassroomID;
-GO
+GO
+
 CREATE FUNCTION dbo.udf_getClassroomID
     (@buildingPrefix nvarchar(10),
 	 @roomNumber nvarchar(10))
@@ -91,12 +104,14 @@ AS
 BEGIN
     DECLARE @classroom_id int;
 
-    SELECT @classroom_id = @classroom_id
-    FROM Classroom    WHERE buildingPrefix = @buildingPrefix AND
+    SELECT @classroom_id = classroom_id
+    FROM Classroom
+    WHERE buildingPrefix = @buildingPrefix AND
 		  roomNumber = @roomNumber;
     RETURN @classroom_id
 END
 GO
+
 
 ---   udf_getSemesterID   -----------------------------------------------------
 
@@ -106,7 +121,8 @@ IF EXISTS (
     WHERE SPECIFIC_NAME = 'udf_getSemesterID'
 	)
     DROP FUNCTION udf_getSemesterID;
-GO
+GO
+
 CREATE FUNCTION dbo.udf_getSemesterID
     (@semesterType nvarchar(10),
 	 @semesterYear nvarchar(10))
@@ -115,40 +131,77 @@ AS
 BEGIN
     DECLARE @semester_id int;
 
-    SELECT @semester_id = @semester_id
-    FROM Semester    WHERE semesterType = @semesterType AND
+    SELECT @semester_id = semester_id
+    FROM Semester
+    WHERE semesterType = @semesterType AND
 		  semesterYear = @semesterYear;
     RETURN @semester_id
 END
 GO
 
+
+---   udf_getBuildingID   ----------------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'udf_getBuildingID'
+	)
+    DROP FUNCTION udf_getBuildingID;
+GO
+
+CREATE FUNCTION dbo.udf_getBuildingID
+    (@buildingPrefix nvarchar(10))
+RETURNS int
+AS
+BEGIN
+    DECLARE @building_id int;
+
+    SELECT @building_id = building_id
+    FROM Building
+    WHERE buildingPrefix = @buildingPrefix;
+    RETURN @building_id
+END
+GO
+
+
 -------------------------------------------------------------------------------
 ---   Stored Procedures
 -------------------------------------------------------------------------------
 
----   usp_addInstructorDepartment  --------------------------------------------
+---   usp_addInstructorDepartment  --------------------------------------------
+
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
     WHERE SPECIFIC_NAME = 'usp_addInstructorDepartment'
     )
     DROP PROCEDURE usp_addInstructorDepartment;
-GO
+GO
+
 CREATE PROCEDURE usp_addInstructorDepartment
     @instructorWNumber nvarchar(9),
     @departmentPrefix nvarchar(10)
 AS
 BEGIN
     DECLARE @instructor_id int;
-    DECLARE @department_id int;
-    SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
+    DECLARE @department_id int;
+
+    SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
+
     IF (@instructor_id IS NULL) 
         BEGIN
             RAISERROR('Invalid instructorWNumber',0,1);
-        END
+        END
 
-    SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
-    IF (@department_id IS NULL)         BEGIN            RAISERROR('Invalid departmentPrefix',0,1);        END
+
+    SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+
+    IF (@department_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid departmentPrefix',0,1);
+        END
+
     BEGIN TRY
     INSERT INTO dbo.InstructorDepartment
     (instructor_id, department_id, instructorWNumber, departmentPrefix)
@@ -156,6 +209,210 @@ VALUES (@instructor_id, @department_id, @instructorWNumber, @departmentPrefix);
     END TRY
     BEGIN CATCH
         RAISERROR('Error could not insert row',10,1); 
-    END CATCH
+    END CATCH
+
 END
 GO
+
+
+---   usp_addCourse  --------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'usp_addCourse'
+    )
+    DROP PROCEDURE usp_addCourse;
+GO
+
+CREATE PROCEDURE usp_addCourse
+    @coursePrefix nvarchar(10),
+    @courseNumber nvarchar(10),
+    @departmentPrefix nvarchar(10),
+    @courseName nvarchar(100),
+    @defaultCredits decimal,
+    @active nvarchar(5)
+AS
+BEGIN
+	DECLARE @department_id int;
+
+	SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+    
+	IF (@department_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid departmentPrefix',0,1);
+        END
+    
+	BEGIN TRY
+    INSERT INTO dbo.Course
+    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+     defaultCredits, active)
+VALUES (@department_id, @coursePrefix, @courseNumber, @courseName, @departmentPrefix,
+	    @defaultCredits, @active);
+    END TRY
+    BEGIN CATCH
+        RAISERROR('Error could not insert row',10,1); 
+    END CATCH
+
+END
+GO
+
+
+---   usp_addClassroom  --------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'usp_addClassroom'
+    )
+    DROP PROCEDURE usp_addClassroom;
+GO
+
+CREATE PROCEDURE usp_addClassroom
+    @buildingPrefix nvarchar(10),
+    @roomNumber nvarchar(10),
+    @classroomCapacity int,
+    @computers int,
+    @availableFromTime datetime2,
+    @availableToTime datetime2,
+    @active nvarchar(4)
+AS
+BEGIN
+	DECLARE @building_id int;
+
+	SET @building_id = dbo.udf_getBuildingID(@buildingPrefix);
+    
+	IF (@building_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid buildingPrefix',0,1);
+        END
+    
+	BEGIN TRY
+    INSERT INTO dbo.Classroom
+    (building_id, buildingPrefix, roomNumber, classroomCapacity, computers,
+     availableFromTime, availableToTime, active)
+VALUES (@building_id, @buildingPrefix, @roomNumber, @classroomCapacity, @computers,
+		@availableFromTime, @availableToTime, @active);
+    END TRY
+    BEGIN CATCH
+        RAISERROR('Error could not insert row',10,1); 
+    END CATCH
+
+END
+GO
+
+
+---   usp_addSection  --------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'usp_addSection'
+    )
+    DROP PROCEDURE usp_addSection;
+GO
+
+CREATE PROCEDURE usp_addSection
+    @coursePrefix nvarchar(10),
+    @courseNumber nvarchar(10),
+    @buildingPrefix nvarchar(10),
+    @roomNumber nvarchar(10),
+    @instructorWNumber nvarchar(9),
+    @semesterType nvarchar(10),
+    @semesterYear int,
+    @crn nvarchar(10),
+    @daysTaught nvarchar(10),
+    @courseStartTime datetime2,
+    @courseEndTime datetime2,
+    @block nvarchar(5),
+    @courseType nvarchar(10),
+    @pay nvarchar(50),
+    @sectionCapacity int,
+    @creditLoad decimal,
+    @creditOverload decimal,
+    @comments nvarchar(255)
+AS
+BEGIN
+	DECLARE @course_id int;
+    DECLARE @classroom_id int;
+    DECLARE @instructor_id int;
+    DECLARE @semester_id int;
+
+	SET @course_id = dbo.udf_getCourseID(@coursePrefix, @courseNumber);
+    
+	IF (@coursePrefix IS NOT NULL AND @courseNumber IS NOT NULL AND @course_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid coursePrefix and courseNumber',0,1);
+        END
+	ELSE
+		SET @course_id = NULL
+
+
+	SET @classroom_id = dbo.udf_getClassroomID(@buildingPrefix, @roomNumber);
+    
+	IF (@buildingPrefix IS NOT NULL AND @roomNumber IS NOT NULL AND @classroom_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid buildingPrefix and roomNumber',0,1);
+        END
+	ELSE
+		SET @classroom_id = NULL
+
+
+	SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
+    
+	IF (@instructorWNumber IS NOT NULL AND @instructor_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid coursePrefix and instructorWNumber',0,1);
+        END
+	ELSE
+		SET @instructor_id = NULL
+
+
+	SET @semester_id = dbo.udf_getSemesterID(@semesterType, @semesterYear);
+    
+	IF (@semesterType IS NOT NULL AND @semesterType IS NOT NULL AND @semester_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid semesterType and semesterYear',0,1);
+        END
+	ELSE
+		SET @semester_id = NULL
+
+    
+	BEGIN TRY
+		INSERT INTO dbo.Section
+			(course_id, classroom_id, instructor_id, semester_id, coursePrefix, 
+			 courseNumber, buildingPrefix, roomNumber, instructorWNumber, semesterType,
+			 semesterYear, crn, daysTaught, courseStartTime, courseEndTime, block,
+			 courseType, pay, sectionCapacity, creditLoad, creditOverload, comments)
+		VALUES (@course_id, @classroom_id, @instructor_id, @semester_id, @coursePrefix, 
+				@courseNumber, @buildingPrefix, @roomNumber, @instructorWNumber, @semesterType,
+				@semesterYear, @crn, @daysTaught, @courseStartTime, @courseEndTime, @block,
+				@courseType, @pay, @sectionCapacity, @creditLoad, @creditOverload, @comments);
+    END TRY
+    BEGIN CATCH
+        RAISERROR('Error could not insert row',10,1); 
+    END CATCH
+
+END
+GO
+
+
+-------------------------------------------------------------------------------
+---   Tests
+-------------------------------------------------------------------------------
+
+------usp_addInstructorDepartment Test ----------------------------------------
+INSERT INTO dbo.Instructor
+    (instructorWNumber, instructorFirstName, instructorLastName, hoursRequired, active)
+VALUES ('W0100007', 'Rob', 'Hilton', 12, 'Y');
+GO
+
+EXEC usp_addInstructorDepartment 
+    @instructorWNumber='W0100007', @departmentPrefix='CS'; 
+
+SELECT * FROM Instructor;
+SELECT * FROM InstructorDepartment;
+
+------usp_addCourse Test ------------------------------------------------------
+------usp_addClassroom Test ---------------------------------------------------
+------usp_addSection Test -----------------------------------------------------
