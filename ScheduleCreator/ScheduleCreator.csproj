@@ -294,6 +294,7 @@
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Properties\PublishProfiles\Osiris For 3750.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\calendar.js" />
     <Content Include="Scripts\calendar.min.js" />
@@ -309,7 +310,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Content\Course_Scheduler2.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
