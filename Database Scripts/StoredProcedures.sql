@@ -2,8 +2,10 @@
 USE [3750User]
 
 --- Delete Test Data
-DELETE Instructor WHERE instructorWNumber = 'W0100007';
 DELETE InstructorDepartment WHERE instructorWNumber = 'W0100007';
+DELETE Instructor WHERE instructorWNumber = 'W0100007';
+DELETE InstructorRelease WHERE instructorWNumber = 'W0100007';
+GO
 
 -------------------------------------------------------------------------------
 ---   Functions
@@ -397,6 +399,66 @@ END
 GO
 
 
+---   usp_addInstructorRelease  --------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'usp_addInstructorRelease'
+    )
+    DROP PROCEDURE usp_addInstructorRelease;
+GO
+
+CREATE PROCEDURE usp_addInstructorRelease
+    @instructorWNumber nvarchar(9),
+	@semesterType nvarchar(10),
+	@semesterYear int,
+	@releaseDescription nvarchar(255),
+	@totalReleaseHours decimal
+AS
+BEGIN
+	DECLARE @semester_id int;
+
+	SET @semester_id = dbo.udf_getSemesterID(@semesterType, @semesterYear);
+    
+	IF (@semester_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid semesterType or semesterYear',0,1);
+        END
+
+	DECLARE @instructor_id int;
+
+	SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
+    
+	IF (@instructor_id IS NULL) 
+        BEGIN
+            RAISERROR('Invalid instructorWNumber',0,1);
+        END
+    
+	BEGIN TRY
+    INSERT INTO dbo.InstructorRelease
+	(instructor_id, semester_id, instructorWNumber, semesterType, semesterYear, releaseDescription, totalReleaseHours)
+VALUES (@instructor_id, @semester_id, @instructorWNumber, @semesterType, @semesterYear,
+		@releaseDescription, @totalReleaseHours);
+    END TRY
+    BEGIN CATCH
+        RAISERROR('Error could not insert row',10,1); 
+    END CATCH
+
+END
+GO
+
+
+---   usp_addSemester  --------------------------------------------
+
+IF EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
+    WHERE SPECIFIC_NAME = 'usp_addSemester'
+    )
+    DROP PROCEDURE usp_addSemester;
+GO
+
 -------------------------------------------------------------------------------
 ---   Tests
 -------------------------------------------------------------------------------
@@ -416,3 +478,13 @@ SELECT * FROM InstructorDepartment;
 ------usp_addCourse Test ------------------------------------------------------
 ------usp_addClassroom Test ---------------------------------------------------
 ------usp_addSection Test -----------------------------------------------------
+------usp_addInstructorRelease Test -----------------------------------------------------
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0', @totalReleaseHours='0'
+	
+SELECT * FROM InstructorRelease
+
+--Instructor(Needed?)
+--Department (Needed?)
+--Semester (Needed?)
+--Building
