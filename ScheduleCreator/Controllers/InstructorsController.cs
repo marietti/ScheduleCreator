@@ -20,6 +20,11 @@ namespace ScheduleCreator.Controllers
             return View(db.Instructors.ToList());
         }
 
+        public ActionResult SectionByInstructor()
+        {
+            return View(db.Instructors.ToList());
+        }
+
         // GET: Instructors/Details/5
         public ActionResult Details(int? id)
         {

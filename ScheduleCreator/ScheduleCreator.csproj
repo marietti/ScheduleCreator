@@ -309,7 +309,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Content\Course_Scheduler2.html" />
+    <Content Include="Content\Course_Scheduler.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -391,6 +391,7 @@
     <Content Include="Views\Semesters\Details.cshtml" />
     <Content Include="Views\Semesters\Edit.cshtml" />
     <Content Include="Views\Semesters\Index.cshtml" />
+    <Content Include="Views\Instructors\SectionByInstructor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
