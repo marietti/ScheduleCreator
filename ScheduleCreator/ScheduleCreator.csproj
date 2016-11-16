@@ -258,6 +258,7 @@
     <Content Include="Content\Calendar Stuff\Gruntfile.js" />
     <Content Include="Content\Calendar Stuff\index-bs3.html" />
     <Content Include="Content\Calendar Stuff\index.html" />
+    <Content Include="Content\simple-sidebar.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

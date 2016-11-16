@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link href="~/Content/simple-sidebar.css" rel="stylesheet">
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,30 +21,75 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Buildings", "Index", "Buildings")</li>
-                    <li>@Html.ActionLink("Classrooms", "Index", "Classrooms")</li>
-                    <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
-                    <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
-                    <li>@Html.ActionLink("InstructorDepartments", "Index", "InstructorDepartments")</li>
-                    <li>@Html.ActionLink("InstructorReleases", "Index", "InstructorReleases")</li>
-                    <li>@Html.ActionLink("Instructors", "Index", "Instructors")</li>
-                    <li>@Html.ActionLink("Sections", "Index", "Sections")</li>
-                    <li>@Html.ActionLink("Semesters", "Index", "Semesters")</li>
+                    <li>@Html.ActionLink("Sections By Instructors", "SectionByInstructor", "Instructors")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Lists<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Buildings", "Index", "Buildings")</li>
+                            <li>@Html.ActionLink("Classrooms", "Index", "Classrooms")</li>
+                            <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                            <li>@Html.ActionLink("Departments", "Index", "Departments")</li>
+                            <li>@Html.ActionLink("InstructorDepartments", "Index", "InstructorDepartments")</li>
+                            <li>@Html.ActionLink("InstructorReleases", "Index", "InstructorReleases")</li>
+                            <li>@Html.ActionLink("Instructors", "Index", "Instructors")</li>
+                            <li>@Html.ActionLink("Sections", "Index", "Sections")</li>
+                            <li>@Html.ActionLink("Semesters", "Index", "Semesters")</li>
+                        </ul>
+                    </li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li>
+                    <span class="glyphicon glyphicon-plus"></span> <strong>@Html.ActionLink("Create Building", "Create", "Buildings")</strong>
+                </li>
+                <li>
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    <strong>@Html.ActionLink("Create Classroom", "Create", "Classrooms")</strong>
+                </li>
+                <li>
+                    <strong>@Html.ActionLink("Create Course", "Create", "Courses")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create Department", "Create", "Departments")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create Instructor", "Create", "Instructors")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create InstructorDepartment", "Create", "InstructorDepartments")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create InstructorRelease", "Create", "InstructorReleases")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create Section", "Create", "Sections")</strong>
+                </li>
+                <li>
+                    <strong> @Html.ActionLink("Create Semester", "Create", "Semesters")</strong>
+                </li>
+            </ul>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        </div>
+
+        <div id="page-content-wrapper">
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                </footer>
+            </div>
+
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @RenderSection("scripts", required: false)
+        </div>
+    </div>
 </body>
 </html>
