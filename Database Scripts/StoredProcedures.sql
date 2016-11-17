@@ -2,9 +2,14 @@
 USE [3750User]
 
 --- Delete Test Data
+DELETE Section WHERE courseNumber = '1410'
 DELETE InstructorDepartment WHERE instructorWNumber = 'W0100007';
-DELETE Instructor WHERE instructorWNumber = 'W0100007';
 DELETE InstructorRelease WHERE instructorWNumber = 'W0100007';
+DELETE Instructor WHERE instructorWNumber = 'W0100007';
+
+DELETE Course WHERE courseNumber = '1410'
+
+DELETE Classroom WHERE active = 'N'
 GO
 
 -------------------------------------------------------------------------------
@@ -228,7 +233,7 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE usp_addCourse
-    @coursePrefix nvarchar(10),
+    @coursePrefix nvarchar(10), --Should we just make this the same as department prefix?
     @courseNumber nvarchar(10),
     @departmentPrefix nvarchar(10),
     @courseName nvarchar(100),
@@ -346,8 +351,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid coursePrefix and courseNumber',0,1);
         END
-	ELSE
-		SET @course_id = NULL
 
 
 	SET @classroom_id = dbo.udf_getClassroomID(@buildingPrefix, @roomNumber);
@@ -356,8 +359,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid buildingPrefix and roomNumber',0,1);
         END
-	ELSE
-		SET @classroom_id = NULL
 
 
 	SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
@@ -366,8 +367,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid coursePrefix and instructorWNumber',0,1);
         END
-	ELSE
-		SET @instructor_id = NULL
 
 
 	SET @semester_id = dbo.udf_getSemesterID(@semesterType, @semesterYear);
@@ -376,8 +375,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid semesterType and semesterYear',0,1);
         END
-	ELSE
-		SET @semester_id = NULL
 
     
 	BEGIN TRY
@@ -448,17 +445,6 @@ VALUES (@instructor_id, @semester_id, @instructorWNumber, @semesterType, @semest
 END
 GO
 
-
----   usp_addSemester  --------------------------------------------
-
-IF EXISTS (
-    SELECT *
-    FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'usp_addSemester'
-    )
-    DROP PROCEDURE usp_addSemester;
-GO
-
 -------------------------------------------------------------------------------
 ---   Tests
 -------------------------------------------------------------------------------
@@ -476,15 +462,95 @@ SELECT * FROM Instructor;
 SELECT * FROM InstructorDepartment;
 
 ------usp_addCourse Test ------------------------------------------------------
-------usp_addClassroom Test ---------------------------------------------------
-------usp_addSection Test -----------------------------------------------------
-------usp_addInstructorRelease Test -----------------------------------------------------
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0', @totalReleaseHours='0'
-	
-SELECT * FROM InstructorRelease
+--Should Work--
+EXEC usp_addCourse
+	@coursePrefix='CS', @courseNumber='1410', @departmentPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
 
---Instructor(Needed?)
---Department (Needed?)
---Semester (Needed?)
---Building
+--Should Fail--
+EXEC usp_addCourse
+	@coursePrefix='CS', @courseNumber='1410', @departmentPrefix='ART', @courseName='CS1410', @defaultCredits='4', @active='Y'
+
+--Should fail(?)
+--Raises questions about the coursePrefix argument
+EXEC usp_addCourse
+	@coursePrefix='ART', @courseNumber='1410', @departmentPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+
+SELECT * FROM Course
+------usp_addClassroom Test ---------------------------------------------------
+--Should work--
+EXEC usp_addClassroom
+	@buildingPrefix='TE', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+
+--Should fail--
+EXEC usp_addClassroom
+	@buildingPrefix='LL', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+
+SELECT * FROM Classroom
+
+------usp_addSection Test -----------------------------------------------------
+--Should Work--
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='30', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='C', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='9999', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+--Needs to test to make sure the building and classroom are valid
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='AB', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='7530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+--Why are we allowing a null instructor_id in section?
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='WXXXXXXX', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Sprjiolk', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+EXEC usp_addSection 
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=3000,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+SELECT * FROM Section
+
+
+------usp_addInstructorRelease Test -----------------------------------------------------
+--Should Work---
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+
+--Should Fail--
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+
+SELECT * FROM InstructorRelease

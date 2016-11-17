@@ -10,7 +10,7 @@ USE master;
 --( NAME = N'ScheduleCreator', FILENAME =
 -- N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator.mdf',
 -- SIZE = 5120KB , FILEGROWTH = 1024KB )
--- LOG ON
+--LOG ON
 --( NAME = N'ScheduleCreator_log', FILENAME =
 --N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator_log.ldf',
 --SIZE = 2048KB , FILEGROWTH = 10%);
