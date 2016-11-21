@@ -17,7 +17,7 @@ namespace ScheduleCreator.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Instructor()
         {
-            this.InstructorDepartments = new HashSet<InstructorDepartment>();
+            this.InstructorPrograms = new HashSet<InstructorProgram>();
             this.InstructorReleases = new HashSet<InstructorRelease>();
             this.Sections = new HashSet<Section>();
         }
@@ -30,7 +30,7 @@ namespace ScheduleCreator.Models
         public string active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InstructorDepartment> InstructorDepartments { get; set; }
+        public virtual ICollection<InstructorProgram> InstructorPrograms { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InstructorRelease> InstructorReleases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -10,107 +10,107 @@ using ScheduleCreator.Models;
 
 namespace ScheduleCreator.Controllers
 {
-    public class DepartmentsController : Controller
+    public class ProgramsController : Controller
     {
-        private ScheduleCreaterEntities db = new ScheduleCreaterEntities();
+        private ScheduleCreatorEntities db = new ScheduleCreatorEntities();
 
-        // GET: Departments
+        // GET: Programs
         public ActionResult Index()
         {
-            return View(db.Departments.ToList());
+            return View(db.Programs.ToList());
         }
 
-        // GET: Departments/Details/5
+        // GET: Programs/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            Program Program = db.Programs.Find(id);
+            if (Program == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(Program);
         }
 
-        // GET: Departments/Create
+        // GET: Programs/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
+        // POST: Programs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "department_id,departmentPrefix,departmentName,maxCreditsAllowed")] Department department)
+        public ActionResult Create([Bind(Include = "program_id,programPrefix,ProgramName,maxCreditsAllowed")] Program Program)
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
+                db.Programs.Add(Program);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(department);
+            return View(Program);
         }
 
-        // GET: Departments/Edit/5
+        // GET: Programs/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            Program Program = db.Programs.Find(id);
+            if (Program == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(Program);
         }
 
-        // POST: Departments/Edit/5
+        // POST: Programs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "department_id,departmentPrefix,departmentName,maxCreditsAllowed")] Department department)
+        public ActionResult Edit([Bind(Include = "program_id,programPrefix,ProgramName,maxCreditsAllowed")] Program Program)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(department).State = EntityState.Modified;
+                db.Entry(Program).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(department);
+            return View(Program);
         }
 
-        // GET: Departments/Delete/5
+        // GET: Programs/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            Program Program = db.Programs.Find(id);
+            if (Program == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(Program);
         }
 
-        // POST: Departments/Delete/5
+        // POST: Programs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Department department = db.Departments.Find(id);
-            db.Departments.Remove(department);
+            Program Program = db.Programs.Find(id);
+            db.Programs.Remove(Program);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

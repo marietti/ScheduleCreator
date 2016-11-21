@@ -21,15 +21,15 @@ namespace ScheduleCreator.Models
         }
     
         public int course_id { get; set; }
-        public int department_id { get; set; }
+        public int program_id { get; set; }
         public string coursePrefix { get; set; }
         public string courseNumber { get; set; }
-        public string departmentPrefix { get; set; }
+        public string programPrefix { get; set; }
         public string courseName { get; set; }
         public Nullable<decimal> defaultCredits { get; set; }
         public string active { get; set; }
     
-        public virtual Department Department { get; set; }
+        public virtual Program Program { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Section> Sections { get; set; }
     }

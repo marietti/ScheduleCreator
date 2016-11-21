@@ -173,9 +173,9 @@
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\ClassroomsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
-    <Compile Include="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\ProgramsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InstructorDepartmentsController.cs" />
+    <Compile Include="Controllers\InstructorProgramsController.cs" />
     <Compile Include="Controllers\InstructorReleasesController.cs" />
     <Compile Include="Controllers\InstructorsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -194,20 +194,20 @@
     <Compile Include="Models\Course.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Department.cs">
-      <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instructor.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\InstructorDepartment.cs">
+    <Compile Include="Models\InstructorProgram.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InstructorRelease.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Program.cs">
+      <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ScheduleCreatorModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -276,13 +276,6 @@
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ScheduleCreatorModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
-      <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\Calendar Stuff\.bower.json" />
     <Content Include="Content\Calendar Stuff\bower.json" />
     <Content Include="Content\Calendar Stuff\composer.json" />
@@ -295,6 +288,13 @@
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
+    <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ScheduleCreatorModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
+      <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Osiris For 3750.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\calendar.js" />
@@ -362,21 +362,21 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Departments\Create.cshtml" />
-    <Content Include="Views\Departments\Delete.cshtml" />
-    <Content Include="Views\Departments\Details.cshtml" />
-    <Content Include="Views\Departments\Edit.cshtml" />
-    <Content Include="Views\Departments\Index.cshtml" />
+    <Content Include="Views\Programs\Create.cshtml" />
+    <Content Include="Views\Programs\Delete.cshtml" />
+    <Content Include="Views\Programs\Details.cshtml" />
+    <Content Include="Views\Programs\Edit.cshtml" />
+    <Content Include="Views\Programs\Index.cshtml" />
     <Content Include="Views\Instructors\Create.cshtml" />
     <Content Include="Views\Instructors\Delete.cshtml" />
     <Content Include="Views\Instructors\Details.cshtml" />
     <Content Include="Views\Instructors\Edit.cshtml" />
     <Content Include="Views\Instructors\Index.cshtml" />
-    <Content Include="Views\InstructorDepartments\Create.cshtml" />
-    <Content Include="Views\InstructorDepartments\Delete.cshtml" />
-    <Content Include="Views\InstructorDepartments\Details.cshtml" />
-    <Content Include="Views\InstructorDepartments\Edit.cshtml" />
-    <Content Include="Views\InstructorDepartments\Index.cshtml" />
+    <Content Include="Views\InstructorPrograms\Create.cshtml" />
+    <Content Include="Views\InstructorPrograms\Delete.cshtml" />
+    <Content Include="Views\InstructorPrograms\Details.cshtml" />
+    <Content Include="Views\InstructorPrograms\Edit.cshtml" />
+    <Content Include="Views\InstructorPrograms\Index.cshtml" />
     <Content Include="Views\InstructorReleases\Create.cshtml" />
     <Content Include="Views\InstructorReleases\Delete.cshtml" />
     <Content Include="Views\InstructorReleases\Details.cshtml" />

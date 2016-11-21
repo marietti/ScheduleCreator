@@ -12,23 +12,23 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Department
+    public partial class Program
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Department()
+        public Program()
         {
             this.Courses = new HashSet<Course>();
-            this.InstructorDepartments = new HashSet<InstructorDepartment>();
+            this.InstructorPrograms = new HashSet<InstructorProgram>();
         }
     
-        public int department_id { get; set; }
-        public string departmentPrefix { get; set; }
-        public string departmentName { get; set; }
+        public int program_id { get; set; }
+        public string programPrefix { get; set; }
+        public string programName { get; set; }
         public decimal maxCreditsAllowed { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Course> Courses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InstructorDepartment> InstructorDepartments { get; set; }
+        public virtual ICollection<InstructorProgram> InstructorPrograms { get; set; }
     }
 }

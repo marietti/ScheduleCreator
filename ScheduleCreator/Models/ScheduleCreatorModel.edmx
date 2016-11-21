@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ScheduleCreaterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ScheduleCreator.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="building_id" />
@@ -33,22 +33,13 @@
             <PropertyRef Name="course_id" />
           </Key>
           <Property Name="course_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="department_id" Type="int" Nullable="false" />
+          <Property Name="program_id" Type="int" Nullable="false" />
           <Property Name="coursePrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="courseNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="programPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="courseName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="defaultCredits" Type="decimal" Precision="18" Scale="0" />
           <Property Name="active" Type="nvarchar" MaxLength="5" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="department_id" />
-          </Key>
-          <Property Name="department_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="departmentName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="maxCreditsAllowed" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Instructor">
           <Key>
@@ -61,14 +52,14 @@
           <Property Name="hoursRequired" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="active" Type="nvarchar" MaxLength="5" Nullable="false" />
         </EntityType>
-        <EntityType Name="InstructorDepartment">
+        <EntityType Name="InstructorProgram">
           <Key>
-            <PropertyRef Name="instructorDepartment_id" />
+            <PropertyRef Name="instructorProgram_id" />
           </Key>
-          <Property Name="instructorDepartment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="department_id" Type="int" Nullable="false" />
+          <Property Name="instructorProgram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="program_id" Type="int" Nullable="false" />
           <Property Name="instructor_id" Type="int" Nullable="false" />
-          <Property Name="departmentPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="programPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
         </EntityType>
         <EntityType Name="InstructorRelease">
@@ -83,6 +74,15 @@
           <Property Name="semesterYear" Type="int" Nullable="false" />
           <Property Name="releaseDescription" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="totalReleaseHours" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Program">
+          <Key>
+            <PropertyRef Name="program_id" />
+          </Key>
+          <Property Name="program_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="programPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="programName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Section">
           <Key>
@@ -105,7 +105,7 @@
           <Property Name="courseStartTime" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="courseEndTime" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="block" Type="nvarchar" MaxLength="5" Nullable="false" />
-          <Property Name="courseType" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="courseType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="pay" Type="nvarchar" MaxLength="50" />
           <Property Name="sectionCapacity" Type="int" Nullable="false" />
           <Property Name="creditLoad" Type="decimal" Precision="18" Scale="0" />
@@ -134,39 +134,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Course_Department_id">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+        <Association Name="FK_Course_Program_id">
+          <End Role="Program" Type="Self.Program" Multiplicity="1" />
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="department_id" />
+            <Principal Role="Program">
+              <PropertyRef Name="program_id" />
             </Principal>
             <Dependent Role="Course">
-              <PropertyRef Name="department_id" />
+              <PropertyRef Name="program_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_InstructorDepartment_Department_id">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
-          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="department_id" />
-            </Principal>
-            <Dependent Role="InstructorDepartment">
-              <PropertyRef Name="department_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InstructorDepartment_Instructor_id">
+        <Association Name="FK_InstructorProgram_Instructor_id">
           <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
-          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <End Role="InstructorProgram" Type="Self.InstructorProgram" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Instructor">
               <PropertyRef Name="instructor_id" />
             </Principal>
-            <Dependent Role="InstructorDepartment">
+            <Dependent Role="InstructorProgram">
               <PropertyRef Name="instructor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InstructorProgram_Program_id">
+          <End Role="Program" Type="Self.Program" Multiplicity="1" />
+          <End Role="InstructorProgram" Type="Self.InstructorProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Program">
+              <PropertyRef Name="program_id" />
+            </Principal>
+            <Dependent Role="InstructorProgram">
+              <PropertyRef Name="program_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -242,31 +242,107 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ScheduleCreaterModelStoreContainer">
+        <Function Name="udf_getBuildingID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="buildingPrefix" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getClassroomID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="buildingPrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="roomNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getCourseID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="coursePrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getDepartmentID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="departmentPrefix" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getInstructorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getProgramID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="programPrefix" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="udf_getSemesterID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="semesterType" Type="nvarchar" Mode="In" />
+          <Parameter Name="semesterYear" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="usp_addClassroom" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="buildingPrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="roomNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="classroomCapacity" Type="int" Mode="In" />
+          <Parameter Name="computers" Type="int" Mode="In" />
+          <Parameter Name="availableFromTime" Type="datetime2" Mode="In" />
+          <Parameter Name="availableToTime" Type="datetime2" Mode="In" />
+          <Parameter Name="active" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="usp_addCourse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="coursePrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="programPrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseName" Type="nvarchar" Mode="In" />
+          <Parameter Name="defaultCredits" Type="decimal" Mode="In" />
+          <Parameter Name="active" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="usp_addInstructorDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="departmentPrefix" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="usp_addInstructorProgram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="programPrefix" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="usp_addInstructorRelease" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="semesterType" Type="nvarchar" Mode="In" />
+          <Parameter Name="semesterYear" Type="int" Mode="In" />
+          <Parameter Name="releaseDescription" Type="nvarchar" Mode="In" />
+          <Parameter Name="totalReleaseHours" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="usp_addSection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="coursePrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="buildingPrefix" Type="nvarchar" Mode="In" />
+          <Parameter Name="roomNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="semesterType" Type="nvarchar" Mode="In" />
+          <Parameter Name="semesterYear" Type="int" Mode="In" />
+          <Parameter Name="crn" Type="nvarchar" Mode="In" />
+          <Parameter Name="daysTaught" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseStartTime" Type="datetime2" Mode="In" />
+          <Parameter Name="courseEndTime" Type="datetime2" Mode="In" />
+          <Parameter Name="block" Type="nvarchar" Mode="In" />
+          <Parameter Name="courseType" Type="nvarchar" Mode="In" />
+          <Parameter Name="pay" Type="nvarchar" Mode="In" />
+          <Parameter Name="sectionCapacity" Type="int" Mode="In" />
+          <Parameter Name="creditLoad" Type="decimal" Mode="In" />
+          <Parameter Name="creditOverload" Type="decimal" Mode="In" />
+          <Parameter Name="comments" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ScheduleCreatorStoreContainer">
           <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classroom" EntityType="Self.Classroom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instructor" EntityType="Self.Instructor" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="InstructorDepartment" EntityType="Self.InstructorDepartment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InstructorProgram" EntityType="Self.InstructorProgram" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InstructorRelease" EntityType="Self.InstructorRelease" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Program" EntityType="Self.Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Semester" EntityType="Self.Semester" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Classroom_Building_id" Association="Self.FK_Classroom_Building_id">
             <End Role="Building" EntitySet="Building" />
             <End Role="Classroom" EntitySet="Classroom" />
           </AssociationSet>
-          <AssociationSet Name="FK_Course_Department_id" Association="Self.FK_Course_Department_id">
-            <End Role="Department" EntitySet="Department" />
+          <AssociationSet Name="FK_Course_Program_id" Association="Self.FK_Course_Program_id">
+            <End Role="Program" EntitySet="Program" />
             <End Role="Course" EntitySet="Course" />
           </AssociationSet>
-          <AssociationSet Name="FK_InstructorDepartment_Department_id" Association="Self.FK_InstructorDepartment_Department_id">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="InstructorDepartment" EntitySet="InstructorDepartment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_InstructorDepartment_Instructor_id" Association="Self.FK_InstructorDepartment_Instructor_id">
+          <AssociationSet Name="FK_InstructorProgram_Instructor_id" Association="Self.FK_InstructorProgram_Instructor_id">
             <End Role="Instructor" EntitySet="Instructor" />
-            <End Role="InstructorDepartment" EntitySet="InstructorDepartment" />
+            <End Role="InstructorProgram" EntitySet="InstructorProgram" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InstructorProgram_Program_id" Association="Self.FK_InstructorProgram_Program_id">
+            <End Role="Program" EntitySet="Program" />
+            <End Role="InstructorProgram" EntitySet="InstructorProgram" />
           </AssociationSet>
           <AssociationSet Name="FK_InstructorRelease_Instructor_id" Association="Self.FK_InstructorRelease_Instructor_id">
             <End Role="Instructor" EntitySet="Instructor" />
@@ -297,7 +373,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ScheduleCreaterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ScheduleCreator" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="building_id" />
@@ -329,26 +405,15 @@
             <PropertyRef Name="course_id" />
           </Key>
           <Property Name="course_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="department_id" Type="Int32" Nullable="false" />
+          <Property Name="program_id" Type="Int32" Nullable="false" />
           <Property Name="coursePrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="courseNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="programPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="courseName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="defaultCredits" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Department" Relationship="Self.FK_Course_Department_id" FromRole="Course" ToRole="Department" />
+          <NavigationProperty Name="Program" Relationship="Self.FK_Course_Program_id" FromRole="Course" ToRole="Program" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Course_id" FromRole="Course" ToRole="Section" />
-        </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="department_id" />
-          </Key>
-          <Property Name="department_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="departmentName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="maxCreditsAllowed" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Department_id" FromRole="Department" ToRole="Course" />
-          <NavigationProperty Name="InstructorDepartments" Relationship="Self.FK_InstructorDepartment_Department_id" FromRole="Department" ToRole="InstructorDepartment" />
         </EntityType>
         <EntityType Name="Instructor">
           <Key>
@@ -360,21 +425,21 @@
           <Property Name="instructorLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="hoursRequired" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="InstructorDepartments" Relationship="Self.FK_InstructorDepartment_Instructor_id" FromRole="Instructor" ToRole="InstructorDepartment" />
+          <NavigationProperty Name="InstructorPrograms" Relationship="Self.FK_InstructorProgram_Instructor_id" FromRole="Instructor" ToRole="InstructorProgram" />
           <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Instructor_id" FromRole="Instructor" ToRole="InstructorRelease" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Instructor_id" FromRole="Instructor" ToRole="Section" />
         </EntityType>
-        <EntityType Name="InstructorDepartment">
+        <EntityType Name="InstructorProgram">
           <Key>
-            <PropertyRef Name="instructorDepartment_id" />
+            <PropertyRef Name="instructorProgram_id" />
           </Key>
-          <Property Name="instructorDepartment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="department_id" Type="Int32" Nullable="false" />
+          <Property Name="instructorProgram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="program_id" Type="Int32" Nullable="false" />
           <Property Name="instructor_id" Type="Int32" Nullable="false" />
-          <Property Name="departmentPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="programPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Department" Relationship="Self.FK_InstructorDepartment_Department_id" FromRole="InstructorDepartment" ToRole="Department" />
-          <NavigationProperty Name="Instructor" Relationship="Self.FK_InstructorDepartment_Instructor_id" FromRole="InstructorDepartment" ToRole="Instructor" />
+          <NavigationProperty Name="Instructor" Relationship="Self.FK_InstructorProgram_Instructor_id" FromRole="InstructorProgram" ToRole="Instructor" />
+          <NavigationProperty Name="Program" Relationship="Self.FK_InstructorProgram_Program_id" FromRole="InstructorProgram" ToRole="Program" />
         </EntityType>
         <EntityType Name="InstructorRelease">
           <Key>
@@ -390,6 +455,17 @@
           <Property Name="totalReleaseHours" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="Instructor" Relationship="Self.FK_InstructorRelease_Instructor_id" FromRole="InstructorRelease" ToRole="Instructor" />
           <NavigationProperty Name="Semester" Relationship="Self.FK_InstructorRelease_Semester_id" FromRole="InstructorRelease" ToRole="Semester" />
+        </EntityType>
+        <EntityType Name="Program">
+          <Key>
+            <PropertyRef Name="program_id" />
+          </Key>
+          <Property Name="program_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="programPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="programName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Program_id" FromRole="Program" ToRole="Course" />
+          <NavigationProperty Name="InstructorPrograms" Relationship="Self.FK_InstructorProgram_Program_id" FromRole="Program" ToRole="InstructorProgram" />
         </EntityType>
         <EntityType Name="Section">
           <Key>
@@ -412,7 +488,7 @@
           <Property Name="courseStartTime" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="courseEndTime" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="block" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="courseType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="courseType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="pay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="sectionCapacity" Type="Int32" Nullable="false" />
           <Property Name="creditLoad" Type="Decimal" Precision="18" Scale="0" />
@@ -459,15 +535,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Course_Department_id">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+        <Association Name="FK_Course_Program_id">
+          <End Role="Program" Type="Self.Program" Multiplicity="1" />
           <End Role="Course" Type="Self.Course" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="department_id" />
+            <Principal Role="Program">
+              <PropertyRef Name="program_id" />
             </Principal>
             <Dependent Role="Course">
-              <PropertyRef Name="department_id" />
+              <PropertyRef Name="program_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -483,26 +559,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_InstructorDepartment_Department_id">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
-          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="department_id" />
-            </Principal>
-            <Dependent Role="InstructorDepartment">
-              <PropertyRef Name="department_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InstructorDepartment_Instructor_id">
+        <Association Name="FK_InstructorProgram_Instructor_id">
           <End Role="Instructor" Type="Self.Instructor" Multiplicity="1" />
-          <End Role="InstructorDepartment" Type="Self.InstructorDepartment" Multiplicity="*" />
+          <End Role="InstructorProgram" Type="Self.InstructorProgram" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Instructor">
               <PropertyRef Name="instructor_id" />
             </Principal>
-            <Dependent Role="InstructorDepartment">
+            <Dependent Role="InstructorProgram">
               <PropertyRef Name="instructor_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -531,6 +595,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InstructorProgram_Program_id">
+          <End Role="Program" Type="Self.Program" Multiplicity="1" />
+          <End Role="InstructorProgram" Type="Self.InstructorProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Program">
+              <PropertyRef Name="program_id" />
+            </Principal>
+            <Dependent Role="InstructorProgram">
+              <PropertyRef Name="program_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InstructorRelease_Semester_id">
           <End Role="Semester" Type="Self.Semester" Multiplicity="1" />
           <End Role="InstructorRelease" Type="Self.InstructorRelease" Multiplicity="*" />
@@ -555,14 +631,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ScheduleCreaterEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ScheduleCreatorEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Buildings" EntityType="Self.Building" />
           <EntitySet Name="Classrooms" EntityType="Self.Classroom" />
           <EntitySet Name="Courses" EntityType="Self.Course" />
-          <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="Instructors" EntityType="Self.Instructor" />
-          <EntitySet Name="InstructorDepartments" EntityType="Self.InstructorDepartment" />
+          <EntitySet Name="InstructorPrograms" EntityType="Self.InstructorProgram" />
           <EntitySet Name="InstructorReleases" EntityType="Self.InstructorRelease" />
+          <EntitySet Name="Programs" EntityType="Self.Program" />
           <EntitySet Name="Sections" EntityType="Self.Section" />
           <EntitySet Name="Semesters" EntityType="Self.Semester" />
           <AssociationSet Name="FK_Classroom_Building_id" Association="Self.FK_Classroom_Building_id">
@@ -573,21 +649,17 @@
             <End Role="Classroom" EntitySet="Classrooms" />
             <End Role="Section" EntitySet="Sections" />
           </AssociationSet>
-          <AssociationSet Name="FK_Course_Department_id" Association="Self.FK_Course_Department_id">
-            <End Role="Department" EntitySet="Departments" />
+          <AssociationSet Name="FK_Course_Program_id" Association="Self.FK_Course_Program_id">
+            <End Role="Program" EntitySet="Programs" />
             <End Role="Course" EntitySet="Courses" />
           </AssociationSet>
           <AssociationSet Name="FK_Section_Course_id" Association="Self.FK_Section_Course_id">
             <End Role="Course" EntitySet="Courses" />
             <End Role="Section" EntitySet="Sections" />
           </AssociationSet>
-          <AssociationSet Name="FK_InstructorDepartment_Department_id" Association="Self.FK_InstructorDepartment_Department_id">
-            <End Role="Department" EntitySet="Departments" />
-            <End Role="InstructorDepartment" EntitySet="InstructorDepartments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_InstructorDepartment_Instructor_id" Association="Self.FK_InstructorDepartment_Instructor_id">
+          <AssociationSet Name="FK_InstructorProgram_Instructor_id" Association="Self.FK_InstructorProgram_Instructor_id">
             <End Role="Instructor" EntitySet="Instructors" />
-            <End Role="InstructorDepartment" EntitySet="InstructorDepartments" />
+            <End Role="InstructorProgram" EntitySet="InstructorPrograms" />
           </AssociationSet>
           <AssociationSet Name="FK_InstructorRelease_Instructor_id" Association="Self.FK_InstructorRelease_Instructor_id">
             <End Role="Instructor" EntitySet="Instructors" />
@@ -597,6 +669,10 @@
             <End Role="Instructor" EntitySet="Instructors" />
             <End Role="Section" EntitySet="Sections" />
           </AssociationSet>
+          <AssociationSet Name="FK_InstructorProgram_Program_id" Association="Self.FK_InstructorProgram_Program_id">
+            <End Role="Program" EntitySet="Programs" />
+            <End Role="InstructorProgram" EntitySet="InstructorPrograms" />
+          </AssociationSet>
           <AssociationSet Name="FK_InstructorRelease_Semester_id" Association="Self.FK_InstructorRelease_Semester_id">
             <End Role="Semester" EntitySet="Semesters" />
             <End Role="InstructorRelease" EntitySet="InstructorReleases" />
@@ -605,15 +681,67 @@
             <End Role="Semester" EntitySet="Semesters" />
             <End Role="Section" EntitySet="Sections" />
           </AssociationSet>
+          <FunctionImport Name="usp_addClassroom">
+            <Parameter Name="buildingPrefix" Mode="In" Type="String" />
+            <Parameter Name="roomNumber" Mode="In" Type="String" />
+            <Parameter Name="classroomCapacity" Mode="In" Type="Int32" />
+            <Parameter Name="computers" Mode="In" Type="Int32" />
+            <Parameter Name="availableFromTime" Mode="In" Type="DateTime" />
+            <Parameter Name="availableToTime" Mode="In" Type="DateTime" />
+            <Parameter Name="active" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_addCourse">
+            <Parameter Name="coursePrefix" Mode="In" Type="String" />
+            <Parameter Name="courseNumber" Mode="In" Type="String" />
+            <Parameter Name="programPrefix" Mode="In" Type="String" />
+            <Parameter Name="courseName" Mode="In" Type="String" />
+            <Parameter Name="defaultCredits" Mode="In" Type="Decimal" />
+            <Parameter Name="active" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_addInstructorDepartment">
+            <Parameter Name="instructorWNumber" Mode="In" Type="String" />
+            <Parameter Name="departmentPrefix" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_addInstructorProgram">
+            <Parameter Name="instructorWNumber" Mode="In" Type="String" />
+            <Parameter Name="programPrefix" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="usp_addInstructorRelease">
+            <Parameter Name="instructorWNumber" Mode="In" Type="String" />
+            <Parameter Name="semesterType" Mode="In" Type="String" />
+            <Parameter Name="semesterYear" Mode="In" Type="Int32" />
+            <Parameter Name="releaseDescription" Mode="In" Type="String" />
+            <Parameter Name="totalReleaseHours" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="usp_addSection">
+            <Parameter Name="coursePrefix" Mode="In" Type="String" />
+            <Parameter Name="courseNumber" Mode="In" Type="String" />
+            <Parameter Name="buildingPrefix" Mode="In" Type="String" />
+            <Parameter Name="roomNumber" Mode="In" Type="String" />
+            <Parameter Name="instructorWNumber" Mode="In" Type="String" />
+            <Parameter Name="semesterType" Mode="In" Type="String" />
+            <Parameter Name="semesterYear" Mode="In" Type="Int32" />
+            <Parameter Name="crn" Mode="In" Type="String" />
+            <Parameter Name="daysTaught" Mode="In" Type="String" />
+            <Parameter Name="courseStartTime" Mode="In" Type="DateTime" />
+            <Parameter Name="courseEndTime" Mode="In" Type="DateTime" />
+            <Parameter Name="block" Mode="In" Type="String" />
+            <Parameter Name="courseType" Mode="In" Type="String" />
+            <Parameter Name="pay" Mode="In" Type="String" />
+            <Parameter Name="sectionCapacity" Mode="In" Type="Int32" />
+            <Parameter Name="creditLoad" Mode="In" Type="Decimal" />
+            <Parameter Name="creditOverload" Mode="In" Type="Decimal" />
+            <Parameter Name="comments" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ScheduleCreaterModelStoreContainer" CdmEntityContainer="ScheduleCreaterEntities">
+        <EntityContainerMapping StorageEntityContainer="ScheduleCreatorStoreContainer" CdmEntityContainer="ScheduleCreatorEntities">
           <EntitySetMapping Name="Buildings">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Building">
+            <EntityTypeMapping TypeName="ScheduleCreator.Building">
               <MappingFragment StoreEntitySet="Building">
                 <ScalarProperty Name="building_id" ColumnName="building_id" />
                 <ScalarProperty Name="buildingPrefix" ColumnName="buildingPrefix" />
@@ -623,7 +751,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Classrooms">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Classroom">
+            <EntityTypeMapping TypeName="ScheduleCreator.Classroom">
               <MappingFragment StoreEntitySet="Classroom">
                 <ScalarProperty Name="classroom_id" ColumnName="classroom_id" />
                 <ScalarProperty Name="building_id" ColumnName="building_id" />
@@ -638,31 +766,21 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Course">
+            <EntityTypeMapping TypeName="ScheduleCreator.Course">
               <MappingFragment StoreEntitySet="Course">
                 <ScalarProperty Name="course_id" ColumnName="course_id" />
-                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="program_id" ColumnName="program_id" />
                 <ScalarProperty Name="coursePrefix" ColumnName="coursePrefix" />
                 <ScalarProperty Name="courseNumber" ColumnName="courseNumber" />
-                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
+                <ScalarProperty Name="programPrefix" ColumnName="programPrefix" />
                 <ScalarProperty Name="courseName" ColumnName="courseName" />
                 <ScalarProperty Name="defaultCredits" ColumnName="defaultCredits" />
                 <ScalarProperty Name="active" ColumnName="active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Departments">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="department_id" ColumnName="department_id" />
-                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
-                <ScalarProperty Name="departmentName" ColumnName="departmentName" />
-                <ScalarProperty Name="maxCreditsAllowed" ColumnName="maxCreditsAllowed" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Instructors">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Instructor">
+            <EntityTypeMapping TypeName="ScheduleCreator.Instructor">
               <MappingFragment StoreEntitySet="Instructor">
                 <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
                 <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
@@ -673,19 +791,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="InstructorDepartments">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.InstructorDepartment">
-              <MappingFragment StoreEntitySet="InstructorDepartment">
-                <ScalarProperty Name="instructorDepartment_id" ColumnName="instructorDepartment_id" />
-                <ScalarProperty Name="department_id" ColumnName="department_id" />
+          <EntitySetMapping Name="InstructorPrograms">
+            <EntityTypeMapping TypeName="ScheduleCreator.InstructorProgram">
+              <MappingFragment StoreEntitySet="InstructorProgram">
+                <ScalarProperty Name="instructorProgram_id" ColumnName="instructorProgram_id" />
+                <ScalarProperty Name="program_id" ColumnName="program_id" />
                 <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
-                <ScalarProperty Name="departmentPrefix" ColumnName="departmentPrefix" />
+                <ScalarProperty Name="programPrefix" ColumnName="programPrefix" />
                 <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InstructorReleases">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.InstructorRelease">
+            <EntityTypeMapping TypeName="ScheduleCreator.InstructorRelease">
               <MappingFragment StoreEntitySet="InstructorRelease">
                 <ScalarProperty Name="instructorRelease_id" ColumnName="instructorRelease_id" />
                 <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
@@ -698,8 +816,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Programs">
+            <EntityTypeMapping TypeName="ScheduleCreator.Program">
+              <MappingFragment StoreEntitySet="Program">
+                <ScalarProperty Name="program_id" ColumnName="program_id" />
+                <ScalarProperty Name="programPrefix" ColumnName="programPrefix" />
+                <ScalarProperty Name="programName" ColumnName="programName" />
+                <ScalarProperty Name="maxCreditsAllowed" ColumnName="maxCreditsAllowed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Section">
+            <EntityTypeMapping TypeName="ScheduleCreator.Section">
               <MappingFragment StoreEntitySet="Section">
                 <ScalarProperty Name="section_id" ColumnName="section_id" />
                 <ScalarProperty Name="course_id" ColumnName="course_id" />
@@ -728,7 +856,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Semesters">
-            <EntityTypeMapping TypeName="ScheduleCreaterModel.Semester">
+            <EntityTypeMapping TypeName="ScheduleCreator.Semester">
               <MappingFragment StoreEntitySet="Semester">
                 <ScalarProperty Name="semester_id" ColumnName="semester_id" />
                 <ScalarProperty Name="semesterType" ColumnName="semesterType" />
@@ -738,6 +866,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="usp_addClassroom" FunctionName="ScheduleCreator.Store.usp_addClassroom" />
+          <FunctionImportMapping FunctionImportName="usp_addCourse" FunctionName="ScheduleCreator.Store.usp_addCourse" />
+          <FunctionImportMapping FunctionImportName="usp_addInstructorDepartment" FunctionName="ScheduleCreator.Store.usp_addInstructorDepartment" />
+          <FunctionImportMapping FunctionImportName="usp_addInstructorProgram" FunctionName="ScheduleCreator.Store.usp_addInstructorProgram" />
+          <FunctionImportMapping FunctionImportName="usp_addInstructorRelease" FunctionName="ScheduleCreator.Store.usp_addInstructorRelease" />
+          <FunctionImportMapping FunctionImportName="usp_addSection" FunctionName="ScheduleCreator.Store.usp_addSection" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

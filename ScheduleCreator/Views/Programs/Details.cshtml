@@ -1,4 +1,4 @@
-﻿@model ScheduleCreator.Models.Department
+﻿@model ScheduleCreator.Models.Program
 
 @{
     ViewBag.Title = "Details";
@@ -7,23 +7,23 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Department</h4>
+    <h4>Program</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.departmentPrefix)
+            @Html.DisplayNameFor(model => model.programPrefix)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.departmentPrefix)
+            @Html.DisplayFor(model => model.programPrefix)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.departmentName)
+            @Html.DisplayNameFor(model => model.programName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.departmentName)
+            @Html.DisplayFor(model => model.programName)
         </dd>
 
         <dt>
@@ -37,6 +37,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.department_id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.program_id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

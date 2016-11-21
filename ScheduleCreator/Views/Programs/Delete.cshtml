@@ -1,4 +1,4 @@
-﻿@model ScheduleCreator.Models.Department
+﻿@model ScheduleCreator.Models.Program
 
 @{
     ViewBag.Title = "Delete";
@@ -8,23 +8,23 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Department</h4>
+    <h4>Program</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.departmentPrefix)
+            @Html.DisplayNameFor(model => model.programPrefix)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.departmentPrefix)
+            @Html.DisplayFor(model => model.programPrefix)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.departmentName)
+            @Html.DisplayNameFor(model => model.programName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.departmentName)
+            @Html.DisplayFor(model => model.programName)
         </dd>
 
         <dt>
