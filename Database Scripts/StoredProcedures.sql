@@ -1,9 +1,9 @@
---USE ScheduleCreator
-USE [3750User]
+USE ScheduleCreator
+--USE [3750User]
 
 --- Delete Test Data
 DELETE Section WHERE courseNumber = '1410'
-DELETE InstructorDepartment WHERE instructorWNumber = 'W0100007';
+DELETE InstructorProgram WHERE instructorWNumber = 'W0100007';
 DELETE InstructorRelease WHERE instructorWNumber = 'W0100007';
 DELETE Instructor WHERE instructorWNumber = 'W0100007';
 
@@ -41,27 +41,27 @@ END
 GO
 
 
----   udf_getDepartmentID   ---------------------------------------------------
+---   udf_getProgramID   ---------------------------------------------------
 
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'udf_getDepartmentID'
+    WHERE SPECIFIC_NAME = 'udf_getProgramID'
 	)
-    DROP FUNCTION udf_getDepartmentID;
+    DROP FUNCTION udf_getProgramID;
 GO
 
-CREATE FUNCTION dbo.udf_getDepartmentID
-    (@departmentPrefix nvarchar(10))
+CREATE FUNCTION dbo.udf_getProgramID
+    (@programPrefix nvarchar(10))
 RETURNS int
 AS
 BEGIN
-    DECLARE @department_id int;
+    DECLARE @program_id int;
 
-    SELECT @department_id = department_id
-    FROM Department
-    WHERE departmentPrefix = @departmentPrefix;
-    RETURN @department_id
+    SELECT @program_id = program_id
+    FROM Program
+    WHERE programPrefix = @programPrefix;
+    RETURN @program_id
 END
 GO
 
@@ -176,23 +176,23 @@ GO
 ---   Stored Procedures
 -------------------------------------------------------------------------------
 
----   usp_addInstructorDepartment  --------------------------------------------
+---   usp_addInstructorProgram  --------------------------------------------
 
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'usp_addInstructorDepartment'
+    WHERE SPECIFIC_NAME = 'usp_addInstructorProgram'
     )
-    DROP PROCEDURE usp_addInstructorDepartment;
+    DROP PROCEDURE usp_addInstructorProgram;
 GO
 
-CREATE PROCEDURE usp_addInstructorDepartment
+CREATE PROCEDURE usp_addInstructorProgram
     @instructorWNumber nvarchar(9),
-    @departmentPrefix nvarchar(10)
+    @programPrefix nvarchar(10)
 AS
 BEGIN
     DECLARE @instructor_id int;
-    DECLARE @department_id int;
+    DECLARE @program_id int;
 
     SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
 
@@ -202,17 +202,17 @@ BEGIN
         END
 
 
-    SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+    SET @program_id = dbo.udf_getProgramID(@programPrefix);
 
-    IF (@department_id IS NULL) 
+    IF (@program_id IS NULL) 
         BEGIN
-            RAISERROR('Invalid departmentPrefix',0,1);
+            RAISERROR('Invalid programPrefix',0,1);
         END
 
     BEGIN TRY
-    INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
-VALUES (@instructor_id, @department_id, @instructorWNumber, @departmentPrefix);
+    INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
+VALUES (@instructor_id, @program_id, @instructorWNumber, @programPrefix);
     END TRY
     BEGIN CATCH
         RAISERROR('Error could not insert row',10,1); 
@@ -233,28 +233,28 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE usp_addCourse
-    @coursePrefix nvarchar(10), --Should we just make this the same as department prefix?
+    @coursePrefix nvarchar(10), --Should we just make this the same as program prefix?
     @courseNumber nvarchar(10),
-    @departmentPrefix nvarchar(10),
+    @programPrefix nvarchar(10),
     @courseName nvarchar(100),
     @defaultCredits decimal,
     @active nvarchar(5)
 AS
 BEGIN
-	DECLARE @department_id int;
+	DECLARE @program_id int;
 
-	SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+	SET @program_id = dbo.udf_getProgramID(@programPrefix);
     
-	IF (@department_id IS NULL) 
+	IF (@program_id IS NULL) 
         BEGIN
-            RAISERROR('Invalid departmentPrefix',0,1);
+            RAISERROR('Invalid programPrefix',0,1);
         END
     
 	BEGIN TRY
     INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES (@department_id, @coursePrefix, @courseNumber, @courseName, @departmentPrefix,
+VALUES (@program_id, @coursePrefix, @courseNumber, @courseName, @programPrefix,
 	    @defaultCredits, @active);
     END TRY
     BEGIN CATCH
@@ -449,31 +449,31 @@ GO
 ---   Tests
 -------------------------------------------------------------------------------
 
-------usp_addInstructorDepartment Test ----------------------------------------
+------usp_addInstructorProgram Test ----------------------------------------
 INSERT INTO dbo.Instructor
     (instructorWNumber, instructorFirstName, instructorLastName, hoursRequired, active)
 VALUES ('W0100007', 'Rob', 'Hilton', 12, 'Y');
 GO
 
-EXEC usp_addInstructorDepartment 
-    @instructorWNumber='W0100007', @departmentPrefix='CS'; 
+EXEC usp_addInstructorProgram 
+    @instructorWNumber='W0100007', @programPrefix='CS'; 
 
 SELECT * FROM Instructor;
-SELECT * FROM InstructorDepartment;
+SELECT * FROM InstructorProgram;
 
 ------usp_addCourse Test ------------------------------------------------------
 --Should Work--
 EXEC usp_addCourse
-	@coursePrefix='CS', @courseNumber='1410', @departmentPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+	@coursePrefix='CS', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
 
 --Should Fail--
 EXEC usp_addCourse
-	@coursePrefix='CS', @courseNumber='1410', @departmentPrefix='ART', @courseName='CS1410', @defaultCredits='4', @active='Y'
+	@coursePrefix='CS', @courseNumber='1410', @programPrefix='ART', @courseName='CS1410', @defaultCredits='4', @active='Y'
 
 --Should fail(?)
 --Raises questions about the coursePrefix argument
 EXEC usp_addCourse
-	@coursePrefix='ART', @courseNumber='1410', @departmentPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+	@coursePrefix='ART', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
 
 SELECT * FROM Course
 ------usp_addClassroom Test ---------------------------------------------------

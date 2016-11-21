@@ -8,10 +8,10 @@ DELETE FROM dbo.Course;
 DELETE FROM dbo.Classroom;
 DELETE FROM dbo.Building;
 DELETE FROM dbo.InstructorRelease;
-DELETE FROM dbo.InstructorDepartment;
+DELETE FROM dbo.InstructorProgram;
 DELETE FROM dbo.Semester;
 DELETE FROM dbo.Instructor;
-DELETE FROM dbo.Department;
+DELETE FROM dbo.Program;
 
 --Instructor Inserts-----------------------------------------------------------
 INSERT INTO dbo.Instructor
@@ -39,41 +39,41 @@ INSERT INTO dbo.Instructor
 VALUES ('W0100006', 'Hugo', 'Valle', 12, 'Y');
 
 
---Department Inserts-----------------------------------------------------------
-INSERT INTO dbo.Department
-    (departmentPrefix, departmentName, maxCreditsAllowed)
+--Program Inserts-----------------------------------------------------------
+INSERT INTO dbo.Program
+    (programPrefix, programName, maxCreditsAllowed)
 VALUES ('CS', 'Computer Science', 12.0);
 
 
 --Course Inserts---------------------------------------------------------------
 INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES ((SELECT department_id FROM Department WHERE departmentPrefix = 'CS'),
+VALUES ((SELECT program_id FROM Program WHERE programPrefix = 'CS'),
          'CS', '1400', 'CS 1400', 'CS', 4.0, 'Y');
 
 INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES ((SELECT department_id FROM Department WHERE departmentPrefix = 'CS'),
+VALUES ((SELECT program_id FROM Program WHERE programPrefix = 'CS'),
         'CS', '1010', 'CS 1010', 'CS', 3.0, 'Y');
 
 INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES ((SELECT department_id FROM Department WHERE departmentPrefix = 'CS'),
+VALUES ((SELECT program_id FROM Program WHERE programPrefix = 'CS'),
         'CS', '3030', 'CS 3030', 'CS', 4.0, 'Y');
 
 INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES ((SELECT department_id FROM Department WHERE departmentPrefix = 'CS'),
+VALUES ((SELECT program_id FROM Program WHERE programPrefix = 'CS'),
         'CS', '4110', 'CS 4110', 'CS', 4.0, 'Y');
 
 INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES ((SELECT department_id FROM Department WHERE departmentPrefix = 'CS'),
+VALUES ((SELECT program_id FROM Program WHERE programPrefix = 'CS'),
         'CS', '4800', 'CS 4800', 'CS', 4.0, 'Y');
 
 
@@ -160,41 +160,41 @@ VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W010000
           AND semesterYear = 2017),
           'W0100002', 'Fall', 2017, '{"Program Coordinator" : 6.0, "CS 1030" : 2.0}', 8.0);
 
---InstructorDepartment Inserts-------------------------------------------------
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+--InstructorProgram Inserts-------------------------------------------------
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100001'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100001', 'CS');
         
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100002'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100002', 'CS');
 
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100003'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100003', 'CS');
 
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100004'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100004', 'CS');
 
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100005'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100005', 'CS');
 
-INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
+INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100006'), 
-        (SELECT department_id FROM Department WHERE departmentPrefix = 'CS'), 
+        (SELECT program_id FROM Program WHERE programPrefix = 'CS'), 
         'W0100006', 'CS');
 
 
@@ -286,13 +286,13 @@ VALUES ((SELECT course_id FROM Course WHERE coursePrefix = 'CS'
 
 
 SELECT * FROM dbo.Instructor;
-SELECT * FROM dbo.Department;
+SELECT * FROM dbo.Program;
 SELECT * FROM dbo.Course;
 SELECT * FROM dbo.Classroom;
 SELECT * FROM dbo.Building;
 SELECT * FROM dbo.Semester;
 SELECT * FROM dbo.InstructorRelease;
-SELECT * FROM dbo.InstructorDepartment;
+SELECT * FROM dbo.InstructorProgram;
 SELECT * FROM dbo.Section;
 
 COMMIT;
