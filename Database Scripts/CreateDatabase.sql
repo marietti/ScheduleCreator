@@ -33,36 +33,38 @@ IF EXISTS (
 ) DROP TABLE Section;
 
 IF EXISTS (
+  SELECT * FROM sys.tables WHERE name = N'Classroom'
+) DROP TABLE Classroom;
+
+IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Building'
 ) DROP TABLE Building;
 
 IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'Classroom'
-) DROP TABLE Classroom;
+  SELECT * FROM sys.tables WHERE name = N'InstructorRelease'
+) DROP TABLE InstructorRelease;
 
 IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Semester'
 ) DROP TABLE Semester;
 
 IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'Instructor'
-) DROP TABLE Instructor;
+  SELECT * FROM sys.tables WHERE name = N'InstructorProgram'
+) DROP TABLE InstructorProgram;
 
 IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'Course'
-) DROP TABLE Course;
+  SELECT * FROM sys.tables WHERE name = N'Instructor'
+) DROP TABLE Instructor;
 
 IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Program'
 ) DROP TABLE Program;
 
 IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'InstructorProgram'
-) DROP TABLE InstructorProgram;
+  SELECT * FROM sys.tables WHERE name = N'Course'
+) DROP TABLE Course;
 
-IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'InstructorRelease'
-) DROP TABLE InstructorRelease;
+
 
 CREATE TABLE [InstructorRelease] (
     [instructorRelease_id] int IDENTITY(1000,1) NOT NULL,
