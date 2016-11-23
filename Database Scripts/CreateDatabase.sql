@@ -24,6 +24,21 @@ USE master;
 
 -- Make sure we are attached to the correct database
 --USE ScheduleCreator;
+
+IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='3750User')
+    DROP DATABASE [3750User];
+
+CREATE DATABASE [3750User]
+ ON  PRIMARY
+( NAME = N'3750User', FILENAME =
+ N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\3750User.mdf',
+ SIZE = 5120KB , FILEGROWTH = 1024KB )
+LOG ON
+( NAME = N'3750User_log', FILENAME =
+N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\3750User_log.ldf',
+SIZE = 2048KB , FILEGROWTH = 10%);
+GO
+
 USE [3750User];
 
 -- Drop tables if they exist
