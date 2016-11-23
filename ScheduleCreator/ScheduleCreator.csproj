@@ -238,23 +238,6 @@
     <Content Include="Content\calendar.css" />
     <Content Include="Content\calendar.min.css" />
     <Content Include="Content\Calendar Stuff\.gitignore" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap2\css\bootstrap-responsive.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap2\css\bootstrap.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap2\img\glyphicons-halflings-white.png" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap2\img\glyphicons-halflings.png" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap2\js\bootstrap.min.js" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap-theme.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap-theme.min.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\css\bootstrap.min.css" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\js\bootstrap.js" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\js\bootstrap.min.js" />
-    <Content Include="Content\Calendar Stuff\components\jquery\jquery.min.js" />
-    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\jstz.js" />
-    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\jstz.min.js" />
-    <Content Include="Content\Calendar Stuff\components\jstimezonedetect\LICENCE.txt" />
-    <Content Include="Content\Calendar Stuff\components\underscore\underscore-min.js" />
     <Content Include="Content\Calendar Stuff\Gruntfile.js" />
     <Content Include="Content\Calendar Stuff\index-bs3.html" />
     <Content Include="Content\Calendar Stuff\index.html" />
@@ -285,9 +268,6 @@
     <Content Include="Content\Calendar Stuff\package.json" />
     <Content Include="Content\Calendar Stuff\README.md" />
     <Content Include="Content\Calendar Stuff\.bowerrc" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
     <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ScheduleCreatorModel.Designer.cs</LastGenOutput>
