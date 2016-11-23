@@ -2,7 +2,7 @@
 USE master;
 
 -- Drop the database if it exists
---IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreator')
+--IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreator')--
 --    DROP DATABASE ScheduleCreator;
 
 --CREATE DATABASE [ScheduleCreator]
@@ -10,7 +10,7 @@ USE master;
 --( NAME = N'ScheduleCreator', FILENAME =
 -- N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator.mdf',
 -- SIZE = 5120KB , FILEGROWTH = 1024KB )
--- LOG ON
+--LOG ON
 --( NAME = N'ScheduleCreator_log', FILENAME =
 --N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator_log.ldf',
 --SIZE = 2048KB , FILEGROWTH = 10%);
@@ -33,36 +33,38 @@ IF EXISTS (
 ) DROP TABLE Section;
 
 IF EXISTS (
+  SELECT * FROM sys.tables WHERE name = N'Classroom'
+) DROP TABLE Classroom;
+
+IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Building'
 ) DROP TABLE Building;
 
 IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'Classroom'
-) DROP TABLE Classroom;
+  SELECT * FROM sys.tables WHERE name = N'InstructorRelease'
+) DROP TABLE InstructorRelease;
 
 IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Semester'
 ) DROP TABLE Semester;
 
 IF EXISTS (
+  SELECT * FROM sys.tables WHERE name = N'InstructorProgram'
+) DROP TABLE InstructorProgram;
+
+IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Instructor'
 ) DROP TABLE Instructor;
+
+IF EXISTS (
+  SELECT * FROM sys.tables WHERE name = N'Program'
+) DROP TABLE Program;
 
 IF EXISTS (
   SELECT * FROM sys.tables WHERE name = N'Course'
 ) DROP TABLE Course;
 
-IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'Department'
-) DROP TABLE Department;
 
-IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'InstructorDepartment'
-) DROP TABLE InstructorDepartment;
-
-IF EXISTS (
-  SELECT * FROM sys.tables WHERE name = N'InstructorRelease'
-) DROP TABLE InstructorRelease;
 
 CREATE TABLE [InstructorRelease] (
     [instructorRelease_id] int IDENTITY(1000,1) NOT NULL,
@@ -75,27 +77,27 @@ CREATE TABLE [InstructorRelease] (
     [totalReleaseHours] decimal
 );
 
-CREATE TABLE [InstructorDepartment] (
-    [instructorDepartment_id] int IDENTITY(1000,1) NOT NULL,
-    [department_id] int NOT NULL,
+CREATE TABLE [InstructorProgram] (
+    [instructorProgram_id] int IDENTITY(1000,1) NOT NULL,
+    [program_id] int NOT NULL,
     [instructor_id] int NOT NULL,
-    [departmentPrefix] nvarchar(10) NOT NULL,
+    [programPrefix] nvarchar(10) NOT NULL,
     [instructorWNumber] nvarchar(9) NOT NULL,
 );
 
-CREATE TABLE [Department] (
-    [department_id] int IDENTITY(1000,1) NOT NULL,
-    [departmentPrefix] nvarchar(10) NOT NULL,
-    [departmentName] nvarchar(100) NOT NULL,
+CREATE TABLE [Program] (
+    [program_id] int IDENTITY(1000,1) NOT NULL,
+    [programPrefix] nvarchar(10) NOT NULL,
+    [programName] nvarchar(100) NOT NULL,
     [maxCreditsAllowed] decimal NOT NULL,
 );
 
 CREATE TABLE [Course] (
     [course_id] int IDENTITY(1000,1) NOT NULL,
-    [department_id] int NOT NULL,
+    [program_id] int NOT NULL,
     [coursePrefix] nvarchar(10) NOT NULL,
     [courseNumber] nvarchar(10) NOT NULL,
-    [departmentPrefix] nvarchar(10) NOT NULL,
+    [programPrefix] nvarchar(10) NOT NULL,
     [courseName] nvarchar(100) NOT NULL,
     [defaultCredits] decimal,
     [active] nvarchar(5) NOT NULL,
@@ -177,17 +179,17 @@ ALTER TABLE Course
 	ADD CONSTRAINT PK_Course
 	PRIMARY KEY CLUSTERED (course_id);
 
-ALTER TABLE Department
-	ADD CONSTRAINT PK_Department
-	PRIMARY KEY CLUSTERED (department_id);
+ALTER TABLE Program
+	ADD CONSTRAINT PK_Program
+	PRIMARY KEY CLUSTERED (program_id);
 
 ALTER TABLE Instructor
 	ADD CONSTRAINT PK_Instructor
 	PRIMARY KEY CLUSTERED (instructor_id);
 
-ALTER TABLE InstructorDepartment
-	ADD CONSTRAINT PK_InstructorDepartment
-	PRIMARY KEY CLUSTERED (instructorDepartment_id);
+ALTER TABLE InstructorProgram
+	ADD CONSTRAINT PK_InstructorProgram
+	PRIMARY KEY CLUSTERED (instructorProgram_id);
 
 ALTER TABLE InstructorRelease
 	ADD CONSTRAINT PK_InstructorRelease
@@ -206,11 +208,11 @@ GO
 ALTER TABLE InstructorRelease
 	ADD CONSTRAINT AK_InstructorRelease UNIQUE(instructorWNumber, semesterType, semesterYear);
 
-ALTER TABLE InstructorDepartment
-	ADD CONSTRAINT AK_InstructorDepartment UNIQUE(departmentPrefix, instructorWNumber);
+ALTER TABLE InstructorProgram
+	ADD CONSTRAINT AK_InstructorProgram UNIQUE(programPrefix, instructorWNumber);
 
-ALTER TABLE Department
-	ADD CONSTRAINT AK_Department UNIQUE(departmentPrefix);
+ALTER TABLE Program
+	ADD CONSTRAINT AK_Program UNIQUE(programPrefix);
 
 ALTER TABLE Course
 	ADD CONSTRAINT AK_Course UNIQUE(coursePrefix, courseNumber);
@@ -237,17 +239,17 @@ ALTER TABLE InstructorRelease
 	ADD CONSTRAINT FK_InstructorRelease_Semester_id
 	FOREIGN KEY (semester_id) REFERENCES Semester(semester_id);
 
-ALTER TABLE InstructorDepartment
-	ADD CONSTRAINT FK_InstructorDepartment_Instructor_id
+ALTER TABLE InstructorProgram
+	ADD CONSTRAINT FK_InstructorProgram_Instructor_id
 	FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id);
 
-ALTER TABLE InstructorDepartment
-	ADD CONSTRAINT FK_InstructorDepartment_Department_id
-	FOREIGN KEY (department_id) REFERENCES Department(department_id);
+ALTER TABLE InstructorProgram
+	ADD CONSTRAINT FK_InstructorProgram_Program_id
+	FOREIGN KEY (program_id) REFERENCES Program(program_id);
 
 ALTER TABLE Course
-	ADD CONSTRAINT FK_Course_Department_id
-	FOREIGN KEY (department_id) REFERENCES Department(department_id);
+	ADD CONSTRAINT FK_Course_Program_id
+	FOREIGN KEY (program_id) REFERENCES Program(program_id);
 
 ALTER TABLE Classroom
 	ADD CONSTRAINT FK_Classroom_Building_id

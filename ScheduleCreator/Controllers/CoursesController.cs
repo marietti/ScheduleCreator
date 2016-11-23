@@ -12,12 +12,12 @@ namespace ScheduleCreator.Controllers
 {
     public class CoursesController : Controller
     {
-        private ScheduleCreaterEntities db = new ScheduleCreaterEntities();
+        private ScheduleCreatorEntities db = new ScheduleCreatorEntities();
 
         // GET: Courses
         public ActionResult Index()
         {
-            var courses = db.Courses.Include(c => c.Department);
+            var courses = db.Courses.Include(c => c.Program);
             return View(courses.ToList());
         }
 
@@ -39,7 +39,7 @@ namespace ScheduleCreator.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "departmentPrefix");
+            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix");
             return View();
         }
 
@@ -48,7 +48,7 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "course_id,department_id,coursePrefix,courseNumber,departmentPrefix,courseName,defaultCredits,active")] Course course)
+        public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,programPrefix,courseName,defaultCredits,active")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "departmentPrefix", course.department_id);
+            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
             return View(course);
         }
 
@@ -73,7 +73,7 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "departmentPrefix", course.department_id);
+            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
             return View(course);
         }
 
@@ -82,7 +82,7 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "course_id,department_id,coursePrefix,courseNumber,departmentPrefix,courseName,defaultCredits,active")] Course course)
+        public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,programPrefix,courseName,defaultCredits,active")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "departmentPrefix", course.department_id);
+            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
             return View(course);
         }
 

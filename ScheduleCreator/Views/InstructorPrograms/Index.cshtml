@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ScheduleCreator.Models.InstructorDepartment>
+﻿@model IEnumerable<ScheduleCreator.Models.InstructorProgram>
 
 @{
     ViewBag.Title = "Index";
@@ -12,13 +12,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.departmentPrefix)
+            @Html.DisplayNameFor(model => model.programPrefix)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.instructorWNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Department.departmentPrefix)
+            @Html.DisplayNameFor(model => model.Program.programPrefix)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
@@ -29,21 +29,21 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.departmentPrefix)
+            @Html.DisplayFor(modelItem => item.programPrefix)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.instructorWNumber)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Department.departmentPrefix)
+            @Html.DisplayFor(modelItem => item.Program.programPrefix)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Instructor.instructorWNumber)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.instructorDepartment_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.instructorDepartment_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.instructorDepartment_id })
+            @Html.ActionLink("Edit", "Edit", new { id=item.instructorProgram_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.instructorProgram_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.instructorProgram_id })
         </td>
     </tr>
 }

@@ -12,15 +12,15 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class InstructorDepartment
+    public partial class InstructorProgram
     {
-        public int instructorDepartment_id { get; set; }
-        public int department_id { get; set; }
+        public int instructorProgram_id { get; set; }
+        public int program_id { get; set; }
         public int instructor_id { get; set; }
-        public string departmentPrefix { get; set; }
+        public string programPrefix { get; set; }
         public string instructorWNumber { get; set; }
     
-        public virtual Department Department { get; set; }
         public virtual Instructor Instructor { get; set; }
+        public virtual Program Program { get; set; }
     }
 }

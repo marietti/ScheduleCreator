@@ -12,7 +12,7 @@ namespace ScheduleCreator.Controllers
 {
     public class InstructorsController : Controller
     {
-        private ScheduleCreaterEntities db = new ScheduleCreaterEntities();
+        private ScheduleCreatorEntities db = new ScheduleCreatorEntities();
 
         // GET: Instructors
         public ActionResult Index()

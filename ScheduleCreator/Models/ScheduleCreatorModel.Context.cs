@@ -12,11 +12,13 @@ namespace ScheduleCreator.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
-    public partial class ScheduleCreaterEntities : DbContext
+    public partial class ScheduleCreatorEntities : DbContext
     {
-        public ScheduleCreaterEntities()
-            : base("name=ScheduleCreaterEntities")
+        public ScheduleCreatorEntities()
+            : base("name=ScheduleCreatorEntities")
         {
         }
     
@@ -28,11 +30,188 @@ namespace ScheduleCreator.Models
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Classroom> Classrooms { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Instructor> Instructors { get; set; }
-        public virtual DbSet<InstructorDepartment> InstructorDepartments { get; set; }
+        public virtual DbSet<InstructorProgram> InstructorPrograms { get; set; }
         public virtual DbSet<InstructorRelease> InstructorReleases { get; set; }
+        public virtual DbSet<Program> Programs { get; set; }
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Semester> Semesters { get; set; }
+    
+        public virtual int usp_addClassroom(string buildingPrefix, string roomNumber, Nullable<int> classroomCapacity, Nullable<int> computers, Nullable<System.DateTime> availableFromTime, Nullable<System.DateTime> availableToTime, string active)
+        {
+            var buildingPrefixParameter = buildingPrefix != null ?
+                new ObjectParameter("buildingPrefix", buildingPrefix) :
+                new ObjectParameter("buildingPrefix", typeof(string));
+    
+            var roomNumberParameter = roomNumber != null ?
+                new ObjectParameter("roomNumber", roomNumber) :
+                new ObjectParameter("roomNumber", typeof(string));
+    
+            var classroomCapacityParameter = classroomCapacity.HasValue ?
+                new ObjectParameter("classroomCapacity", classroomCapacity) :
+                new ObjectParameter("classroomCapacity", typeof(int));
+    
+            var computersParameter = computers.HasValue ?
+                new ObjectParameter("computers", computers) :
+                new ObjectParameter("computers", typeof(int));
+    
+            var availableFromTimeParameter = availableFromTime.HasValue ?
+                new ObjectParameter("availableFromTime", availableFromTime) :
+                new ObjectParameter("availableFromTime", typeof(System.DateTime));
+    
+            var availableToTimeParameter = availableToTime.HasValue ?
+                new ObjectParameter("availableToTime", availableToTime) :
+                new ObjectParameter("availableToTime", typeof(System.DateTime));
+    
+            var activeParameter = active != null ?
+                new ObjectParameter("active", active) :
+                new ObjectParameter("active", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addClassroom", buildingPrefixParameter, roomNumberParameter, classroomCapacityParameter, computersParameter, availableFromTimeParameter, availableToTimeParameter, activeParameter);
+        }
+    
+        public virtual int usp_addCourse(string coursePrefix, string courseNumber, string programPrefix, string courseName, Nullable<decimal> defaultCredits, string active)
+        {
+            var coursePrefixParameter = coursePrefix != null ?
+                new ObjectParameter("coursePrefix", coursePrefix) :
+                new ObjectParameter("coursePrefix", typeof(string));
+    
+            var courseNumberParameter = courseNumber != null ?
+                new ObjectParameter("courseNumber", courseNumber) :
+                new ObjectParameter("courseNumber", typeof(string));
+    
+            var programPrefixParameter = programPrefix != null ?
+                new ObjectParameter("programPrefix", programPrefix) :
+                new ObjectParameter("programPrefix", typeof(string));
+    
+            var courseNameParameter = courseName != null ?
+                new ObjectParameter("courseName", courseName) :
+                new ObjectParameter("courseName", typeof(string));
+    
+            var defaultCreditsParameter = defaultCredits.HasValue ?
+                new ObjectParameter("defaultCredits", defaultCredits) :
+                new ObjectParameter("defaultCredits", typeof(decimal));
+    
+            var activeParameter = active != null ?
+                new ObjectParameter("active", active) :
+                new ObjectParameter("active", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addCourse", coursePrefixParameter, courseNumberParameter, programPrefixParameter, courseNameParameter, defaultCreditsParameter, activeParameter);
+        }
+    
+        public virtual int usp_addInstructorProgram(string instructorWNumber, string programPrefix)
+        {
+            var instructorWNumberParameter = instructorWNumber != null ?
+                new ObjectParameter("instructorWNumber", instructorWNumber) :
+                new ObjectParameter("instructorWNumber", typeof(string));
+    
+            var programPrefixParameter = programPrefix != null ?
+                new ObjectParameter("programPrefix", programPrefix) :
+                new ObjectParameter("programPrefix", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addInstructorProgram", instructorWNumberParameter, programPrefixParameter);
+        }
+    
+        public virtual int usp_addInstructorRelease(string instructorWNumber, string semesterType, Nullable<int> semesterYear, string releaseDescription, Nullable<decimal> totalReleaseHours)
+        {
+            var instructorWNumberParameter = instructorWNumber != null ?
+                new ObjectParameter("instructorWNumber", instructorWNumber) :
+                new ObjectParameter("instructorWNumber", typeof(string));
+    
+            var semesterTypeParameter = semesterType != null ?
+                new ObjectParameter("semesterType", semesterType) :
+                new ObjectParameter("semesterType", typeof(string));
+    
+            var semesterYearParameter = semesterYear.HasValue ?
+                new ObjectParameter("semesterYear", semesterYear) :
+                new ObjectParameter("semesterYear", typeof(int));
+    
+            var releaseDescriptionParameter = releaseDescription != null ?
+                new ObjectParameter("releaseDescription", releaseDescription) :
+                new ObjectParameter("releaseDescription", typeof(string));
+    
+            var totalReleaseHoursParameter = totalReleaseHours.HasValue ?
+                new ObjectParameter("totalReleaseHours", totalReleaseHours) :
+                new ObjectParameter("totalReleaseHours", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addInstructorRelease", instructorWNumberParameter, semesterTypeParameter, semesterYearParameter, releaseDescriptionParameter, totalReleaseHoursParameter);
+        }
+    
+        public virtual int usp_addSection(string coursePrefix, string courseNumber, string buildingPrefix, string roomNumber, string instructorWNumber, string semesterType, Nullable<int> semesterYear, string crn, string daysTaught, Nullable<System.DateTime> courseStartTime, Nullable<System.DateTime> courseEndTime, string block, string courseType, string pay, Nullable<int> sectionCapacity, Nullable<decimal> creditLoad, Nullable<decimal> creditOverload, string comments)
+        {
+            var coursePrefixParameter = coursePrefix != null ?
+                new ObjectParameter("coursePrefix", coursePrefix) :
+                new ObjectParameter("coursePrefix", typeof(string));
+    
+            var courseNumberParameter = courseNumber != null ?
+                new ObjectParameter("courseNumber", courseNumber) :
+                new ObjectParameter("courseNumber", typeof(string));
+    
+            var buildingPrefixParameter = buildingPrefix != null ?
+                new ObjectParameter("buildingPrefix", buildingPrefix) :
+                new ObjectParameter("buildingPrefix", typeof(string));
+    
+            var roomNumberParameter = roomNumber != null ?
+                new ObjectParameter("roomNumber", roomNumber) :
+                new ObjectParameter("roomNumber", typeof(string));
+    
+            var instructorWNumberParameter = instructorWNumber != null ?
+                new ObjectParameter("instructorWNumber", instructorWNumber) :
+                new ObjectParameter("instructorWNumber", typeof(string));
+    
+            var semesterTypeParameter = semesterType != null ?
+                new ObjectParameter("semesterType", semesterType) :
+                new ObjectParameter("semesterType", typeof(string));
+    
+            var semesterYearParameter = semesterYear.HasValue ?
+                new ObjectParameter("semesterYear", semesterYear) :
+                new ObjectParameter("semesterYear", typeof(int));
+    
+            var crnParameter = crn != null ?
+                new ObjectParameter("crn", crn) :
+                new ObjectParameter("crn", typeof(string));
+    
+            var daysTaughtParameter = daysTaught != null ?
+                new ObjectParameter("daysTaught", daysTaught) :
+                new ObjectParameter("daysTaught", typeof(string));
+    
+            var courseStartTimeParameter = courseStartTime.HasValue ?
+                new ObjectParameter("courseStartTime", courseStartTime) :
+                new ObjectParameter("courseStartTime", typeof(System.DateTime));
+    
+            var courseEndTimeParameter = courseEndTime.HasValue ?
+                new ObjectParameter("courseEndTime", courseEndTime) :
+                new ObjectParameter("courseEndTime", typeof(System.DateTime));
+    
+            var blockParameter = block != null ?
+                new ObjectParameter("block", block) :
+                new ObjectParameter("block", typeof(string));
+    
+            var courseTypeParameter = courseType != null ?
+                new ObjectParameter("courseType", courseType) :
+                new ObjectParameter("courseType", typeof(string));
+    
+            var payParameter = pay != null ?
+                new ObjectParameter("pay", pay) :
+                new ObjectParameter("pay", typeof(string));
+    
+            var sectionCapacityParameter = sectionCapacity.HasValue ?
+                new ObjectParameter("sectionCapacity", sectionCapacity) :
+                new ObjectParameter("sectionCapacity", typeof(int));
+    
+            var creditLoadParameter = creditLoad.HasValue ?
+                new ObjectParameter("creditLoad", creditLoad) :
+                new ObjectParameter("creditLoad", typeof(decimal));
+    
+            var creditOverloadParameter = creditOverload.HasValue ?
+                new ObjectParameter("creditOverload", creditOverload) :
+                new ObjectParameter("creditOverload", typeof(decimal));
+    
+            var commentsParameter = comments != null ?
+                new ObjectParameter("comments", comments) :
+                new ObjectParameter("comments", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addSection", coursePrefixParameter, courseNumberParameter, buildingPrefixParameter, roomNumberParameter, instructorWNumberParameter, semesterTypeParameter, semesterYearParameter, crnParameter, daysTaughtParameter, courseStartTimeParameter, courseEndTimeParameter, blockParameter, courseTypeParameter, payParameter, sectionCapacityParameter, creditLoadParameter, creditOverloadParameter, commentsParameter);
+        }
     }
 }

@@ -2,9 +2,14 @@
 USE [3750User]
 
 --- Delete Test Data
-DELETE InstructorDepartment WHERE instructorWNumber = 'W0100007';
-DELETE Instructor WHERE instructorWNumber = 'W0100007';
+DELETE Section WHERE courseNumber = '1410'
+DELETE InstructorProgram WHERE instructorWNumber = 'W0100007';
 DELETE InstructorRelease WHERE instructorWNumber = 'W0100007';
+DELETE Instructor WHERE instructorWNumber = 'W0100007';
+
+DELETE Course WHERE courseNumber = '1410'
+
+DELETE Classroom WHERE active = 'N'
 GO
 
 -------------------------------------------------------------------------------
@@ -36,27 +41,27 @@ END
 GO
 
 
----   udf_getDepartmentID   ---------------------------------------------------
+---   udf_getProgramID   ---------------------------------------------------
 
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'udf_getDepartmentID'
+    WHERE SPECIFIC_NAME = 'udf_getProgramID'
 	)
-    DROP FUNCTION udf_getDepartmentID;
+    DROP FUNCTION udf_getProgramID;
 GO
 
-CREATE FUNCTION dbo.udf_getDepartmentID
-    (@departmentPrefix nvarchar(10))
+CREATE FUNCTION dbo.udf_getProgramID
+    (@programPrefix nvarchar(10))
 RETURNS int
 AS
 BEGIN
-    DECLARE @department_id int;
+    DECLARE @program_id int;
 
-    SELECT @department_id = department_id
-    FROM Department
-    WHERE departmentPrefix = @departmentPrefix;
-    RETURN @department_id
+    SELECT @program_id = program_id
+    FROM Program
+    WHERE programPrefix = @programPrefix;
+    RETURN @program_id
 END
 GO
 
@@ -171,23 +176,23 @@ GO
 ---   Stored Procedures
 -------------------------------------------------------------------------------
 
----   usp_addInstructorDepartment  --------------------------------------------
+---   usp_addInstructorProgram  --------------------------------------------
 
 IF EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'usp_addInstructorDepartment'
+    WHERE SPECIFIC_NAME = 'usp_addInstructorProgram'
     )
-    DROP PROCEDURE usp_addInstructorDepartment;
+    DROP PROCEDURE usp_addInstructorProgram;
 GO
 
-CREATE PROCEDURE usp_addInstructorDepartment
+CREATE PROCEDURE usp_addInstructorProgram
     @instructorWNumber nvarchar(9),
-    @departmentPrefix nvarchar(10)
+    @programPrefix nvarchar(10)
 AS
 BEGIN
     DECLARE @instructor_id int;
-    DECLARE @department_id int;
+    DECLARE @program_id int;
 
     SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
 
@@ -197,17 +202,17 @@ BEGIN
         END
 
 
-    SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+    SET @program_id = dbo.udf_getProgramID(@programPrefix);
 
-    IF (@department_id IS NULL) 
+    IF (@program_id IS NULL) 
         BEGIN
-            RAISERROR('Invalid departmentPrefix',0,1);
+            RAISERROR('Invalid programPrefix',0,1);
         END
 
     BEGIN TRY
-    INSERT INTO dbo.InstructorDepartment
-    (instructor_id, department_id, instructorWNumber, departmentPrefix)
-VALUES (@instructor_id, @department_id, @instructorWNumber, @departmentPrefix);
+    INSERT INTO dbo.InstructorProgram
+    (instructor_id, program_id, instructorWNumber, programPrefix)
+VALUES (@instructor_id, @program_id, @instructorWNumber, @programPrefix);
     END TRY
     BEGIN CATCH
         RAISERROR('Error could not insert row',10,1); 
@@ -228,28 +233,28 @@ IF EXISTS (
 GO
 
 CREATE PROCEDURE usp_addCourse
-    @coursePrefix nvarchar(10),
+    @coursePrefix nvarchar(10), --Should we just make this the same as program prefix?
     @courseNumber nvarchar(10),
-    @departmentPrefix nvarchar(10),
+    @programPrefix nvarchar(10),
     @courseName nvarchar(100),
     @defaultCredits decimal,
     @active nvarchar(5)
 AS
 BEGIN
-	DECLARE @department_id int;
+	DECLARE @program_id int;
 
-	SET @department_id = dbo.udf_getDepartmentID(@departmentPrefix);
+	SET @program_id = dbo.udf_getProgramID(@programPrefix);
     
-	IF (@department_id IS NULL) 
+	IF (@program_id IS NULL) 
         BEGIN
-            RAISERROR('Invalid departmentPrefix',0,1);
+            RAISERROR('Invalid programPrefix',0,1);
         END
     
 	BEGIN TRY
     INSERT INTO dbo.Course
-    (department_id, coursePrefix, courseNumber, courseName, departmentPrefix,
+    (program_id, coursePrefix, courseNumber, courseName, programPrefix,
      defaultCredits, active)
-VALUES (@department_id, @coursePrefix, @courseNumber, @courseName, @departmentPrefix,
+VALUES (@program_id, @coursePrefix, @courseNumber, @courseName, @programPrefix,
 	    @defaultCredits, @active);
     END TRY
     BEGIN CATCH
@@ -346,8 +351,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid coursePrefix and courseNumber',0,1);
         END
-	ELSE
-		SET @course_id = NULL
 
 
 	SET @classroom_id = dbo.udf_getClassroomID(@buildingPrefix, @roomNumber);
@@ -356,8 +359,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid buildingPrefix and roomNumber',0,1);
         END
-	ELSE
-		SET @classroom_id = NULL
 
 
 	SET @instructor_id = dbo.udf_getInstructorID(@instructorWNumber);
@@ -366,8 +367,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid coursePrefix and instructorWNumber',0,1);
         END
-	ELSE
-		SET @instructor_id = NULL
 
 
 	SET @semester_id = dbo.udf_getSemesterID(@semesterType, @semesterYear);
@@ -376,8 +375,6 @@ BEGIN
         BEGIN
             RAISERROR('Invalid semesterType and semesterYear',0,1);
         END
-	ELSE
-		SET @semester_id = NULL
 
     
 	BEGIN TRY
@@ -448,43 +445,112 @@ VALUES (@instructor_id, @semester_id, @instructorWNumber, @semesterType, @semest
 END
 GO
 
-
----   usp_addSemester  --------------------------------------------
-
-IF EXISTS (
-    SELECT *
-    FROM INFORMATION_SCHEMA.ROUTINES
-    WHERE SPECIFIC_NAME = 'usp_addSemester'
-    )
-    DROP PROCEDURE usp_addSemester;
-GO
-
 -------------------------------------------------------------------------------
 ---   Tests
 -------------------------------------------------------------------------------
 
-------usp_addInstructorDepartment Test ----------------------------------------
+------usp_addInstructorProgram Test ----------------------------------------
 INSERT INTO dbo.Instructor
     (instructorWNumber, instructorFirstName, instructorLastName, hoursRequired, active)
 VALUES ('W0100007', 'Rob', 'Hilton', 12, 'Y');
 GO
 
-EXEC usp_addInstructorDepartment 
-    @instructorWNumber='W0100007', @departmentPrefix='CS'; 
+EXEC usp_addInstructorProgram 
+    @instructorWNumber='W0100007', @programPrefix='CS'; 
 
 SELECT * FROM Instructor;
-SELECT * FROM InstructorDepartment;
+SELECT * FROM InstructorProgram;
 
 ------usp_addCourse Test ------------------------------------------------------
-------usp_addClassroom Test ---------------------------------------------------
-------usp_addSection Test -----------------------------------------------------
-------usp_addInstructorRelease Test -----------------------------------------------------
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0', @totalReleaseHours='0'
-	
-SELECT * FROM InstructorRelease
+--Should Work--
+EXEC usp_addCourse
+	@coursePrefix='CS', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
 
---Instructor(Needed?)
---Department (Needed?)
---Semester (Needed?)
---Building
+--Should Fail--
+EXEC usp_addCourse
+	@coursePrefix='CS', @courseNumber='1410', @programPrefix='ART', @courseName='CS1410', @defaultCredits='4', @active='Y'
+
+--Should fail(?)
+--Raises questions about the coursePrefix argument
+EXEC usp_addCourse
+	@coursePrefix='ART', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+
+SELECT * FROM Course
+------usp_addClassroom Test ---------------------------------------------------
+--Should work--
+EXEC usp_addClassroom
+	@buildingPrefix='TE', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+
+--Should fail--
+EXEC usp_addClassroom
+	@buildingPrefix='LL', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+
+SELECT * FROM Classroom
+
+------usp_addSection Test -----------------------------------------------------
+--Should Work--
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='30', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='C', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='9999', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+--Needs to test to make sure the building and classroom are valid
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='AB', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='7530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+--Why are we allowing a null instructor_id in section?
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='WXXXXXXX', @semesterType='Fall', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, and does
+EXEC usp_addSection
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Sprjiolk', @semesterYear=2017,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+
+--Should fail, but doesn't
+EXEC usp_addSection 
+	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=3000,
+	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
+	@creditOverload=0, @comments='Comment'
+SELECT * FROM Section
+
+
+------usp_addInstructorRelease Test -----------------------------------------------------
+--Should Work---
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+
+--Should Fail--
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+EXEC usp_addInstructorRelease 
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+
+SELECT * FROM InstructorRelease
