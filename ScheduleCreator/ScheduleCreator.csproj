@@ -373,6 +373,7 @@
     <Content Include="Views\Semesters\Edit.cshtml" />
     <Content Include="Views\Semesters\Index.cshtml" />
     <Content Include="Views\Instructors\SectionByInstructor.cshtml" />
+    <Content Include="Views\Classrooms\SectionByClassroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
