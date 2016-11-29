@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Course Scheduler</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/simple-sidebar.css" rel="stylesheet">
+    <!-- Override navbar-default for onw with custom colors-->
+    <link href="~/Content/navbar-custom.css" rel="stylesheet"> 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -37,6 +38,20 @@
                             <li>@Html.ActionLink("Semesters", "Index", "Semesters")</li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Create<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Create Building", "Create", "Buildings")</li>
+                            <li>@Html.ActionLink("Create Classroom", "Create", "Classrooms")</li>
+                            <li>@Html.ActionLink("Create Course", "Create", "Courses")</li>
+                            <li>@Html.ActionLink("Create Program", "Create", "Programs")</li>
+                            <li>@Html.ActionLink("Create Instructor", "Create", "Instructors")</li>
+                            <li>@Html.ActionLink("Create InstructorProgram", "Create", "InstructorPrograms")</li>
+                            <li>@Html.ActionLink("Create InstructorRelease", "Create", "InstructorReleases")</li>
+                            <li>@Html.ActionLink("Create Section", "Create", "Sections")</li>
+                            <li>@Html.ActionLink("Create Semester", "Create", "Semesters")</li>
+                        </ul>
+                    </li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -44,45 +59,12 @@
         </div>
     </div>
     <div id="wrapper">
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li>
-                    <strong>@Html.ActionLink("Create Building", "Create", "Buildings")</strong>
-                </li>
-                <li>
-                    <strong>@Html.ActionLink("Create Classroom", "Create", "Classrooms")</strong>
-                </li>
-                <li>
-                    <strong>@Html.ActionLink("Create Course", "Create", "Courses")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create Program", "Create", "Programs")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create Instructor", "Create", "Instructors")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create InstructorProgram", "Create", "InstructorPrograms")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create InstructorRelease", "Create", "InstructorReleases")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create Section", "Create", "Sections")</strong>
-                </li>
-                <li>
-                    <strong> @Html.ActionLink("Create Semester", "Create", "Semesters")</strong>
-                </li>
-            </ul>
-
-        </div>
-
         <div id="page-content-wrapper">
             <div class="container body-content">
                 @RenderBody()
                 <hr />
                 <footer>
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                    <p>&copy; @DateTime.Now.Year - Course Scheduler</p>
                 </footer>
             </div>
 
