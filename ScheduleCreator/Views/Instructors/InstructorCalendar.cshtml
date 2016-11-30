@@ -19,15 +19,13 @@
         if (true)
         {
             <input type="radio" name="instructor" value="@Instructor.instructor_id" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
-
         }
     }
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
             <button id="update-instructors" onclick="generateCalendar()" class="btn btn-default" />
-        </div>
     </div>
-
+</div>
+<div class="col-lg-10">
     <div class="mycal" style="width:100%;"></div>
     <script>
         var temp = $('.mycal');
@@ -38,8 +36,8 @@
                 startDate: '@Model.First().Sections.First().courseStartTime.ToString("dd-MM-yyyy")', // OR 31/10/2104
                 timeFormat: 'hh:mm a',
                 columnDateFormat: 'ddd',
-                minTime: '00:00:00',
-                maxTime: '23:59:59',
+                minTime: '06:00:00',
+                maxTime: '23:00:00',
                 slotDuration: 30,
                 timeGranularity: 15,
 
