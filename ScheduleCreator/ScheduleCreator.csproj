@@ -341,10 +341,7 @@
     <Content Include="Content\Calendar Stuff\bower.json" />
     <Content Include="Content\Calendar Stuff\composer.json" />
     <Content Include="Content\Calendar Stuff\CONTRIBUTING.md" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\Calendar Stuff\components\bootstrap3\fonts\glyphicons-halflings-regular.woff" />
-    <None Include="Content\Calendar Stuff\events.json" />
+    <Content Include="Content\Calendar Stuff\events.json.php" />
     <Content Include="Content\Calendar Stuff\LICENSE" />
     <Content Include="Content\Calendar Stuff\package.json" />
     <Content Include="Content\Calendar Stuff\README.md" />
@@ -356,15 +353,6 @@
     <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
       <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Calendar Stuff\less\calendar.less" />
-    <Content Include="Content\Calendar Stuff\less\day.less" />
-    <Content Include="Content\Calendar Stuff\less\events.less" />
-    <Content Include="Content\Calendar Stuff\less\grid.less" />
-    <Content Include="Content\Calendar Stuff\less\month.less" />
-    <Content Include="Content\Calendar Stuff\less\theme.less" />
-    <Content Include="Content\Calendar Stuff\less\variables.less" />
-    <Content Include="Content\Calendar Stuff\less\week.less" />
-    <Content Include="Content\Calendar2\README.md" />
     <None Include="Properties\PublishProfiles\Osiris For 3750.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\calendar.js" />
@@ -394,9 +382,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Hame\About.cshtml" />
+    <Content Include="Views\Hame\Contact.cshtml" />
+    <Content Include="Views\Hame\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
