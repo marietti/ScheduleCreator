@@ -39,10 +39,22 @@ namespace ScheduleCreator.Controllers
         // GET: Sections/Create
         public ActionResult Create()
         {
-            ViewBag.classroom_id = new SelectList(db.Classrooms, "classroom_id", "buildingPrefix");
-            ViewBag.course_id = new SelectList(db.Courses, "course_id", "coursePrefix");
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber");
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType");
+            ViewBag.classroom_id = new SelectList(
+                 from c in db.Classrooms
+                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 "classroom_id", "fullName");
+            ViewBag.course_id = new SelectList(
+                 from co in db.Courses
+                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 "course_id", "fullName");
+            ViewBag.instructor_id = new SelectList(
+                 from i in db.Instructors
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 "instructor_id", "fullName");
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                 "semester_id", "fullName");
             return View();
         }
 
@@ -60,10 +72,22 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.classroom_id = new SelectList(db.Classrooms, "classroom_id", "buildingPrefix", section.classroom_id);
-            ViewBag.course_id = new SelectList(db.Courses, "course_id", "coursePrefix", section.course_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", section.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", section.semester_id);
+            ViewBag.classroom_id = new SelectList(
+                 from c in db.Classrooms
+                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 "classroom_id", "fullName", section.classroom_id);
+            ViewBag.course_id = new SelectList(
+                 from co in db.Courses
+                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 "course_id", "fullName", section.course_id);
+            ViewBag.instructor_id = new SelectList(
+                 from i in db.Instructors
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 "instructor_id", "fullName", section.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                 "semester_id", "fullName", section.semester_id);
             return View(section);
         }
 
@@ -79,10 +103,22 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.classroom_id = new SelectList(db.Classrooms, "classroom_id", "buildingPrefix", section.classroom_id);
-            ViewBag.course_id = new SelectList(db.Courses, "course_id", "coursePrefix", section.course_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", section.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", section.semester_id);
+            ViewBag.classroom_id = new SelectList(
+                 from c in db.Classrooms
+                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 "classroom_id", "fullName", section.classroom_id);
+            ViewBag.course_id = new SelectList(
+                 from co in db.Courses
+                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 "course_id", "fullName", section.course_id);
+            ViewBag.instructor_id = new SelectList(
+                 from i in db.Instructors
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 "instructor_id", "fullName", section.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                 "semester_id", "fullName", section.semester_id);
             return View(section);
         }
 
@@ -99,10 +135,22 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.classroom_id = new SelectList(db.Classrooms, "classroom_id", "buildingPrefix", section.classroom_id);
-            ViewBag.course_id = new SelectList(db.Courses, "course_id", "coursePrefix", section.course_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", section.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", section.semester_id);
+            ViewBag.classroom_id = new SelectList(
+                 from c in db.Classrooms
+                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 "classroom_id", "fullName", section.classroom_id);
+            ViewBag.course_id = new SelectList(
+                 from co in db.Courses
+                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 "course_id", "fullName", section.course_id);
+            ViewBag.instructor_id = new SelectList(
+                 from i in db.Instructors
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 "instructor_id", "fullName", section.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                 "semester_id", "fullName", section.semester_id);
             return View(section);
         }
 

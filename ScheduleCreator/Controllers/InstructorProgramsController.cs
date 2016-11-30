@@ -40,7 +40,10 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create()
         {
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix");
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber");
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName},
+                "instructor_id", "fullName");
             return View();
         }
 
@@ -59,7 +62,11 @@ namespace ScheduleCreator.Controllers
             }
 
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorProgram.instructor_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorProgram.instructor_id);
+
             return View(instructorProgram);
         }
 
@@ -76,7 +83,10 @@ namespace ScheduleCreator.Controllers
                 return HttpNotFound();
             }
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorProgram.instructor_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorProgram.instructor_id);
             return View(instructorProgram);
         }
 
@@ -94,7 +104,11 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorProgram.instructor_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorProgram.instructor_id);
+
             return View(instructorProgram);
         }
 
