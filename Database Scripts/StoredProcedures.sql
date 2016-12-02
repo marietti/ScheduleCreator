@@ -280,8 +280,8 @@ CREATE PROCEDURE usp_addClassroom
     @roomNumber nvarchar(10),
     @classroomCapacity int,
     @computers int,
-    @availableFromTime datetime2,
-    @availableToTime datetime2,
+    @availableFromTime time,
+    @availableToTime time,
     @active nvarchar(4)
 AS
 BEGIN
@@ -329,8 +329,8 @@ CREATE PROCEDURE usp_addSection
     @semesterYear int,
     @crn nvarchar(10),
     @daysTaught nvarchar(10),
-    @courseStartTime datetime2,
-    @courseEndTime datetime2,
+    @courseStartTime time,
+    @courseEndTime time,
     @block nvarchar(5),
     @courseType nvarchar(10),
     @pay nvarchar(50),
