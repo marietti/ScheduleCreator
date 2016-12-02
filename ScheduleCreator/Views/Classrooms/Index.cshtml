@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { data_target = "#modal-container", data_toggle = "modal" })
 </p>
 <table class="table">
     <tr>
@@ -73,3 +73,15 @@
 }
 
 </table>
+
+<div id="modal-container" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/clear-modal.js")
+}

@@ -1,40 +1,15 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<script type="text/javascript">
-    $(function () {
-        $('body').on('click', '.modal-link', function (e) {
-            e.preventDefault();
-            $(this).attr('data-target', '#modal-container');
-            $(this).attr('data-toggle', 'modal');
-        });
 
-        $('body').on('click', '.modal-close-btn', function() {
-            $('modal-container').modal('hide');
-        });
-
-        $('#modal-container').on('hidden.bs.modal', function () {
-            $(this).removeData('bs.modal');
-        });
-    });
-</script>
 <div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <!--<p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>-->
-    <!--@Html.ActionLink("Test Modal", "CreateModal", "Courses", null, new { data_target = "#modal-container", data_toggle = "modal" })-->
-    <div>
-        @* Create a link that calls the controller method that returns the partial view*@
-        @Html.ActionLink("Test Modal", "CreateModal", "Courses", null, new
-   {
-    @* Needed to link to the html of the modal*@
-        data_target = "#modal-container",
-        @* Tells the bootstrap javascript to do its thing*@
-       data_toggle = "modal"
-   })
-    </div>
 
-    <div id="modal-container" class="modal fade hidden-print" tabindex="-1" role="dialog">
+    @Html.ActionLink("Create new Classroom", "Create", "Classrooms", null, new { data_target = "#modal-container", data_toggle = "modal" }) <br />
+    @Html.ActionLink("Create new Course", "Create", "Courses", null, new { data_target = "#modal-container", data_toggle = "modal" })
+    <div id="modal-container" class="modal fade" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -44,13 +19,5 @@
 </div>
 
 @section scripts {
-    @* The normal bootstrap behavior is to only grab the content for the modal once, if you need to pull in different partial views then the data on the modal will have to be cleared.*@
-    <script type="text/javascript">
-        $(function () {
-            $('#modal-container').on('hidden.bs.modal', function () {
-                $(this).removeData('bs.modal');
-                $('#modal-container .modal-content').empty();
-            });
-        });
-    </script>
+    @Scripts.Render("~/Scripts/clear-modal.js")
 }

@@ -369,6 +369,7 @@
     <Content Include="Scripts\calendar.js" />
     <Content Include="Scripts\calendar.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\clear-modal.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -427,12 +428,10 @@
     <Content Include="Views\Buildings\Details.cshtml" />
     <Content Include="Views\Buildings\Edit.cshtml" />
     <Content Include="Views\Buildings\Index.cshtml" />
-    <Content Include="Views\Classrooms\Create.cshtml" />
     <Content Include="Views\Classrooms\Delete.cshtml" />
     <Content Include="Views\Classrooms\Details.cshtml" />
     <Content Include="Views\Classrooms\Edit.cshtml" />
     <Content Include="Views\Classrooms\Index.cshtml" />
-    <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Delete.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
@@ -472,6 +471,8 @@
     <Content Include="Views\Instructors\InstructorCalendar.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Content Include="Views\Classrooms\Create.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
