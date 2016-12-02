@@ -24,8 +24,8 @@
           <Property Name="roomNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="classroomCapacity" Type="int" Nullable="false" />
           <Property Name="computers" Type="int" Nullable="false" />
-          <Property Name="availableFromTime" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="availableToTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="availableFromTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="availableToTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="active" Type="nvarchar" MaxLength="4" Nullable="false" />
         </EntityType>
         <EntityType Name="Course">
@@ -102,8 +102,8 @@
           <Property Name="semesterYear" Type="int" />
           <Property Name="crn" Type="nvarchar" MaxLength="10" />
           <Property Name="daysTaught" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="courseStartTime" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="courseEndTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="courseStartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="courseEndTime" Type="time" Precision="7" Nullable="false" />
           <Property Name="block" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="courseType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="pay" Type="nvarchar" MaxLength="50" />
@@ -119,8 +119,8 @@
           <Property Name="semester_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="semesterType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="semesterYear" Type="int" Nullable="false" />
-          <Property Name="startDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="endDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="endDate" Type="date" Nullable="false" />
         </EntityType>
         <Association Name="FK_Classroom_Building_id">
           <End Role="Building" Type="Self.Building" Multiplicity="1" />
@@ -253,9 +253,6 @@
           <Parameter Name="coursePrefix" Type="nvarchar" Mode="In" />
           <Parameter Name="courseNumber" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="udf_getDepartmentID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
-          <Parameter Name="departmentPrefix" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="udf_getInstructorID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
         </Function>
@@ -271,8 +268,8 @@
           <Parameter Name="roomNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="classroomCapacity" Type="int" Mode="In" />
           <Parameter Name="computers" Type="int" Mode="In" />
-          <Parameter Name="availableFromTime" Type="datetime2" Mode="In" />
-          <Parameter Name="availableToTime" Type="datetime2" Mode="In" />
+          <Parameter Name="availableFromTime" Type="time" Mode="In" />
+          <Parameter Name="availableToTime" Type="time" Mode="In" />
           <Parameter Name="active" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="usp_addCourse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -282,10 +279,6 @@
           <Parameter Name="courseName" Type="nvarchar" Mode="In" />
           <Parameter Name="defaultCredits" Type="decimal" Mode="In" />
           <Parameter Name="active" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="usp_addInstructorDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
-          <Parameter Name="departmentPrefix" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="usp_addInstructorProgram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="instructorWNumber" Type="nvarchar" Mode="In" />
@@ -308,8 +301,8 @@
           <Parameter Name="semesterYear" Type="int" Mode="In" />
           <Parameter Name="crn" Type="nvarchar" Mode="In" />
           <Parameter Name="daysTaught" Type="nvarchar" Mode="In" />
-          <Parameter Name="courseStartTime" Type="datetime2" Mode="In" />
-          <Parameter Name="courseEndTime" Type="datetime2" Mode="In" />
+          <Parameter Name="courseStartTime" Type="time" Mode="In" />
+          <Parameter Name="courseEndTime" Type="time" Mode="In" />
           <Parameter Name="block" Type="nvarchar" Mode="In" />
           <Parameter Name="courseType" Type="nvarchar" Mode="In" />
           <Parameter Name="pay" Type="nvarchar" Mode="In" />
@@ -394,8 +387,8 @@
           <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="classroomCapacity" Type="Int32" Nullable="false" />
           <Property Name="computers" Type="Int32" Nullable="false" />
-          <Property Name="availableFromTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="availableToTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="availableFromTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="availableToTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="active" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Building" Relationship="Self.FK_Classroom_Building_id" FromRole="Classroom" ToRole="Building" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Classroom_id" FromRole="Classroom" ToRole="Section" />
@@ -485,8 +478,8 @@
           <Property Name="semesterYear" Type="Int32" />
           <Property Name="crn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="daysTaught" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="courseStartTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="courseEndTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="courseStartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="courseEndTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="block" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="courseType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="pay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -506,8 +499,8 @@
           <Property Name="semester_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="semesterType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="semesterYear" Type="Int32" Nullable="false" />
-          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Semester_id" FromRole="Semester" ToRole="InstructorRelease" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Semester_id" FromRole="Semester" ToRole="Section" />
         </EntityType>
@@ -686,8 +679,8 @@
             <Parameter Name="roomNumber" Mode="In" Type="String" />
             <Parameter Name="classroomCapacity" Mode="In" Type="Int32" />
             <Parameter Name="computers" Mode="In" Type="Int32" />
-            <Parameter Name="availableFromTime" Mode="In" Type="DateTime" />
-            <Parameter Name="availableToTime" Mode="In" Type="DateTime" />
+            <Parameter Name="availableFromTime" Mode="In" Type="Time" />
+            <Parameter Name="availableToTime" Mode="In" Type="Time" />
             <Parameter Name="active" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_addCourse">
@@ -697,10 +690,6 @@
             <Parameter Name="courseName" Mode="In" Type="String" />
             <Parameter Name="defaultCredits" Mode="In" Type="Decimal" />
             <Parameter Name="active" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="usp_addInstructorDepartment">
-            <Parameter Name="instructorWNumber" Mode="In" Type="String" />
-            <Parameter Name="departmentPrefix" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_addInstructorProgram">
             <Parameter Name="instructorWNumber" Mode="In" Type="String" />
@@ -723,8 +712,8 @@
             <Parameter Name="semesterYear" Mode="In" Type="Int32" />
             <Parameter Name="crn" Mode="In" Type="String" />
             <Parameter Name="daysTaught" Mode="In" Type="String" />
-            <Parameter Name="courseStartTime" Mode="In" Type="DateTime" />
-            <Parameter Name="courseEndTime" Mode="In" Type="DateTime" />
+            <Parameter Name="courseStartTime" Mode="In" Type="Time" />
+            <Parameter Name="courseEndTime" Mode="In" Type="Time" />
             <Parameter Name="block" Mode="In" Type="String" />
             <Parameter Name="courseType" Mode="In" Type="String" />
             <Parameter Name="pay" Mode="In" Type="String" />
@@ -868,7 +857,6 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="usp_addClassroom" FunctionName="ScheduleCreator.Store.usp_addClassroom" />
           <FunctionImportMapping FunctionImportName="usp_addCourse" FunctionName="ScheduleCreator.Store.usp_addCourse" />
-          <FunctionImportMapping FunctionImportName="usp_addInstructorDepartment" FunctionName="ScheduleCreator.Store.usp_addInstructorDepartment" />
           <FunctionImportMapping FunctionImportName="usp_addInstructorProgram" FunctionName="ScheduleCreator.Store.usp_addInstructorProgram" />
           <FunctionImportMapping FunctionImportName="usp_addInstructorRelease" FunctionName="ScheduleCreator.Store.usp_addInstructorRelease" />
           <FunctionImportMapping FunctionImportName="usp_addSection" FunctionName="ScheduleCreator.Store.usp_addSection" />

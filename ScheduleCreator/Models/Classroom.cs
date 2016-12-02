@@ -26,8 +26,8 @@ namespace ScheduleCreator.Models
         public string roomNumber { get; set; }
         public int classroomCapacity { get; set; }
         public int computers { get; set; }
-        public System.DateTime availableFromTime { get; set; }
-        public System.DateTime availableToTime { get; set; }
+        public System.TimeSpan availableFromTime { get; set; }
+        public System.TimeSpan availableToTime { get; set; }
         public string active { get; set; }
     
         public virtual Building Building { get; set; }

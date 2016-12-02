@@ -349,13 +349,6 @@
     <Content Include="Content\Calendar Stuff\package.json" />
     <Content Include="Content\Calendar Stuff\README.md" />
     <Content Include="Content\Calendar Stuff\.bowerrc" />
-    <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ScheduleCreatorModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
-      <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
-    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -364,6 +357,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="Models\ScheduleCreatorModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ScheduleCreatorModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ScheduleCreatorModel.edmx.diagram">
+      <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Osiris For 3750.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\calendar.js" />
