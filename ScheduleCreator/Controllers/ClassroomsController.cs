@@ -44,8 +44,11 @@ namespace ScheduleCreator.Controllers
         // GET: Classrooms/Create
         public ActionResult Create()
         {
-            ViewBag.building_id = new SelectList(db.Buildings, "building_id", "buildingPrefix");
-            return View();
+            ViewBag.building_id = new SelectList(
+                 from b in db.Buildings
+                 select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
+                 "building_id", "fullName");
+            return PartialView();
         }
 
         // POST: Classrooms/Create
@@ -61,9 +64,12 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.building_id = new SelectList(db.Buildings, "building_id", "buildingPrefix", classroom.building_id);
-            return View(classroom);
+            
+            ViewBag.building_id = new SelectList(
+                 from b in db.Buildings
+                 select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
+                 "building_id", "fullName", classroom.building_id);
+            return PartialView(classroom);
         }
 
         // GET: Classrooms/Edit/5
@@ -78,7 +84,10 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.building_id = new SelectList(db.Buildings, "building_id", "buildingPrefix", classroom.building_id);
+            ViewBag.building_id = new SelectList(
+                 from b in db.Buildings
+                 select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
+                 "building_id", "fullName", classroom.building_id);
             return View(classroom);
         }
 
@@ -95,7 +104,10 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.building_id = new SelectList(db.Buildings, "building_id", "buildingPrefix", classroom.building_id);
+            ViewBag.classroom_id = new SelectList(
+                 from b in db.Buildings
+                 select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " " + b.buildingName },
+                 "building_id", "fullName", classroom.building_id);
             return View(classroom);
         }
 

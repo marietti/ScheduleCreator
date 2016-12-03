@@ -39,8 +39,14 @@ namespace ScheduleCreator.Controllers
         // GET: InstructorReleases/Create
         public ActionResult Create()
         {
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber");
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType");
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName");
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                "semester_id", "fullName");
             return View();
         }
 
@@ -57,9 +63,14 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorRelease.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", instructorRelease.semester_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorRelease.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
         }
 
@@ -75,8 +86,14 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorRelease.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", instructorRelease.semester_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorRelease.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
         }
 
@@ -93,8 +110,14 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.instructor_id = new SelectList(db.Instructors, "instructor_id", "instructorWNumber", instructorRelease.instructor_id);
-            ViewBag.semester_id = new SelectList(db.Semesters, "semester_id", "semesterType", instructorRelease.semester_id);
+            ViewBag.instructor_id = new SelectList(
+                from i in db.Instructors
+                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                "instructor_id", "fullName", instructorRelease.instructor_id);
+            ViewBag.semester_id = new SelectList(
+                from s in db.Semesters
+                select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+                "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
         }
 

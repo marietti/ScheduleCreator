@@ -37,7 +37,7 @@ namespace ScheduleCreator.Models
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Semester> Semesters { get; set; }
     
-        public virtual int usp_addClassroom(string buildingPrefix, string roomNumber, Nullable<int> classroomCapacity, Nullable<int> computers, Nullable<System.DateTime> availableFromTime, Nullable<System.DateTime> availableToTime, string active)
+        public virtual int usp_addClassroom(string buildingPrefix, string roomNumber, Nullable<int> classroomCapacity, Nullable<int> computers, Nullable<System.TimeSpan> availableFromTime, Nullable<System.TimeSpan> availableToTime, string active)
         {
             var buildingPrefixParameter = buildingPrefix != null ?
                 new ObjectParameter("buildingPrefix", buildingPrefix) :
@@ -57,11 +57,11 @@ namespace ScheduleCreator.Models
     
             var availableFromTimeParameter = availableFromTime.HasValue ?
                 new ObjectParameter("availableFromTime", availableFromTime) :
-                new ObjectParameter("availableFromTime", typeof(System.DateTime));
+                new ObjectParameter("availableFromTime", typeof(System.TimeSpan));
     
             var availableToTimeParameter = availableToTime.HasValue ?
                 new ObjectParameter("availableToTime", availableToTime) :
-                new ObjectParameter("availableToTime", typeof(System.DateTime));
+                new ObjectParameter("availableToTime", typeof(System.TimeSpan));
     
             var activeParameter = active != null ?
                 new ObjectParameter("active", active) :
@@ -137,7 +137,7 @@ namespace ScheduleCreator.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_addInstructorRelease", instructorWNumberParameter, semesterTypeParameter, semesterYearParameter, releaseDescriptionParameter, totalReleaseHoursParameter);
         }
     
-        public virtual int usp_addSection(string coursePrefix, string courseNumber, string buildingPrefix, string roomNumber, string instructorWNumber, string semesterType, Nullable<int> semesterYear, string crn, string daysTaught, Nullable<System.DateTime> courseStartTime, Nullable<System.DateTime> courseEndTime, string block, string courseType, string pay, Nullable<int> sectionCapacity, Nullable<decimal> creditLoad, Nullable<decimal> creditOverload, string comments)
+        public virtual int usp_addSection(string coursePrefix, string courseNumber, string buildingPrefix, string roomNumber, string instructorWNumber, string semesterType, Nullable<int> semesterYear, string crn, string daysTaught, Nullable<System.TimeSpan> courseStartTime, Nullable<System.TimeSpan> courseEndTime, string block, string courseType, string pay, Nullable<int> sectionCapacity, Nullable<decimal> creditLoad, Nullable<decimal> creditOverload, string comments)
         {
             var coursePrefixParameter = coursePrefix != null ?
                 new ObjectParameter("coursePrefix", coursePrefix) :
@@ -177,11 +177,11 @@ namespace ScheduleCreator.Models
     
             var courseStartTimeParameter = courseStartTime.HasValue ?
                 new ObjectParameter("courseStartTime", courseStartTime) :
-                new ObjectParameter("courseStartTime", typeof(System.DateTime));
+                new ObjectParameter("courseStartTime", typeof(System.TimeSpan));
     
             var courseEndTimeParameter = courseEndTime.HasValue ?
                 new ObjectParameter("courseEndTime", courseEndTime) :
-                new ObjectParameter("courseEndTime", typeof(System.DateTime));
+                new ObjectParameter("courseEndTime", typeof(System.TimeSpan));
     
             var blockParameter = block != null ?
                 new ObjectParameter("block", block) :

@@ -131,8 +131,8 @@ CREATE TABLE [Semester] (
     [semester_id] int IDENTITY(1000,1) NOT NULL,
     [semesterType] nvarchar(10) NOT NULL,
     [semesterYear] int NOT NULL,
-    [startDate] datetime2 NOT NULL,
-    [endDate] datetime2 NOT NULL,
+    [startDate] date NOT NULL,
+    [endDate] date NOT NULL,
 );
 
 CREATE TABLE [Classroom] (
@@ -142,8 +142,8 @@ CREATE TABLE [Classroom] (
     [roomNumber] nvarchar(10) NOT NULL,
     [classroomCapacity] int NOT NULL,
     [computers] int NOT NULL,
-    [availableFromTime] datetime2 NOT NULL,
-    [availableToTime] datetime2 NOT NULL,
+    [availableFromTime] time NOT NULL,
+    [availableToTime] time NOT NULL,
     [active] nvarchar(4) NOT NULL,
 );
 
@@ -169,8 +169,8 @@ CREATE TABLE [Section] (
     [semesterYear] int,
     [crn] nvarchar(10),
     [daysTaught] nvarchar(10) NOT NULL,
-    [courseStartTime] datetime2 NOT NULL,
-    [courseEndTime] datetime2 NOT NULL,
+    [courseStartTime] time NOT NULL,
+    [courseEndTime] time NOT NULL,
     [block] nvarchar(5) NOT NULL,
     [courseType] nvarchar(10) NOT NULL,
     [pay] nvarchar(50),

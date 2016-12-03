@@ -39,8 +39,11 @@ namespace ScheduleCreator.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix");
-            return View();
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName");
+            return PartialView();
         }
 
         // POST: Courses/Create
@@ -56,11 +59,15 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
-            return View(course);
+            
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName", course.program_id);
+            return PartialView(course);
         }
 
+        
         // GET: Courses/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -73,7 +80,10 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName", course.program_id);
             return View(course);
         }
 

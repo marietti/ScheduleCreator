@@ -28,8 +28,8 @@ namespace ScheduleCreator.Models
         public Nullable<int> semesterYear { get; set; }
         public string crn { get; set; }
         public string daysTaught { get; set; }
-        public System.DateTime courseStartTime { get; set; }
-        public System.DateTime courseEndTime { get; set; }
+        public System.TimeSpan courseStartTime { get; set; }
+        public System.TimeSpan courseEndTime { get; set; }
         public string block { get; set; }
         public string courseType { get; set; }
         public string pay { get; set; }
