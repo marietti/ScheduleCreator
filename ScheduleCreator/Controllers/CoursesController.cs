@@ -44,7 +44,7 @@ namespace ScheduleCreator.Controllers
                  orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName");
-            return PartialView();
+            return View();
         }
 
         // POST: Courses/Create
@@ -69,7 +69,7 @@ namespace ScheduleCreator.Controllers
                  orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName", course.program_id);
-            return PartialView(course);
+            return View(course);
         }
 
         

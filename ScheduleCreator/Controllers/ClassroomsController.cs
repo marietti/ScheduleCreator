@@ -49,7 +49,7 @@ namespace ScheduleCreator.Controllers
                  orderby b.buildingPrefix
                  select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
                  "building_id", "fullName");
-            return PartialView();
+            return View();
         }
 
         // POST: Classrooms/Create
@@ -74,7 +74,7 @@ namespace ScheduleCreator.Controllers
                  orderby b.buildingPrefix
                  select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
                  "building_id", "fullName", classroom.building_id);
-            return PartialView(classroom);
+            return View(classroom);
         }
 
         // GET: Classrooms/Edit/5
