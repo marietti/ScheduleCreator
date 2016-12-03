@@ -11,7 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Classroom
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,11 +22,17 @@ namespace ScheduleCreator.Models
     
         public int classroom_id { get; set; }
         public int building_id { get; set; }
+        [Required(ErrorMessage = "A building prefix is required")]
         public string buildingPrefix { get; set; }
+        [Required(ErrorMessage = "A room number is required")]
         public string roomNumber { get; set; }
+        [Required(ErrorMessage = "A classroom capacity is required")]
         public int classroomCapacity { get; set; }
+        [Required(ErrorMessage = "Number of computers is required")]
         public int computers { get; set; }
+        [Required(ErrorMessage = "Avaliable from time is required")]
         public System.TimeSpan availableFromTime { get; set; }
+        [Required(ErrorMessage = "Avaliable to time is required")]
         public System.TimeSpan availableToTime { get; set; }
         public string active { get; set; }
     

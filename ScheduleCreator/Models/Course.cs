@@ -11,7 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Course
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,9 +22,13 @@ namespace ScheduleCreator.Models
     
         public int course_id { get; set; }
         public int program_id { get; set; }
+        [Required(ErrorMessage = "Course prefix is required")]
         public string coursePrefix { get; set; }
+        [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
+        [Required(ErrorMessage = "Program prefix is required")]
         public string programPrefix { get; set; }
+        [Required(ErrorMessage = "Course name is required")]
         public string courseName { get; set; }
         public Nullable<decimal> defaultCredits { get; set; }
         public string active { get; set; }
