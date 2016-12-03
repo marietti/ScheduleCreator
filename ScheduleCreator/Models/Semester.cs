@@ -11,7 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Semester
     {
         // These are also database constraints if you want to add or modify these then you need to make changes to the
@@ -26,6 +26,7 @@ namespace ScheduleCreator.Models
         }
     
         public int semester_id { get; set; }
+        [Required(ErrorMessage = "Smester Type is required")]
         public string semesterType { get; set; }
         public int semesterYear { get; set; }
         public System.DateTime startDate { get; set; }

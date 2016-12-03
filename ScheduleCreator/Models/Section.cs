@@ -11,7 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class Section
     {
         // These are also database constraints if you want to add or modify these then you need to make changes to the
@@ -24,14 +24,22 @@ namespace ScheduleCreator.Models
         public Nullable<int> classroom_id { get; set; }
         public Nullable<int> instructor_id { get; set; }
         public Nullable<int> semester_id { get; set; }
+        [Required(ErrorMessage = "Course prefix is required")]
         public string coursePrefix { get; set; }
+        [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
+        [Required(ErrorMessage = "Building prefix is required")]
         public string buildingPrefix { get; set; }
+        [Required(ErrorMessage = "Room number is required")]
         public string roomNumber { get; set; }
+        [Required(ErrorMessage = "Instructor wnumber is required")]
         public string instructorWNumber { get; set; }
+        [Required(ErrorMessage = "Program prefix is required")]
         public string semesterType { get; set; }
         public Nullable<int> semesterYear { get; set; }
+        [Required(ErrorMessage = "CRN is required")]
         public string crn { get; set; }
+        [Required(ErrorMessage = "Days taught is required")]
         public string daysTaught { get; set; }
         public System.TimeSpan courseStartTime { get; set; }
         public System.TimeSpan courseEndTime { get; set; }
