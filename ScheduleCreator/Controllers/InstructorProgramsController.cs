@@ -41,9 +41,10 @@ namespace ScheduleCreator.Controllers
         {
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix");
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName},
-                "instructor_id", "fullName");
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName");
             return View();
         }
 
@@ -63,9 +64,10 @@ namespace ScheduleCreator.Controllers
 
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorProgram.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorProgram.instructor_id);
 
             return View(instructorProgram);
         }
@@ -84,9 +86,10 @@ namespace ScheduleCreator.Controllers
             }
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorProgram.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorProgram.instructor_id);
             return View(instructorProgram);
         }
 
@@ -105,9 +108,10 @@ namespace ScheduleCreator.Controllers
             }
             ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorProgram.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorProgram.instructor_id);
 
             return View(instructorProgram);
         }

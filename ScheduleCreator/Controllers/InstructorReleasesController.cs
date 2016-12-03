@@ -40,11 +40,13 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create()
         {
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName");
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName");
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName");
             return View();
@@ -64,11 +66,13 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorRelease.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
@@ -87,11 +91,13 @@ namespace ScheduleCreator.Controllers
                 return HttpNotFound();
             }
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorRelease.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
@@ -111,11 +117,13 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.instructor_id = new SelectList(
-                from i in db.Instructors
-                select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
-                "instructor_id", "fullName", instructorRelease.instructor_id);
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);

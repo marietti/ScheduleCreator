@@ -38,6 +38,7 @@ namespace ScheduleCreator.Controllers
         // GET: Semesters/Create
         public ActionResult Create()
         {
+            ViewBag.semesterType = new SelectList(Semester.SemesterTypes);
             return View();
         }
 
@@ -55,6 +56,7 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.semesterType = new SelectList(Semester.SemesterTypes, semester.semesterType);
             return View(semester);
         }
 
@@ -70,6 +72,8 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.semesterType = new SelectList(Semester.SemesterTypes, semester.semesterType);
             return View(semester);
         }
 
@@ -86,6 +90,7 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.semesterType = new SelectList(Semester.SemesterTypes, semester.semesterType);
             return View(semester);
         }
 

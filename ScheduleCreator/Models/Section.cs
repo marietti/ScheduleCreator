@@ -14,6 +14,11 @@ namespace ScheduleCreator.Models
     
     public partial class Section
     {
+        // These are also database constraints if you want to add or modify these then you need to make changes to the
+        // Database as well
+        public static Dictionary<String, String> CourseTypes = new Dictionary<string, string> { { "Traditional", "TRAD" }, { "Online", "ONL" }, { "Hybrid", "HYB" } };
+        public static Dictionary<String, String> BlockTypes = new Dictionary<string, string> { { "Semester", "S" }, { "First Block", "FB" }, { "Second Block", "SB" } };
+
         public int section_id { get; set; }
         public int course_id { get; set; }
         public Nullable<int> classroom_id { get; set; }

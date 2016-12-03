@@ -40,21 +40,28 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create()
         {
             ViewBag.classroom_id = new SelectList(
-                 from c in db.Classrooms
-                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 from cl in db.Classrooms
+                 orderby cl.buildingPrefix, cl.roomNumber
+                 select new { cl.classroom_id, cl.buildingPrefix, cl.roomNumber, fullName = cl.buildingPrefix + " " + cl.roomNumber },
                  "classroom_id", "fullName");
             ViewBag.course_id = new SelectList(
-                 from co in db.Courses
-                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 from c in db.Courses
+                 orderby c.coursePrefix, c.courseNumber
+                 select new { c.course_id, c.coursePrefix, c.courseNumber, fullName = c.coursePrefix + " " + c.courseNumber },
                  "course_id", "fullName");
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
                  "instructor_id", "fullName");
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
-                 "semester_id", "fullName");
+                "semester_id", "fullName");
+            
+            ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList());
+            ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList());
             return View();
         }
 
@@ -63,8 +70,27 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,coursePrefix,courseNumber,buildingPrefix,roomNumber,instructorWNumber,semesterType,semesterYear,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
+        public ActionResult Create([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
         {
+            // Get values for rest of fields based of id
+            // coursePrefix,courseNumber
+            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList()[0];
+            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList()[0];
+
+            // buildingPrefix,roomNumber
+            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList()[0];
+            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList()[0];
+
+            // instructorWNumber
+            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList()[0];
+
+            // semesterType,semesterYear
+            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList()[0];
+            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList()[0];
+
+            // Replace selection with shortened form
+            section.block = Section.BlockTypes[section.block];
+            section.courseType = Section.CourseTypes[section.courseType];
             if (ModelState.IsValid)
             {
                 db.Sections.Add(section);
@@ -73,21 +99,31 @@ namespace ScheduleCreator.Controllers
             }
 
             ViewBag.classroom_id = new SelectList(
-                 from c in db.Classrooms
-                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 from cl in db.Classrooms
+                 orderby cl.buildingPrefix, cl.roomNumber
+                 select new { cl.classroom_id, cl.buildingPrefix, cl.roomNumber, fullName = cl.buildingPrefix + " " + cl.roomNumber },
                  "classroom_id", "fullName", section.classroom_id);
             ViewBag.course_id = new SelectList(
-                 from co in db.Courses
-                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 from c in db.Courses
+                 orderby c.coursePrefix, c.courseNumber
+                 select new { c.course_id, c.coursePrefix, c.courseNumber, fullName = c.coursePrefix + " " + c.courseNumber },
                  "course_id", "fullName", section.course_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
-                 "semester_id", "fullName", section.semester_id);
+                "semester_id", "fullName", section.semester_id);
+
+            // Lookup key based on value. Doesn't work if there are duplicate values.
+            string previousBlock = Section.BlockTypes.FirstOrDefault(x => x.Value == section.block).Key;
+            string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
+            ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
+            ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
             return View(section);
         }
 
@@ -104,21 +140,31 @@ namespace ScheduleCreator.Controllers
                 return HttpNotFound();
             }
             ViewBag.classroom_id = new SelectList(
-                 from c in db.Classrooms
-                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 from cl in db.Classrooms
+                 orderby cl.buildingPrefix, cl.roomNumber
+                 select new { cl.classroom_id, cl.buildingPrefix, cl.roomNumber, fullName = cl.buildingPrefix + " " + cl.roomNumber },
                  "classroom_id", "fullName", section.classroom_id);
             ViewBag.course_id = new SelectList(
-                 from co in db.Courses
-                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 from c in db.Courses
+                 orderby c.coursePrefix, c.courseNumber
+                 select new { c.course_id, c.coursePrefix, c.courseNumber, fullName = c.coursePrefix + " " + c.courseNumber },
                  "course_id", "fullName", section.course_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
-                 "semester_id", "fullName", section.semester_id);
+                "semester_id", "fullName", section.semester_id);
+
+            // Lookup key based on value. Doesn't work if there are duplicate values.
+            string previousBlock = Section.BlockTypes.FirstOrDefault(x => x.Value == section.block).Key;
+            string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
+            ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
+            ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
             return View(section);
         }
 
@@ -127,8 +173,28 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,coursePrefix,courseNumber,buildingPrefix,roomNumber,instructorWNumber,semesterType,semesterYear,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
+        public ActionResult Edit([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
         {
+            // Get values for rest of fields based of id
+            // coursePrefix,courseNumber
+            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList()[0];
+            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList()[0];
+
+            // buildingPrefix,roomNumber
+            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList()[0];
+            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList()[0];
+
+            // instructorWNumber
+            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList()[0];
+
+            // semesterType,semesterYear
+            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList()[0];
+            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList()[0];
+
+            // Replace selection with shortened form
+            section.block = Section.BlockTypes[section.block];
+            section.courseType = Section.CourseTypes[section.courseType];
+
             if (ModelState.IsValid)
             {
                 db.Entry(section).State = EntityState.Modified;
@@ -136,21 +202,31 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.classroom_id = new SelectList(
-                 from c in db.Classrooms
-                 select new { c.classroom_id, c.buildingPrefix, c.roomNumber, fullName = c.buildingPrefix + " " + c.roomNumber },
+                 from cl in db.Classrooms
+                 orderby cl.buildingPrefix, cl.roomNumber
+                 select new { cl.classroom_id, cl.buildingPrefix, cl.roomNumber, fullName = cl.buildingPrefix + " " + cl.roomNumber },
                  "classroom_id", "fullName", section.classroom_id);
             ViewBag.course_id = new SelectList(
-                 from co in db.Courses
-                 select new { co.course_id, co.coursePrefix, co.courseNumber, fullName = co.coursePrefix + " " + co.courseNumber },
+                 from c in db.Courses
+                 orderby c.coursePrefix, c.courseNumber
+                 select new { c.course_id, c.coursePrefix, c.courseNumber, fullName = c.coursePrefix + " " + c.courseNumber },
                  "course_id", "fullName", section.course_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorFirstName + " " + i.instructorLastName },
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
+                orderby s.semesterYear descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
-                 "semester_id", "fullName", section.semester_id);
+                "semester_id", "fullName", section.semester_id);
+
+            // Lookup key based on value. Doesn't work if there are duplicate values.
+            string previousBlock = Section.BlockTypes.FirstOrDefault(x => x.Value == section.block).Key;
+            string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
+            ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
+            ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
             return View(section);
         }
 

@@ -14,6 +14,10 @@ namespace ScheduleCreator.Models
     
     public partial class Semester
     {
+        // These are also database constraints if you want to add or modify these then you need to make changes to the
+        // Database as well
+        public static List<string> SemesterTypes = new List<string> { "Fall", "Spring", "Summer" };
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Semester()
         {
