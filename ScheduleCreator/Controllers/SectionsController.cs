@@ -56,7 +56,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName");
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName");
             
@@ -115,7 +115,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", section.semester_id);
 
@@ -156,7 +156,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", section.semester_id);
 
@@ -218,7 +218,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", section.semester_id);
 

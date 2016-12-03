@@ -46,7 +46,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName");
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName");
             return View();
@@ -57,8 +57,15 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "instructorRelease_id,instructor_id,semester_id,instructorWNumber,semesterType,semesterYear,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
+        public ActionResult Create([Bind(Include = "instructorRelease_id,instructor_id,semester_id,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
         {
+            // instructorWNumber
+            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList()[0];
+
+            // semesterType,semesterYear
+            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList()[0];
+            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.InstructorReleases.Add(instructorRelease);
@@ -72,7 +79,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
@@ -97,7 +104,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);
@@ -108,8 +115,15 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "instructorRelease_id,instructor_id,semester_id,instructorWNumber,semesterType,semesterYear,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
+        public ActionResult Edit([Bind(Include = "instructorRelease_id,instructor_id,semester_id,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
         {
+            // instructorWNumber
+            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList()[0];
+
+            // semesterType,semesterYear
+            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList()[0];
+            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.Entry(instructorRelease).State = EntityState.Modified;
@@ -123,7 +137,7 @@ namespace ScheduleCreator.Controllers
                  "instructor_id", "fullName", instructorRelease.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
-                orderby s.semesterYear descending
+                orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName", instructorRelease.semester_id);
             return View(instructorRelease);

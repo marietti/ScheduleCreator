@@ -41,6 +41,7 @@ namespace ScheduleCreator.Controllers
         {
             ViewBag.program_id = new SelectList(
                  from p in db.Programs
+                 orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName");
             return PartialView();
@@ -51,17 +52,21 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,programPrefix,courseName,defaultCredits,active")] Course course)
+        public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits,active")] Course course)
         {
+            // programPrefix
+            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.Courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
+
             ViewBag.program_id = new SelectList(
                  from p in db.Programs
+                 orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName", course.program_id);
             return PartialView(course);
@@ -80,8 +85,10 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.program_id = new SelectList(
                  from p in db.Programs
+                 orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName", course.program_id);
             return View(course);
@@ -92,15 +99,22 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,programPrefix,courseName,defaultCredits,active")] Course course)
+        public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits,active")] Course course)
         {
+            // programPrefix
+            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", course.program_id);
+            ViewBag.program_id = new SelectList(
+                from p in db.Programs
+                orderby p.programPrefix
+                select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                "program_id", "fullName", course.program_id);
             return View(course);
         }
 

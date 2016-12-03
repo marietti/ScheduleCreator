@@ -39,7 +39,11 @@ namespace ScheduleCreator.Controllers
         // GET: InstructorPrograms/Create
         public ActionResult Create()
         {
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix");
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 orderby p.programPrefix
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName");
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
@@ -53,16 +57,26 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "instructorProgram_id,program_id,instructor_id,programPrefix,instructorWNumber")] InstructorProgram instructorProgram)
+        public ActionResult Create([Bind(Include = "instructorProgram_id,program_id,instructor_id")] InstructorProgram instructorProgram)
         {
+            // programPrefix
+            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList()[0];
+
+            // instructorWNumber
+            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.InstructorPrograms.Add(instructorProgram);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
+            
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 orderby p.programPrefix
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
@@ -84,7 +98,11 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 orderby p.programPrefix
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
@@ -98,15 +116,25 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "instructorProgram_id,program_id,instructor_id,programPrefix,instructorWNumber")] InstructorProgram instructorProgram)
+        public ActionResult Edit([Bind(Include = "instructorProgram_id,program_id,instructor_id")] InstructorProgram instructorProgram)
         {
+            // programPrefix
+            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList()[0];
+
+            // instructorWNumber
+            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList()[0];
+
             if (ModelState.IsValid)
             {
                 db.Entry(instructorProgram).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.program_id = new SelectList(db.Programs, "program_id", "programPrefix", instructorProgram.program_id);
+            ViewBag.program_id = new SelectList(
+                 from p in db.Programs
+                 orderby p.programPrefix
+                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
+                 "program_id", "fullName", instructorProgram.program_id);
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
