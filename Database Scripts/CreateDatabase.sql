@@ -168,9 +168,9 @@ CREATE TABLE [Section] (
     [semesterType] nvarchar(10),
     [semesterYear] int,
     [crn] nvarchar(10),
-    [daysTaught] nvarchar(10) NOT NULL,
-    [courseStartTime] time NOT NULL,
-    [courseEndTime] time NOT NULL,
+    [daysTaught] nvarchar(10),
+    [courseStartTime] time,
+    [courseEndTime] time,
     [block] nvarchar(5) NOT NULL,
     [courseType] nvarchar(10) NOT NULL,
     [pay] nvarchar(50),
@@ -242,7 +242,7 @@ ALTER TABLE Classroom
 	ADD CONSTRAINT AK_Classroom UNIQUE(buildingPrefix, roomNumber);
 
 ALTER TABLE Building
-	ADD CONSTRAINT AK_Building UNIQUE(buildingPrefix);
+	ADD CONSTRAINT AK_Building UNIQUE(buildingPrefix, campusPrefix);
 GO
 
 --Add Foreign Keys
