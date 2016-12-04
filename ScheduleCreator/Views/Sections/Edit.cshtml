@@ -60,7 +60,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.daysTaught, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.daysTaught, new { htmlAttributes = new { @class = "form-control" } })
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="M" checked="@(ViewBag.dayReCheck[0] == true)" /> M</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="T" checked="@(ViewBag.dayReCheck[1] == true)" /> T</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="W" checked="@(ViewBag.dayReCheck[2] == true)" /> W</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="R" checked="@(ViewBag.dayReCheck[3] == true)" /> R</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="F" checked="@(ViewBag.dayReCheck[4] == true)" /> F</label>
                 @Html.ValidationMessageFor(model => model.daysTaught, "", new { @class = "text-danger" })
             </div>
         </div>
