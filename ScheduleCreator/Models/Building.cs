@@ -12,6 +12,7 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     public partial class Building
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +23,7 @@ namespace ScheduleCreator.Models
 
         public int building_id { get; set; }
         [Required(ErrorMessage = "A Building Prefix is required")]
+        [Remote("IsBuildingTaken", "Buildings", AdditionalFields = "campusPrefix")]
         public string buildingPrefix { get; set; }
         [Required(ErrorMessage = "A Building Name is required")]
         public string buildingName { get; set; }
