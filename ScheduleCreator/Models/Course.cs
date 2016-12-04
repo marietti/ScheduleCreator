@@ -26,7 +26,6 @@ namespace ScheduleCreator.Models
         public string coursePrefix { get; set; }
         [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
-        [Required(ErrorMessage = "Program prefix is required")]
         public string programPrefix { get; set; }
         [Required(ErrorMessage = "Course name is required")]
         public string courseName { get; set; }

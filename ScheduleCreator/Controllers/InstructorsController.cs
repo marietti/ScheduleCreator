@@ -56,8 +56,9 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "instructor_id,instructorWNumber,instructorFirstName,instructorLastName,hoursRequired,active")] Instructor instructor)
+        public ActionResult Create([Bind(Include = "instructor_id,instructorWNumber,instructorFirstName,instructorLastName,hoursRequired")] Instructor instructor, bool active)
         {
+            instructor.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Instructors.Add(instructor);
@@ -65,6 +66,7 @@ namespace ScheduleCreator.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.active = active;
             return View(instructor);
         }
 
@@ -80,6 +82,8 @@ namespace ScheduleCreator.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.active = instructor.active == "Y" ? true : false;
             return View(instructor);
         }
 
@@ -88,14 +92,18 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "instructor_id,instructorWNumber,instructorFirstName,instructorLastName,hoursRequired,active")] Instructor instructor)
+        public ActionResult Edit([Bind(Include = "instructor_id,instructorWNumber,instructorFirstName,instructorLastName,hoursRequired")] Instructor instructor, bool active)
         {
+
+            instructor.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Entry(instructor).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.active = active;
             return View(instructor);
         }
 

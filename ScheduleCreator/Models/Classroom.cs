@@ -22,7 +22,6 @@ namespace ScheduleCreator.Models
     
         public int classroom_id { get; set; }
         public int building_id { get; set; }
-        [Required(ErrorMessage = "A building prefix is required")]
         public string buildingPrefix { get; set; }
         [Required(ErrorMessage = "A room number is required")]
         public string roomNumber { get; set; }

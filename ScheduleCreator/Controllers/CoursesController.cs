@@ -52,11 +52,12 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits,active")] Course course)
+        public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits")] Course course, bool active)
         {
             // programPrefix
             course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
 
+            course.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Courses.Add(course);
@@ -69,6 +70,8 @@ namespace ScheduleCreator.Controllers
                  orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName", course.program_id);
+
+            ViewBag.active = active;
             return View(course);
         }
 
@@ -91,6 +94,8 @@ namespace ScheduleCreator.Controllers
                  orderby p.programPrefix
                  select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                  "program_id", "fullName", course.program_id);
+
+            ViewBag.active = course.active == "Y" ? true : false;
             return View(course);
         }
 
@@ -99,11 +104,12 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits,active")] Course course)
+        public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits")] Course course, bool active)
         {
             // programPrefix
             course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
 
+            course.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Entry(course).State = EntityState.Modified;
@@ -115,6 +121,8 @@ namespace ScheduleCreator.Controllers
                 orderby p.programPrefix
                 select new { p.program_id, p.programPrefix, p.programName, fullName = p.programPrefix + " - " + p.programName },
                 "program_id", "fullName", course.program_id);
+
+            ViewBag.active = active;
             return View(course);
         }
 

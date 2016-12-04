@@ -57,11 +57,12 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime,active")] Classroom classroom)
+        public ActionResult Create([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime")] Classroom classroom, bool active)
         {
             // buildingPrefix
             classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList()[0];
 
+            classroom.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Classrooms.Add(classroom);
@@ -74,6 +75,8 @@ namespace ScheduleCreator.Controllers
                  orderby b.buildingPrefix
                  select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
                  "building_id", "fullName", classroom.building_id);
+
+            ViewBag.active = active;
             return View(classroom);
         }
 
@@ -94,6 +97,8 @@ namespace ScheduleCreator.Controllers
                  orderby b.buildingPrefix
                  select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
                  "building_id", "fullName", classroom.building_id);
+
+            ViewBag.active = classroom.active == "Y" ? true : false;
             return View(classroom);
         }
 
@@ -102,11 +107,12 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime,active")] Classroom classroom)
+        public ActionResult Edit([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime")] Classroom classroom, bool active)
         {
             // buildingPrefix
             classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList()[0];
 
+            classroom.active = active ? "Y" : "N";
             if (ModelState.IsValid)
             {
                 db.Entry(classroom).State = EntityState.Modified;
@@ -118,6 +124,8 @@ namespace ScheduleCreator.Controllers
                  orderby b.buildingPrefix
                  select new { b.building_id, b.buildingPrefix, b.buildingName, fullName = b.buildingPrefix + " - " + b.buildingName },
                  "building_id", "fullName", classroom.building_id);
+
+            ViewBag.active = active;
             return View(classroom);
         }
 
