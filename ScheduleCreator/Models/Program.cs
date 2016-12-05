@@ -12,6 +12,8 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class Program
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,6 +25,7 @@ namespace ScheduleCreator.Models
     
         public int program_id { get; set; }
         [Required(ErrorMessage = "Program prefix is required")]
+        [Remote("IsProgramTaken", "Programs", AdditionalFields = "programName")]
         public string programPrefix { get; set; }
         [Required(ErrorMessage = "Program name is required")]
         public string programName { get; set; }

@@ -131,7 +131,7 @@ namespace ScheduleCreator.Controllers
                 foreach(Building b in db.Buildings.ToList())
                 {
                     if ((b.buildingPrefix == buildingPrefix) && (b.campusPrefix == campusPrefix))
-                        return Json("The building prefix and campus prefix aleady exsists", JsonRequestBehavior.AllowGet);
+                        return Json("The building prefix and campus prefix aleady exists", JsonRequestBehavior.AllowGet);
                 }
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
