@@ -135,7 +135,7 @@ namespace ScheduleCreator.Controllers
                 }
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
-            return Json(true, JsonRequestBehavior.DenyGet);
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

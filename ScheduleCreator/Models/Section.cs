@@ -16,36 +16,34 @@ namespace ScheduleCreator.Models
     {
         // These are also database constraints if you want to add or modify these then you need to make changes to the
         // Database as well
-        public static Dictionary<String, String> CourseTypes = new Dictionary<string, string> { { "Traditional", "TRAD" }, { "Online", "ONL" }, { "Hybrid", "HYB" } };
-        public static Dictionary<String, String> BlockTypes = new Dictionary<string, string> { { "Semester", "S" }, { "First Block", "FB" }, { "Second Block", "SB" } };
+        public static Dictionary<string, string> CourseTypes = new Dictionary<string, string> { { "Traditional", "TRAD" }, { "Online", "ONL" }, { "Hybrid", "HYB" } };
+        public static Dictionary<string, string> BlockTypes = new Dictionary<string, string> { { "Semester", "S" }, { "First Block", "FB" }, { "Second Block", "SB" } };
+        // A list of the posible characters for daysTaught
+        public static List<string> days = new List<string> {"M", "T", "W", "R", "F"};
 
         public int section_id { get; set; }
+        [Required(ErrorMessage = "Course is required")]
         public int course_id { get; set; }
         public Nullable<int> classroom_id { get; set; }
         public Nullable<int> instructor_id { get; set; }
         public Nullable<int> semester_id { get; set; }
-        [Required(ErrorMessage = "Course prefix is required")]
         public string coursePrefix { get; set; }
-        [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
-        [Required(ErrorMessage = "Building prefix is required")]
         public string buildingPrefix { get; set; }
-        [Required(ErrorMessage = "Room number is required")]
         public string roomNumber { get; set; }
-        [Required(ErrorMessage = "Instructor wnumber is required")]
         public string instructorWNumber { get; set; }
-        [Required(ErrorMessage = "Program prefix is required")]
         public string semesterType { get; set; }
         public Nullable<int> semesterYear { get; set; }
-        [Required(ErrorMessage = "CRN is required")]
         public string crn { get; set; }
-        [Required(ErrorMessage = "Days taught is required")]
         public string daysTaught { get; set; }
-        public System.TimeSpan courseStartTime { get; set; }
-        public System.TimeSpan courseEndTime { get; set; }
+        public Nullable<System.TimeSpan> courseStartTime { get; set; }
+        public Nullable<System.TimeSpan> courseEndTime { get; set; }
+        [Required(ErrorMessage = "Block is required")]
         public string block { get; set; }
+        [Required(ErrorMessage = "Course type is required")]
         public string courseType { get; set; }
         public string pay { get; set; }
+        [Required(ErrorMessage = "Section capacity is required")]
         public int sectionCapacity { get; set; }
         public Nullable<decimal> creditLoad { get; set; }
         public Nullable<decimal> creditOverload { get; set; }
