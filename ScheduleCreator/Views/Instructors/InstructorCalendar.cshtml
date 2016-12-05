@@ -26,7 +26,7 @@
 
     @foreach (var Instructor in Model)
     {
-    <div id="myCal-@Instructor.instructor_id" class="myCal-@Instructor.instructor_id myCal" style="width:100%;"></div>
+    <div id="myCal-@Instructor.instructor_id" class="myCal-@Instructor.instructor_id myCal" style="width:100%; display:none;"></div>
     }
 
 
@@ -44,10 +44,10 @@
             timeGranularity: 15,
 
             dayClick: function(el, startTime) {
-                alert('Slot selected: ' + startTime);
+                //alert('Slot selected: ' + startTime);
             },
             eventClick: function(eventId) {
-                alert('Event was clicked with id: ' + eventId);
+                window.location = '../Sections/Edit/'+eventId;
             },
 
             events: GenerateEvents(@Instructor.instructor_id),
