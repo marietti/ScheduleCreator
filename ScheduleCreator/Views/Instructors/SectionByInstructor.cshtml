@@ -40,8 +40,8 @@
         {
             foreach (var hrs in item.Sections)
             {
-                totalHrs += (decimal)hrs.creditLoad;
-                totalHrs += (decimal)hrs.creditOverload;
+                totalHrs += hrs.creditLoad != null ? (decimal)hrs.creditLoad : 0;
+                totalHrs += hrs.creditOverload != null ? (decimal)hrs.creditOverload : 0;
             }
         }
         catch (System.Data.ConstraintException e)
