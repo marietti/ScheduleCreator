@@ -9,39 +9,62 @@
 <script type="text/javascript" src="~/Content/moment.min.js"></script>
 <script type="text/javascript" src="~/Content/easycal.js"></script>
 
-<div style="width:100%">
-    <div class="col-lg-4 col-md-5">
-        <h2>Instructor Calendar</h2>
-    </div>
-    <div class="col-lg-offset-4 col-md-offset-2 col-lg-4 col-md-5">
-        @ViewBag.semester_id;
-    </div>
-</div>
-
-<div class="col-lg-2" id="calendar-nav">
+<h2>Instructor Calendar</h2>
+<div class="panel-primary" style="max-height: 500px; overflow-y: auto">
+    <div class="col-lg-2" id="calendar-nav">
 
 
-    @foreach (var Instructor in Model)
-    {
-        if (true)
+        @foreach (var Instructor in Model)
         {
-            <input type="radio" name="instructor" value="@Instructor.instructor_id" onclick="showCalendar(this.value)"/> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+            if (true)
+            {
+                <input type="radio" name="cal-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+            }
         }
-    }
+    </div>
+    <div class="col-lg-10">
+
+        @foreach (var Instructor in Model)
+        {
+            <div id="cal-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
+        }
+    </div>
 </div>
-<div class="col-lg-10">
+<br />
+<div class="panel-primary" style="max-height: 500px; overflow-y: auto">
+    <div class="col-lg-2" id="calendar-nav">
 
-    @foreach (var Instructor in Model)
-    {
-    <div id="myCal-@Instructor.instructor_id" class="myCal-@Instructor.instructor_id myCal" style="width:100%; display:none;"></div>
+        @foreach (var Instructor in Model)
+        {
+            if (true)
+            {
+                <input type="radio" name="cal2-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal2', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+            }
+        }
+    </div>
+    <div class="col-lg-10">
+
+        @foreach (var Instructor in Model)
+        {
+            <div id="cal2-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
+        }
+    </div>
+</div>
+
+
+<script>
+
+
+    @foreach (var Instructor in Model) {
+    <text>
+    var temp = $('.@Instructor.instructor_id');
+    var eventObjects = @Html.Raw(ViewBag.instructorEvents[@Instructor.instructor_id]);
+    temp = generateCalendars(@Instructor.instructor_id, eventObjects);
+    </text>
     }
-
-
-    <script>
-        @foreach (var Instructor in Model) {
-            <text>
-        var temp = $('.myCal-@Instructor.instructor_id');
-        temp.easycal({
+    
+    function generateCalendars(instId, eventObjects){
+        return temp.easycal({
             startDate: '01-01-1900', // OR 31/10/2104
             timeFormat: 'hh:mm a',
             columnDateFormat: 'ddd',
@@ -57,98 +80,28 @@
                 window.location = '../Sections/Edit/'+eventId;
             },
 
-            events: GenerateEvents(@Instructor.instructor_id),
+            events: eventObjects,
 
             overlapColor: '#F00',
             overlapTextColor: '#FFF',
             overlapTitle: 'Multiple'
         });
-        </text>
-        }
-
-        function GenerateEvents(n)
-        {
-            var myArray = [];
-            var temp;
-            @foreach (var Instructor in Model)
-            {
-        <text>
-
-
-            if(n == @Instructor.instructor_id.ToString())
-            {
-                </text>
-                    foreach (var Section in Instructor.Sections)
-                    {
-                        if (Section.daysTaught != null)
-                        {
-                            foreach (char day in Section.daysTaught)
-                            {
-                                string daysToAdd = "0";
-                                switch (day)
-                                {
-                                    case 'm':
-                                    case 'M':
-                                        daysToAdd = "1";
-                                        break;
-                                    case 't':
-                                    case 'T':
-                                        daysToAdd = "2";
-                                        break;
-                                    case 'w':
-                                    case 'W':
-                                        daysToAdd = "3";
-                                        break;
-                                    case 'r':
-                                    case 'R':
-                                        daysToAdd = "4";
-                                        break;
-                                    case 'f':
-                                    case 'F':
-                                        daysToAdd = "5";
-                                        break;
-                                    case 's':
-                                    case 'S':
-                                        daysToAdd = "6";
-                                        break;
-                                }
-                                string date = "0" + daysToAdd + "-01-1900";
-                                string startTime = Section.courseStartTime.ToString();
-                                string endTime = Section.courseEndTime.ToString();
-                                startTime = date + " " + startTime;
-                                endTime = date + " " + endTime;
-                <text>
-                    temp = {
-
-                            id: '@Section.section_id',
-                title: '@Section.coursePrefix @Section.courseNumber<br/>@Section.buildingPrefix @Section.roomNumber',
-                start: '@startTime',
-                end: '@endTime',
-                backgroundColor: '#492365',
-                textColor: '#FFF'
-
-            }
-                        myArray.push(temp);
-            </text>
-                        }
-                    }
-                }
-                
-
-        <text>
-        }
-        </text>
-
-
     }
-        return myArray;
-        }
 
-        function showCalendar(id)
-        {
-            var name = "myCal-"+id;
-            $(".myCal").hide();
-            document.getElementById(name).style.display = "block";
+    var lastCal;
+    var lastCal2;
+    function showCalendar(cal, instId)
+    {
+        var name = cal + "-" + instId;
+        if (cal == 'cal'){
+            $("#" + lastCal).hide();
+            lastCal = name;
         }
-    </script>
-</div>
+        else{
+            $("#" + lastCal2).hide();
+            lastCal2 = name;
+        }
+        document.getElementById(name).style.display = "block";
+    }
+
+</script>
