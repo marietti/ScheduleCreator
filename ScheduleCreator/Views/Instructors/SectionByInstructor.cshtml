@@ -37,11 +37,12 @@
 
         decimal totalHrs = 0;
 
-        foreach (var hrs in item.Sections)
-        {
-            totalHrs += (decimal)hrs.creditLoad;
-            totalHrs += (decimal)hrs.creditOverload;
-        }
+            foreach (var hrs in item.Sections)
+            {
+    totalHrs += hrs.creditLoad != null ? (decimal)hrs.creditLoad : 0;
+    totalHrs += hrs.creditOverload != null ? (decimal)hrs.creditOverload : 0;
+            }
+
 
         foreach (var hrs in item.InstructorReleases)
         {
