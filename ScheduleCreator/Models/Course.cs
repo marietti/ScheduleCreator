@@ -12,6 +12,7 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     public partial class Course
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,12 +24,14 @@ namespace ScheduleCreator.Models
         public int course_id { get; set; }
         public int program_id { get; set; }
         [Required(ErrorMessage = "Course prefix is required")]
+        [Remote("IsCourseTaken", "Courses", AdditionalFields = "program_id,courseNumber")]
         public string coursePrefix { get; set; }
         [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
         public string programPrefix { get; set; }
         [Required(ErrorMessage = "Course name is required")]
         public string courseName { get; set; }
+        [Required(ErrorMessage = "Default credits is required")]
         public Nullable<decimal> defaultCredits { get; set; }
         public string active { get; set; }
     
