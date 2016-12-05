@@ -20,14 +20,83 @@ namespace ScheduleCreator.Controllers
             return View(db.Instructors.ToList());
         }
 
-        public ActionResult SectionByInstructor()
+        public ActionResult SectionByInstructor(int? id)
         {
-            return View(db.Instructors.ToList());
+            int semesterId;
+            if (id == null)
+            {
+                semesterId = ((db.Semesters.ToList()).Last()).semester_id;
+            }
+            else
+            {
+                semesterId = (int)id;
+            }
+            List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
+            List<Section> tempSectionList = new List<Section>();
+
+            if (db.Instructors != null)
+            {
+                //instructorList = from i in db.Instructors where 
+                foreach (Instructor instructor in instructorList)
+                {
+                    var InstructorNewList = from s in db.Sections select s;
+                    InstructorNewList = InstructorNewList.Where(s => s.instructor_id == instructor.instructor_id && s.semester_id == semesterId);
+                    instructor.Sections = InstructorNewList.ToList();
+                    /*if (instructor.Sections != null)
+                    {
+                        foreach (Section section in instructor.Sections)
+                        {
+                            if (section.semester_id != semesterId)
+                            {
+                                tempSectionList.Add(section);
+                            }
+                        }
+                        foreach (Section section in tempSectionList)
+                        {
+                            instructor.Sections.Remove(section);
+                        }
+                        tempSectionList.Clear();
+                    }*/
+                }
+            }
+            ViewBag.semester_id = new SelectList(
+               from s in db.Semesters
+               orderby s.startDate descending
+               select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+               "semester_id", "fullName");
+            return View(instructorList);
         }
 
-        public ActionResult InstructorCalendar()
+        public ActionResult InstructorCalendar(int? id)
         {
-            return View(db.Instructors.ToList());
+            int semesterId;
+            if (id == null)
+            {
+                semesterId = ((db.Semesters.ToList()).Last()).semester_id;
+            }
+            else
+            {
+                semesterId = (int)id;
+            }
+            List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
+            List<Section> tempSectionList = new List<Section>();
+
+            if (db.Instructors != null)
+            {
+                //instructorList = from i in db.Instructors where 
+                foreach (Instructor instructor in instructorList)
+                {
+                    var InstructorNewList = from s in db.Sections select s;
+                    InstructorNewList = InstructorNewList.Where(s => s.instructor_id == instructor.instructor_id && s.semester_id == semesterId);
+                    instructor.Sections = InstructorNewList.ToList();
+                }
+            }
+            ViewBag.semester_id = new SelectList(
+               from s in db.Semesters
+               orderby s.startDate descending
+               select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
+               "semester_id", "fullName");
+            return View(instructorList);
         }
 
         // GET: Instructors/Details/5

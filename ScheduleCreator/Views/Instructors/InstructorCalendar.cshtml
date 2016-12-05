@@ -9,7 +9,14 @@
 <script type="text/javascript" src="~/Content/moment.min.js"></script>
 <script type="text/javascript" src="~/Content/easycal.js"></script>
 
-<h2>Instructor Calendar</h2>
+<div style="width:100%">
+    <div class="col-lg-4 col-md-5">
+        <h2>Instructor Calendar</h2>
+    </div>
+    <div class="col-lg-offset-4 col-md-offset-2 col-lg-4 col-md-5">
+        @ViewBag.semester_id;
+    </div>
+</div>
 
 <div class="col-lg-2" id="calendar-nav">
 
@@ -71,8 +78,6 @@
             if(n == @Instructor.instructor_id.ToString())
             {
                 </text>
-                try
-                {
                     foreach (var Section in Instructor.Sections)
                     {
                         if (Section.daysTaught != null)
@@ -128,11 +133,8 @@
                         }
                     }
                 }
-                }
-                catch(System.Data.ConstraintException e)
-            {
+                
 
-            }
         <text>
         }
         </text>

@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ScheduleCreator.Models.Instructor>
 
+
 @{
     ViewBag.Title = "Section By Instructor";
 }
@@ -25,11 +26,16 @@
     tr:hover {
         background: #EEEEEE;
     }
-
-    panel-heading
 </style>
 
-<h2>Sections By Instructor</h2>
+<div style="width:100%">
+    <div class="col-lg-4 col-md-5">
+        <h2>Sections By Instructor</h2>
+    </div>
+    <div class="col-lg-offset-4 col-md-offset-2 col-lg-4 col-md-5">
+        @ViewBag.semester_id;
+    </div>
+</div>
 
 <div class="panel-group">
     @foreach (var item in Model)
