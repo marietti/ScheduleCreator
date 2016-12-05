@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Course Scheduler</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     <!-- Override navbar-default for onw with custom colors-->
-    <link href="~/Content/navbar-custom.css" rel="stylesheet"> 
+    @Styles.Render("~/Content/navbar-custom.css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -68,7 +70,6 @@
                 </footer>
             </div>
 
-            @Scripts.Render("~/bundles/jquery")
             @Scripts.Render("~/bundles/bootstrap")
             @RenderSection("scripts", required: false)
         </div>
