@@ -21,9 +21,6 @@
             <input type="radio" name="instructor" value="@Instructor.instructor_id" onclick="showCalendar(this.value)"/> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
         }
     }
-    <div class="form-group">
-            <button id="update-instructors" onclick="generateCalendar()" class="btn btn-default" />
-    </div>
 </div>
 <div class="col-lg-10">
 
@@ -75,44 +72,46 @@
             {
                 </text>
                 try
-                { 
-                foreach (var Section in Instructor.Sections)
                 {
-                    foreach (char day in Section.daysTaught)
+                    foreach (var Section in Instructor.Sections)
                     {
-                        string daysToAdd = "0";
-                        switch (day)
+                        if (Section.daysTaught != null)
                         {
-                            case 'm':
-                            case 'M':
-                                daysToAdd = "1";
-                                break;
-                            case 't':
-                            case 'T':
-                                daysToAdd = "2";
-                                break;
-                            case 'w':
-                            case 'W':
-                                daysToAdd = "3";
-                                break;
-                            case 'r':
-                            case 'R':
-                                daysToAdd = "4";
-                                break;
-                            case 'f':
-                            case 'F':
-                                daysToAdd = "5";
-                                break;
-                            case 's':
-                            case 'S':
-                                daysToAdd = "6";
-                                break;
-                        }
-                        string date = "0" + daysToAdd + "-01-1900";
-                        string startTime = Section.courseStartTime.ToString();
-                        string endTime = Section.courseEndTime.ToString();
-                        startTime = date + " " + startTime;
-                        endTime = date + " " + endTime;
+                            foreach (char day in Section.daysTaught)
+                            {
+                                string daysToAdd = "0";
+                                switch (day)
+                                {
+                                    case 'm':
+                                    case 'M':
+                                        daysToAdd = "1";
+                                        break;
+                                    case 't':
+                                    case 'T':
+                                        daysToAdd = "2";
+                                        break;
+                                    case 'w':
+                                    case 'W':
+                                        daysToAdd = "3";
+                                        break;
+                                    case 'r':
+                                    case 'R':
+                                        daysToAdd = "4";
+                                        break;
+                                    case 'f':
+                                    case 'F':
+                                        daysToAdd = "5";
+                                        break;
+                                    case 's':
+                                    case 'S':
+                                        daysToAdd = "6";
+                                        break;
+                                }
+                                string date = "0" + daysToAdd + "-01-1900";
+                                string startTime = Section.courseStartTime.ToString();
+                                string endTime = Section.courseEndTime.ToString();
+                                startTime = date + " " + startTime;
+                                endTime = date + " " + endTime;
                 <text>
                     temp = {
 
@@ -129,10 +128,11 @@
                         }
                     }
                 }
-                catch(System.Data.ConstraintException e)
-                {
-
                 }
+                catch(System.Data.ConstraintException e)
+            {
+
+            }
         <text>
         }
         </text>

@@ -36,31 +36,20 @@
     {
 
         decimal totalHrs = 0;
-        try
-        {
-            foreach (var hrs in item.Sections)
-            {
-                totalHrs += (decimal)hrs.creditLoad;
-                totalHrs += (decimal)hrs.creditOverload;
-            }
-        }
-        catch (System.Data.ConstraintException e)
-        { }
 
-        try
+        foreach (var hrs in item.Sections)
         {
-            foreach (var hrs in item.InstructorReleases)
-            {
-                totalHrs += (decimal)(hrs.totalReleaseHours);
-            }
+            totalHrs += (decimal)hrs.creditLoad;
+            totalHrs += (decimal)hrs.creditOverload;
         }
-        catch (System.Data.ConstraintException e)
-        { }
 
-        try
+        foreach (var hrs in item.InstructorReleases)
         {
-            if (item.Sections.Count > 0 || item.InstructorReleases.Count > 0)
-            {
+            totalHrs += (decimal)(hrs.totalReleaseHours);
+        }
+
+        if (item.Sections.Count > 0 || item.InstructorReleases.Count > 0)
+        {
 
             <div class="panel panel-default">
                 <div class="panel-heading row" style="width:100%">
@@ -82,126 +71,123 @@
                         @if (item.Sections.Count > 0)
                         {
                             <h3>Sections</h3>
-                                <table style="text-align:center; width:100%;">
+                            <table style="text-align:center; width:100%;">
+                                <tr>
+                                    <th>
+                                    </th>
+                                    <th>
+                                        Course
+                                    </th>
+                                    <th>
+                                        CRN
+                                    </th>
+                                    <th colspan="2">
+                                        Time
+                                    </th>
+                                    <th>
+                                        Days
+                                    </th>
+                                    <th>
+                                        Room
+                                    </th>
+                                    <th>
+                                        Room Capacity
+                                    </th>
+                                    <th>
+                                        Credit Hours
+                                    </th>
+                                    <th>
+                                        Campus
+                                    </th>
+                                    <th>
+                                        Pay
+                                    </th>
+                                    <th>
+                                        Load Hrs
+                                    </th>
+                                    <th>
+                                        OverLoad Hrs
+                                    </th>
+                                </tr>
+                                @foreach (var section in item.Sections)
+                                {
                                     <tr>
-                                        <th>
-                                        </th>
-                                        <th>
-                                            Course
-                                        </th>
-                                        <th>
-                                            CRN
-                                        </th>
-                                        <th colspan="2">
-                                            Time
-                                        </th>
-                                        <th>
-                                            Days
-                                        </th>
-                                        <th>
-                                            Room
-                                        </th>
-                                        <th>
-                                            Room Capacity
-                                        </th>
-                                        <th>
-                                            Credit Hours
-                                        </th>
-                                        <th>
-                                            Campus
-                                        </th>
-                                        <th>
-                                            Pay
-                                        </th>
-                                        <th>
-                                            Load Hrs
-                                        </th>
-                                        <th>
-                                            OverLoad Hrs
-                                        </th>
+                                        <td>
+                                            @Html.ActionLink("Edit Section", "Edit", "Sections", new { @id = section.section_id }, null)
+                                        </td>
+                                        <td>
+                                            <a href="../Courses/Edit/@Html.DisplayFor(sectionItem => section.Course.course_id)">@Html.DisplayFor(sectionItem => section.coursePrefix)@Html.DisplayFor(sectionItem => section.courseNumber)</a>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.crn)
+                                        </td>
+                                        <td>
+                                            @(section.courseStartTime.ToString())
+                                        </td>
+                                        <td>
+                                            @(section.courseEndTime.ToString())
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.daysTaught)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.buildingPrefix)-@Html.DisplayFor(sectionItem => section.roomNumber)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.sectionCapacity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.Course.defaultCredits)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.Classroom.Building.campusPrefix)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.pay)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.creditLoad)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(sectionItem => section.creditOverload)
+                                        </td>
                                     </tr>
-                                    @foreach (var section in item.Sections)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.ActionLink("Edit Section", "Edit", "Sections", new { @id = section.section_id }, null)
-                                            </td>
-                                            <td>
-                                                <a href="../Courses/Edit/@Html.DisplayFor(sectionItem => section.Course.course_id)">@Html.DisplayFor(sectionItem => section.coursePrefix)@Html.DisplayFor(sectionItem => section.courseNumber)</a>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.crn)
-                                            </td>
-                                            <td>
-                                                @(section.courseStartTime.ToString())
-                                            </td>
-                                            <td>
-                                                @(section.courseEndTime.ToString())
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.daysTaught)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.buildingPrefix)-@Html.DisplayFor(sectionItem => section.roomNumber)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.sectionCapacity)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.Course.defaultCredits)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.Classroom.Building.campusPrefix)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.pay)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.creditLoad)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(sectionItem => section.creditOverload)
-                                            </td>
-                                        </tr>
-                                    }
-                                </table>
+                                }
+                            </table>
                         } <!--end if-->
 
                         @if (item.InstructorReleases.Count > 0)
                         {
                             <h3>Released Time</h3>
-                                <table style="text-align:center; width:100%;">
-                                    <tr>
-                                        <th>
+                            <table style="text-align:center; width:100%;">
+                                <tr>
+                                    <th>
 
-                                        </th>
-                                        <th>
-                                            Description
-                                        </th>
-                                        <th>
-                                            Released Hours
-                                        </th>
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Released Hours
+                                    </th>
+                                </tr>
+                                @foreach (var release in item.InstructorReleases)
+                                {
+                                    <tr>
+                                        <td><a>Edit</a></td>
+                                        <td>
+                                            @Html.DisplayFor(releaseItem => release.releaseDescription)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(releaseItem => release.totalReleaseHours)
+                                        </td>
                                     </tr>
-                                    @foreach (var release in item.InstructorReleases)
-                                    {
-                                        <tr>
-                                            <td><a>Edit</a></td>
-                                            <td>
-                                                @Html.DisplayFor(releaseItem => release.releaseDescription)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(releaseItem => release.totalReleaseHours)
-                                            </td>
-                                        </tr>
-                                    }
-                                </table>
+                                }
+                            </table>
                         }
                     </div> <!--End Panel Body-->
                 </div> <!--End Panel-->
             </div> <!--End Accordion Item-->
         }
-    }
-        catch (System.Data.ConstraintException e)
-        { }
     }
 </div> <!--End Accordion-->
