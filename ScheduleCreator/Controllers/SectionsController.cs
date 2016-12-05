@@ -52,16 +52,19 @@ namespace ScheduleCreator.Controllers
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
                  "instructor_id", "fullName");
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
                 orderby s.startDate descending
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName");
-            
+
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList());
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList());
+
+            ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
+
             return View();
         }
 
@@ -70,7 +73,7 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
+        public ActionResult Create([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section, List<string> dayChecks)
         {
             // Get values for rest of fields based of id
             // coursePrefix,courseNumber
@@ -91,6 +94,12 @@ namespace ScheduleCreator.Controllers
             // Replace selection with shortened form
             section.block = Section.BlockTypes[section.block];
             section.courseType = Section.CourseTypes[section.courseType];
+
+            // Handle daysTaught checkboxes
+            // Loop through the returned array append value to daysTaught
+            if (dayChecks != null)
+                dayChecks.ForEach(day => section.daysTaught += day);
+
             if (ModelState.IsValid)
             {
                 db.Sections.Add(section);
@@ -111,7 +120,7 @@ namespace ScheduleCreator.Controllers
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
@@ -124,6 +133,24 @@ namespace ScheduleCreator.Controllers
             string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
+
+            // Set up checkboxes
+            List<bool> dayReCheck = new List<bool>();
+            bool checkDay;
+            foreach (string day in Section.days)
+            {
+                checkDay = false;
+                foreach (char check in section.daysTaught.ToString())
+                {
+                    if (check.ToString() == day)
+                    {
+                        checkDay = (true);
+                        break;
+                    }
+                }
+                dayReCheck.Add(checkDay);
+            }
+            ViewBag.dayReCheck = dayReCheck;
             return View(section);
         }
 
@@ -152,7 +179,7 @@ namespace ScheduleCreator.Controllers
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
@@ -165,6 +192,29 @@ namespace ScheduleCreator.Controllers
             string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
+
+            // Set up checkboxes
+            if (section.daysTaught != null)
+            {
+                List<bool> dayReCheck = new List<bool>();
+                bool checkDay;
+                foreach (string day in Section.days)
+                {
+                    checkDay = false;
+                    foreach (char check in section.daysTaught.ToString())
+                    {
+                        if (check.ToString() == day)
+                        {
+                            checkDay = (true);
+                            break;
+                        }
+                    }
+                    dayReCheck.Add(checkDay);
+                }
+                ViewBag.dayReCheck = dayReCheck;
+            }
+            else
+                ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
             return View(section);
         }
 
@@ -173,7 +223,7 @@ namespace ScheduleCreator.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,daysTaught,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section)
+        public ActionResult Edit([Bind(Include = "section_id,course_id,classroom_id,instructor_id,semester_id,crn,courseStartTime,courseEndTime,block,courseType,pay,sectionCapacity,creditLoad,creditOverload,comments")] Section section, List<string> dayChecks)
         {
             // Get values for rest of fields based of id
             // coursePrefix,courseNumber
@@ -195,6 +245,10 @@ namespace ScheduleCreator.Controllers
             section.block = Section.BlockTypes[section.block];
             section.courseType = Section.CourseTypes[section.courseType];
 
+            // Handle daysTaught checkboxes
+            if (dayChecks != null)
+                dayChecks.ForEach(day => section.daysTaught += day);
+
             if (ModelState.IsValid)
             {
                 db.Entry(section).State = EntityState.Modified;
@@ -214,7 +268,7 @@ namespace ScheduleCreator.Controllers
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
-                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName  },
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
                  "instructor_id", "fullName", section.instructor_id);
             ViewBag.semester_id = new SelectList(
                 from s in db.Semesters
@@ -227,6 +281,24 @@ namespace ScheduleCreator.Controllers
             string previousCourseType = Section.CourseTypes.FirstOrDefault(x => x.Value == section.courseType).Key;
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList(), previousBlock);
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList(), previousCourseType);
+
+            // Set up checkboxes
+            List<bool> dayReCheck = new List<bool>();
+            bool checkDay;
+            foreach (string day in Section.days)
+            {
+                checkDay = false;
+                foreach (char check in section.daysTaught.ToString())
+                {
+                    if (check.ToString() == day)
+                    {
+                        checkDay = (true);
+                        break;
+                    }
+                }
+                dayReCheck.Add(checkDay);
+            }
+            ViewBag.dayReCheck = dayReCheck;
             return View(section);
         }
 
