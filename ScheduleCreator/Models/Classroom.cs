@@ -12,6 +12,7 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     public partial class Classroom
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,6 +25,7 @@ namespace ScheduleCreator.Models
         public int building_id { get; set; }
         public string buildingPrefix { get; set; }
         [Required(ErrorMessage = "A room number is required")]
+        [Remote("IsRoomTaken", "Classrooms", AdditionalFields = "building_id")]
         public string roomNumber { get; set; }
         [Required(ErrorMessage = "A classroom capacity is required")]
         public int classroomCapacity { get; set; }
