@@ -36,18 +36,31 @@
     {
 
         decimal totalHrs = 0;
-        foreach (var hrs in item.Sections)
+        try
         {
-            totalHrs += (decimal)hrs.creditLoad;
-            totalHrs += (decimal)hrs.creditOverload;
+            foreach (var hrs in item.Sections)
+            {
+                totalHrs += (decimal)hrs.creditLoad;
+                totalHrs += (decimal)hrs.creditOverload;
+            }
         }
-        foreach (var hrs in item.InstructorReleases)
-        {
-            totalHrs += (decimal)(hrs.totalReleaseHours);
-        }
+        catch (System.Data.ConstraintException e)
+        { }
 
-        if (item.Sections.Count > 0 || item.InstructorReleases.Count > 0)
+        try
         {
+            foreach (var hrs in item.InstructorReleases)
+            {
+                totalHrs += (decimal)(hrs.totalReleaseHours);
+            }
+        }
+        catch (System.Data.ConstraintException e)
+        { }
+
+        try
+        {
+            if (item.Sections.Count > 0 || item.InstructorReleases.Count > 0)
+            {
 
             <div class="panel panel-default">
                 <div class="panel-heading row" style="width:100%">
@@ -67,7 +80,7 @@
                     <div class="panel-body" style="overflow:auto">
 
                         @if (item.Sections.Count > 0)
-                    {
+                        {
                             <h3>Sections</h3>
                                 <table style="text-align:center; width:100%;">
                                     <tr>
@@ -111,7 +124,7 @@
                                     {
                                         <tr>
                                             <td>
-                                                @Html.ActionLink("Edit Section", "Edit", "Sections",new { @id=section.section_id },null)
+                                                @Html.ActionLink("Edit Section", "Edit", "Sections", new { @id = section.section_id }, null)
                                             </td>
                                             <td>
                                                 <a href="../Courses/Edit/@Html.DisplayFor(sectionItem => section.Course.course_id)">@Html.DisplayFor(sectionItem => section.coursePrefix)@Html.DisplayFor(sectionItem => section.courseNumber)</a>
@@ -120,10 +133,10 @@
                                                 @Html.DisplayFor(sectionItem => section.crn)
                                             </td>
                                             <td>
-                                                @(section.courseStartTime.ToString("hh:mm tt"))
+                                                @(section.courseStartTime.ToString())
                                             </td>
                                             <td>
-                                                @(section.courseEndTime.ToString("hh:mm tt"))
+                                                @(section.courseEndTime.ToString())
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(sectionItem => section.daysTaught)
@@ -155,7 +168,7 @@
                         } <!--end if-->
 
                         @if (item.InstructorReleases.Count > 0)
-                    {
+                        {
                             <h3>Released Time</h3>
                                 <table style="text-align:center; width:100%;">
                                     <tr>
@@ -187,5 +200,8 @@
                 </div> <!--End Panel-->
             </div> <!--End Accordion Item-->
         }
+    }
+        catch (System.Data.ConstraintException e)
+        { }
     }
 </div> <!--End Accordion-->

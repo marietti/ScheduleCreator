@@ -18,7 +18,7 @@
     {
         if (true)
         {
-            <input type="radio" name="instructor" value="@Instructor.instructor_id" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+            <input type="radio" name="instructor" value="@Instructor.instructor_id" onclick="showCalendar(this.value)"/> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
         }
     }
     <div class="form-group">
@@ -26,96 +26,127 @@
     </div>
 </div>
 <div class="col-lg-10">
-    <div class="mycal" style="width:100%;"></div>
+
+    @foreach (var Instructor in Model)
+    {
+    <div id="myCal-@Instructor.instructor_id" class="myCal-@Instructor.instructor_id myCal" style="width:100%;"></div>
+    }
+
+
     <script>
-        var temp = $('.mycal');
+        @foreach (var Instructor in Model) {
+            <text>
+        var temp = $('.myCal-@Instructor.instructor_id');
+        temp.easycal({
+            startDate: '01-01-1900', // OR 31/10/2104
+            timeFormat: 'hh:mm a',
+            columnDateFormat: 'ddd',
+            minTime: '06:00:00',
+            maxTime: '23:00:00',
+            slotDuration: 30,
+            timeGranularity: 15,
 
-        function generateCalendar() {
-            //temp.empty();
-            temp.easycal({
-                startDate: '@Model.First().Sections.First().courseStartTime.ToString("dd-MM-yyyy")', // OR 31/10/2104
-                timeFormat: 'hh:mm a',
-                columnDateFormat: 'ddd',
-                minTime: '06:00:00',
-                maxTime: '23:00:00',
-                slotDuration: 30,
-                timeGranularity: 15,
+            dayClick: function(el, startTime) {
+                alert('Slot selected: ' + startTime);
+            },
+            eventClick: function(eventId) {
+                alert('Event was clicked with id: ' + eventId);
+            },
 
-                dayClick: function (el, startTime) {
-                    alert('Slot selected: ' + startTime);
-                },
-                eventClick: function (eventId) {
-                    alert('Event was clicked with id: ' + eventId);
-                },
+            events: GenerateEvents(@Instructor.instructor_id),
 
-                events: GenerateEvents(),
-
-                overlapColor: '#F00',
-                overlapTextColor: '#FFF',
-                overlapTitle: 'Multiple'
-            });
+            overlapColor: '#F00',
+            overlapTextColor: '#FFF',
+            overlapTitle: 'Multiple'
+        });
+        </text>
         }
 
-function GenerateEvents() {
-	var n = $('input[name=instructor]:checked').val();
-	var myArray = [];
-	var temp;
-	@foreach(var Instructor in Model){
-        <text>
-		if(n == @Instructor.instructor_id.ToString())
+        function GenerateEvents(n)
         {
-        </text>
-        foreach(var Section in Instructor.Sections)
-        {
-            foreach (char day in Section.daysTaught)
+            var myArray = [];
+            var temp;
+            @foreach (var Instructor in Model)
             {
-                int daysToAdd = 0;
-                switch (day)
+        <text>
+
+
+            if(n == @Instructor.instructor_id.ToString())
+            {
+                </text>
+                try
+                { 
+                foreach (var Section in Instructor.Sections)
                 {
-                    case 'm':
-                    case 'M':
-                        daysToAdd = 0;
-                        break;
-                    case 't':
-                    case 'T':
-                        daysToAdd = 1;
-                        break;
-                    case 'w':
-                    case 'W':
-                        daysToAdd = 2;
-                        break;
-                    case 'r':
-                    case 'R':
-                        daysToAdd = 3;
-                        break;
-                    case 'f':
-                    case 'F':
-                        daysToAdd = 4;
-                        break;
-                    case 's':
-                    case 'S':
-                        daysToAdd = 5;
-                        break;
-                }
+                    foreach (char day in Section.daysTaught)
+                    {
+                        string daysToAdd = "0";
+                        switch (day)
+                        {
+                            case 'm':
+                            case 'M':
+                                daysToAdd = "1";
+                                break;
+                            case 't':
+                            case 'T':
+                                daysToAdd = "2";
+                                break;
+                            case 'w':
+                            case 'W':
+                                daysToAdd = "3";
+                                break;
+                            case 'r':
+                            case 'R':
+                                daysToAdd = "4";
+                                break;
+                            case 'f':
+                            case 'F':
+                                daysToAdd = "5";
+                                break;
+                            case 's':
+                            case 'S':
+                                daysToAdd = "6";
+                                break;
+                        }
+                        string date = "0" + daysToAdd + "-01-1900";
+                        string startTime = Section.courseStartTime.ToString();
+                        string endTime = Section.courseEndTime.ToString();
+                        startTime = date + " " + startTime;
+                        endTime = date + " " + endTime;
                 <text>
-                temp = {
-                    id: '@Section.section_id',
-					title: '@Section.coursePrefix @Section.courseNumber',
-					start: '@Section.courseStartTime.AddDays(daysToAdd).ToString("dd-MM-yyyy HH:mm:ss")',
-					end: '@Section.courseEndTime.AddDays(daysToAdd).ToString("dd-MM-yyyy HH:mm:ss")',
-		            backgroundColor: '#492365',
-					textColor: '#FFF'
+                    temp = {
+
+                            id: '@Section.section_id',
+                title: '@Section.coursePrefix @Section.courseNumber',
+                start: '@startTime',
+                end: '@endTime',
+                backgroundColor: '#492365',
+                textColor: '#FFF'
+
+            }
+                        myArray.push(temp);
+            </text>
+                        }
+                    }
+                }
+                catch(System.Data.ConstraintException e)
+                {
 
                 }
-                myArray.push(temp);
-                </text>
-            }
-        }
         <text>
         }
         </text>
-	}
-	return myArray;
-}
+
+
+    }
+        return myArray;
+        }
+
+        function showCalendar(id)
+        {
+            var name = "myCal-"+id;
+            $(".myCal").hide();
+            document.getElementById(name).style.display = "block";
+        }
     </script>
 </div>
