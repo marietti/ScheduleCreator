@@ -30,7 +30,6 @@
 <div><h2>Sections By Instructor</h2></div>
 
 <select onChange="window.location.assign(this.value)" class="form-control">
-    <option selected="selected">Select Semester</option>
     @foreach (ScheduleCreator.Models.Semester s in ViewBag.semester_id)
     {
     <option value=@Url.Action("SectionByInstructor", "Instructors", new { id = s.semester_id })>@s.semesterType @s.semesterYear</option>

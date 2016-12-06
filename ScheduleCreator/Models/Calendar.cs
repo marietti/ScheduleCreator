@@ -32,6 +32,7 @@ namespace ScheduleCreator.Models
             overlapColor = "#F00";
             overlapTextColor = "#FFF";
             overlapTitle = "Multiple";
+            this.events = events;
         }
     }
 
