@@ -2,11 +2,11 @@
 USE master;
 
 -- Drop the database if it exists
---IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreator')--
+--IF EXISTS(SELECT * FROM sys.sysdatabases WHERE name='ScheduleCreator')
 --    DROP DATABASE ScheduleCreator;
 
 --CREATE DATABASE [ScheduleCreator]
--- ON  PRIMARY
+ --ON  PRIMARY
 --( NAME = N'ScheduleCreator', FILENAME =
 -- N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\ScheduleCreator.mdf',
 -- SIZE = 5120KB , FILEGROWTH = 1024KB )
