@@ -60,10 +60,10 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create([Bind(Include = "instructorProgram_id,program_id,instructor_id")] InstructorProgram instructorProgram)
         {
             // programPrefix
-            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList()[0];
+            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList().FirstOrDefault();
 
             // instructorWNumber
-            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList()[0];
+            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -119,10 +119,10 @@ namespace ScheduleCreator.Controllers
         public ActionResult Edit([Bind(Include = "instructorProgram_id,program_id,instructor_id")] InstructorProgram instructorProgram)
         {
             // programPrefix
-            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList()[0];
+            instructorProgram.programPrefix = (from p in db.Programs where p.program_id == instructorProgram.program_id select p.programPrefix).ToList().FirstOrDefault();
 
             // instructorWNumber
-            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList()[0];
+            instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             if (ModelState.IsValid)
             {

@@ -60,11 +60,11 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create([Bind(Include = "instructorRelease_id,instructor_id,semester_id,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
         {
             // instructorWNumber
-            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList()[0];
+            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             // semesterType,semesterYear
-            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList()[0];
-            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList()[0];
+            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList().FirstOrDefault();
+            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList().FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -118,11 +118,11 @@ namespace ScheduleCreator.Controllers
         public ActionResult Edit([Bind(Include = "instructorRelease_id,instructor_id,semester_id,releaseDescription,totalReleaseHours")] InstructorRelease instructorRelease)
         {
             // instructorWNumber
-            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList()[0];
+            instructorRelease.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorRelease.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             // semesterType,semesterYear
-            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList()[0];
-            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList()[0];
+            instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList().FirstOrDefault();
+            instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList().FirstOrDefault();
 
             if (ModelState.IsValid)
             {
