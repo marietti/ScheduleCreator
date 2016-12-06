@@ -446,111 +446,122 @@ END
 GO
 
 -------------------------------------------------------------------------------
----   Tests
+---   Triggers
 -------------------------------------------------------------------------------
-
-------usp_addInstructorProgram Test ----------------------------------------
-INSERT INTO dbo.Instructor
-    (instructorWNumber, instructorFirstName, instructorLastName, hoursRequired, active)
-VALUES ('W0100007', 'Rob', 'Hilton', 12, 'Y');
+--Check for time conflicts centered around the schedule table
+DROP TRIGGER dbo.udt_sectionConflicts
 GO
 
-EXEC usp_addInstructorProgram 
-    @instructorWNumber='W0100007', @programPrefix='CS'; 
+CREATE TRIGGER dbo.udt_sectionConflicts
+on Section
+AFTER INSERT
+AS
+BEGIN
 
-SELECT * FROM Instructor;
-SELECT * FROM InstructorProgram;
+	--One instructor can't teach two sections at the same time
+	
+		--Check if any sections are being taught at the same time by the same professor
+		DECLARE @instructorTimeOverlap int
 
-------usp_addCourse Test ------------------------------------------------------
---Should Work--
-EXEC usp_addCourse
-	@coursePrefix='CS', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+		SELECT  @instructorTimeOverlap = COUNT(*)
+		FROM Section s
+		JOIN inserted i ON s.instructor_id = i.instructor_id
+		WHERE ((i.courseStartTime >= s.courseStartTime AND i.courseStartTime <= s.courseEndTime)
+		OR (i.courseEndTime >= s.courseStartTime AND i.courseEndTime <= s.courseEndTime)
+		OR (i.courseStartTime <= s.courseStartTime AND i.courseEndTime >= s.courseEndTime))
+		AND (i.section_id != s.section_id)
+		AND (i.daysTaught LIKE s.daysTaught)
+		AND (i.semester_id = s.semester_id)
 
---Should Fail--
-EXEC usp_addCourse
-	@coursePrefix='CS', @courseNumber='1410', @programPrefix='ART', @courseName='CS1410', @defaultCredits='4', @active='Y'
+		
+		IF (@instructorTimeOverlap > 0)
+		-- The instructor is already teaching a section that the inserted one would overlap with
+			BEGIN
+				RAISERROR('The instructor is already teaching a section at this time', 0, 2)
+				ROLLBACK TRANSACTION
+				RETURN
+			END
 
---Should fail(?)
---Raises questions about the coursePrefix argument
-EXEC usp_addCourse
-	@coursePrefix='ART', @courseNumber='1410', @programPrefix='CS', @courseName='CS1410', @defaultCredits='4', @active='Y'
+		--Two sections can't be in the same classroom at the same time
+		DECLARE @ClassroomTimeOverlap int
 
-SELECT * FROM Course
-------usp_addClassroom Test ---------------------------------------------------
---Should work--
-EXEC usp_addClassroom
-	@buildingPrefix='TE', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+		SELECT  @ClassroomTimeOverlap = COUNT(*)
+		FROM Section s
+		JOIN inserted i ON s.classroom_id = i.classroom_id
+		WHERE ((i.courseStartTime >= s.courseStartTime AND i.courseStartTime <= s.courseEndTime)
+		OR (i.courseEndTime >= s.courseStartTime AND i.courseEndTime <= s.courseEndTime)
+		OR (i.courseStartTime <= s.courseStartTime AND i.courseEndTime >= s.courseEndTime))
+		AND (i.section_id != s.section_id)
+		AND (i.daysTaught LIKE s.daysTaught)
+		AND (i.semester_id = s.semester_id)
 
---Should fail--
-EXEC usp_addClassroom
-	@buildingPrefix='LL', @roomNumber='530', @classroomCapacity='20', @computers='10', @availableFromTime='', @availableToTime='', @active='N' 
+		IF (@ClassroomTimeOverlap > 0)
+		-- The Classroom is already being used 
+			BEGIN
+				RAISERROR('The classroom is already being used at this time', 0, 2)
+				ROLLBACK TRANSACTION
+				RETURN
+			END
 
-SELECT * FROM Classroom
+	--Insturctor can't go over the absolute max credit load
+	--Not the most elegent solution, but it's serviceable
+	DECLARE @CreditLoad int
+	DECLARE @ReleaseCredits int
+	DECLARE @ProgramMax int
 
-------usp_addSection Test -----------------------------------------------------
---Should Work--
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='30', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+	SELECT @CreditLoad = SUM(s.creditLoad) 
+	FROM Section s
+	JOIN inserted i on s.instructor_id = i.instructor_id
+	WHERE s.instructor_id = i.instructor_id GROUP BY s.instructor_id
 
---Should fail, and does
-EXEC usp_addSection
-	@coursePrefix='C', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+	SELECT @ReleaseCredits = r.totalReleaseHours
+	FROM InstructorRelease r
+	JOIN inserted i on r.instructor_id = i.instructor_id
+	WHERE r.semester_id = i.semester_id
 
---Should fail, and does
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='9999', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+	SELECT @ProgramMax = p.maxCreditsAllowed
+	FROM Program p
+	JOIN InstructorProgram ip on ip.program_id = p.program_id
+	JOIN inserted i on i.instructor_id = ip.instructor_id
 
---Should fail, but doesn't
---Needs to test to make sure the building and classroom are valid
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='AB', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
+	BEGIN
+		RAISERROR('Instructor is now overloaded on credits', 0, 2)
+	END
+END
+GO
 
---Should fail, but doesn't
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='7530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+DROP TRIGGER dbo.udt_creditOverloadCheck
+GO
 
---Should fail, but doesn't
---Why are we allowing a null instructor_id in section?
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='WXXXXXXX', @semesterType='Fall', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+CREATE TRIGGER dbo.udt_creditOverloadCheck
+on InstructorRelease
+AFTER INSERT
+AS
+BEGIN
+	--Insturctor can't go over the absolute max credit load
+	--Not the most elegent solution, but it's serviceable
+	DECLARE @CreditLoad int
+	DECLARE @ReleaseCredits int
+	DECLARE @ProgramMax int
 
---Should fail, and does
-EXEC usp_addSection
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Sprjiolk', @semesterYear=2017,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
+	SELECT @CreditLoad = SUM(s.creditLoad) 
+	FROM Section s
+	JOIN inserted i on s.instructor_id = i.instructor_id
+	WHERE s.instructor_id = i.instructor_id GROUP BY s.instructor_id
 
---Should fail, but doesn't
-EXEC usp_addSection 
-	@coursePrefix='CS', @courseNumber='1410', @buildingPrefix='TE', @roomNumber='530', @instructorWNumber='W0100007', @semesterType='Fall', @semesterYear=3000,
-	@crn='', @daysTaught='MWF', @courseStartTime='7:30AM', @courseEndTime='9:20PM', @block='S', @courseType='TRAD', @pay='Reg', @sectionCapacity='', @creditLoad=4,
-	@creditOverload=0, @comments='Comment'
-SELECT * FROM Section
+	SELECT @ReleaseCredits = r.totalReleaseHours
+	FROM InstructorRelease r
+	JOIN inserted i on r.instructor_id = i.instructor_id
+	WHERE r.semester_id = i.semester_id
 
+	SELECT @ProgramMax = p.maxCreditsAllowed
+	FROM Program p
+	JOIN InstructorProgram ip on ip.program_id = p.program_id
+	JOIN inserted i on i.instructor_id = ip.instructor_id
 
-------usp_addInstructorRelease Test -----------------------------------------------------
---Should Work---
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
-
---Should Fail--
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
-EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
-
-SELECT * FROM InstructorRelease
+	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
+	BEGIN
+		RAISERROR('Instructor is now overloaded on credits', 0, 2)
+	END
+END

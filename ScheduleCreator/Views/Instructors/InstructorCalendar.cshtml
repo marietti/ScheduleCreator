@@ -3,105 +3,102 @@
 @{
     ViewBag.Title = "Instructor Calendar";
 }
+
 <link rel="stylesheet" type="text/css" href="~/Content/easycal.css">
-<script type="text/javascript" src="~/Content/jquery.min.js"></script>
+@Scripts.Render("~/bundles/jquery")
 <script type="text/javascript" src="~/Content/underscore.min.js"></script>
 <script type="text/javascript" src="~/Content/moment.min.js"></script>
 <script type="text/javascript" src="~/Content/easycal.js"></script>
 
-<h2>Instructor Calendar</h2>
-<div class="panel-primary" style="max-height: 500px; overflow-y: auto">
-    <div class="col-lg-2" id="calendar-nav">
+<h3>Instructor Calendar</h3>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2" id="calendar-nav">
 
-
-        @foreach (var Instructor in Model)
-        {
-            if (true)
+            @foreach (var Instructor in Model)
             {
                 <input type="radio" name="cal-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
             }
-        }
-    </div>
-    <div class="col-lg-10">
+        </div>
+        <div class="col-lg-10" style="max-height: 450px; overflow-y: auto">
 
-        @foreach (var Instructor in Model)
-        {
-            <div id="cal-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
-        }
-    </div>
-</div>
-<br />
-<div class="panel-primary" style="max-height: 500px; overflow-y: auto">
-    <div class="col-lg-2" id="calendar-nav">
-
-        @foreach (var Instructor in Model)
-        {
-            if (true)
+            @foreach (var Instructor in Model)
             {
-                <input type="radio" name="cal2-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal2', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+                <div id="cal-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
             }
-        }
+        </div>
     </div>
-    <div class="col-lg-10">
+    <br />
+    <div class="row">
+        <div class="col-lg-2" id="calendar-nav">
 
-        @foreach (var Instructor in Model)
-        {
-            <div id="cal2-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
-        }
+            @foreach (var Instructor in Model)
+            {
+                if (true)
+                {
+                    <input type="radio" name="cal2-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal2', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
+                }
+            }
+        </div>
+        <div class="col-lg-10" style="max-height: 450px; overflow-y: auto">
+
+            @foreach (var Instructor in Model)
+            {
+                <div id="cal2-@Instructor.instructor_id" class="@Instructor.instructor_id" style="width:100%; display:none;"></div>
+            }
+        </div>
     </div>
 </div>
-
-
-<script>
+    <script>
 
 
     @foreach (var Instructor in Model) {
     <text>
-    var temp = $('.@Instructor.instructor_id');
-    var eventObjects = @Html.Raw(ViewBag.instructorEvents[@Instructor.instructor_id]);
-    temp = generateCalendars(@Instructor.instructor_id, eventObjects);
-    </text>
-    }
-    
-    function generateCalendars(instId, eventObjects){
-        return temp.easycal({
-            startDate: '01-01-1900', // OR 31/10/2104
-            timeFormat: 'hh:mm a',
-            columnDateFormat: 'ddd',
-            minTime: '06:00:00',
-            maxTime: '23:00:00',
-            slotDuration: 30,
-            timeGranularity: 15,
-
-            dayClick: function(el, startTime) {
-                //alert('Slot selected: ' + startTime);
-            },
-            eventClick: function(eventId) {
-                window.location = '../Sections/Edit/'+eventId;
-            },
-
-            events: eventObjects,
-
-            overlapColor: '#F00',
-            overlapTextColor: '#FFF',
-            overlapTitle: 'Multiple'
-        });
+        var temp = $('.@Instructor.instructor_id');
+        var eventObjects = @Html.Raw(ViewBag.instructorEvents[@Instructor.instructor_id]);
+        temp = generateCalendars(eventObjects);
+        </text>
     }
 
-    var lastCal;
-    var lastCal2;
-    function showCalendar(cal, instId)
-    {
-        var name = cal + "-" + instId;
-        if (cal == 'cal'){
-            $("#" + lastCal).hide();
-            lastCal = name;
+        function generateCalendars(eventObjects){
+            return temp.easycal({
+                startDate: '01-01-1900', // OR 31/10/2104
+                timeFormat: 'hh:mm a',
+                columnDateFormat: 'ddd',
+                minTime: '06:00:00',
+                maxTime: '23:00:00',
+                slotDuration: 30,
+                timeGranularity: 15,
+
+                dayClick: function(el, startTime) {
+                    //alert('Slot selected: ' + startTime);
+                },
+                eventClick: function(eventId) {
+                    window.location = '../Sections/Edit/'+eventId;
+                },
+
+                events: eventObjects,
+
+                overlapColor: '#F00',
+                overlapTextColor: '#FFF',
+                overlapTitle: 'Multiple'
+            });
         }
-        else{
-            $("#" + lastCal2).hide();
-            lastCal2 = name;
-        }
-        document.getElementById(name).style.display = "block";
-    }
 
-</script>
+        var lastCal;
+        var lastCal2;
+        function showCalendar(cal, instId)
+        {
+            var name = cal + "-" + instId;
+            if (cal == 'cal'){
+                $("#" + lastCal).hide();
+                lastCal = name;
+            }
+            else{
+                $("#" + lastCal2).hide();
+                lastCal2 = name;
+            }
+            document.getElementById(name).style.display = "block";
+        }
+
+    </script>
