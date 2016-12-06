@@ -21,7 +21,10 @@ namespace ScheduleCreator.Controllers
         {
             return View(db.Instructors.ToList());
         }
-
+        public ActionResult FinalFormat()
+        {
+            return View(db.Instructors.ToList());
+        }
         public ActionResult SectionByInstructor(int? id)
         {
             int semesterId;
