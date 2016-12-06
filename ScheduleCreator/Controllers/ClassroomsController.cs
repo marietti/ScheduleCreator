@@ -56,7 +56,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime")] Classroom classroom, bool active)
         {
             // buildingPrefix
-            classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList()[0];
+            classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList().FirstOrDefault();
 
             classroom.active = active ? "Y" : "N";
             if (ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult Edit([Bind(Include = "classroom_id,building_id,roomNumber,classroomCapacity,computers,availableFromTime,availableToTime")] Classroom classroom, bool active)
         {
             // buildingPrefix
-            classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList()[0];
+            classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList().FirstOrDefault();
 
             classroom.active = active ? "Y" : "N";
             if (ModelState.IsValid)

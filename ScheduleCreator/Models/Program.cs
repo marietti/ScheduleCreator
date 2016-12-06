@@ -11,6 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
@@ -24,11 +25,19 @@ namespace ScheduleCreator.Models
         }
     
         public int program_id { get; set; }
+
+        [DisplayName("Prefix")]
+        [StringLength(10)]
         [Required(ErrorMessage = "Program prefix is required")]
         [Remote("IsProgramTaken", "Programs", AdditionalFields = "programName")]
         public string programPrefix { get; set; }
+
+        [DisplayName("Name")]
+        [StringLength(100)]
         [Required(ErrorMessage = "Program name is required")]
         public string programName { get; set; }
+
+        [DisplayName("Max Credits")]
         public decimal maxCreditsAllowed { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

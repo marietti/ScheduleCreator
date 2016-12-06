@@ -104,7 +104,7 @@ CREATE TABLE [Program] (
     [program_id] int IDENTITY(1000,1) NOT NULL,
     [programPrefix] nvarchar(10) NOT NULL,
     [programName] nvarchar(100) NOT NULL,
-    [maxCreditsAllowed] decimal NOT NULL,
+    [maxCreditsAllowed] decimal,
 );
 
 CREATE TABLE [Course] (
@@ -123,7 +123,7 @@ CREATE TABLE [Instructor] (
     [instructorWNumber] nvarchar(9) NOT NULL,
     [instructorFirstName] nvarchar(50) NOT NULL,
     [instructorLastName] nvarchar(50) NOT NULL,
-    [hoursRequired] decimal NOT NULL,
+    [hoursRequired] decimal,
     [active] nvarchar(5) NOT NULL,
 );
 

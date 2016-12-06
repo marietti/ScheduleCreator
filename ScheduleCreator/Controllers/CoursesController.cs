@@ -55,7 +55,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits")] Course course, bool active)
         {
             // programPrefix
-            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
+            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList().FirstOrDefault();
 
             course.active = active ? "Y" : "N";
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult Edit([Bind(Include = "course_id,program_id,coursePrefix,courseNumber,courseName,defaultCredits")] Course course, bool active)
         {
             // programPrefix
-            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList()[0];
+            course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList().FirstOrDefault();
 
             course.active = active ? "Y" : "N";
             if (ModelState.IsValid)

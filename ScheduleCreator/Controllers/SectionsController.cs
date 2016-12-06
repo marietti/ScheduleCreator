@@ -60,10 +60,12 @@ namespace ScheduleCreator.Controllers
                 select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
                 "semester_id", "fullName");
 
+            
+
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList());
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList());
 
-            ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
+            ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false, false };
 
             return View();
         }
@@ -77,19 +79,19 @@ namespace ScheduleCreator.Controllers
         {
             // Get values for rest of fields based of id
             // coursePrefix,courseNumber
-            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList()[0];
-            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList()[0];
+            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList().FirstOrDefault();
+            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList().FirstOrDefault();
 
             // buildingPrefix,roomNumber
-            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList()[0];
-            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList()[0];
+            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList().FirstOrDefault();
+            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList().FirstOrDefault();
 
             // instructorWNumber
-            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList()[0];
+            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             // semesterType,semesterYear
-            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList()[0];
-            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList()[0];
+            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList().FirstOrDefault();
+            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList().FirstOrDefault();
 
             // Replace selection with shortened form
             section.block = Section.BlockTypes[section.block];
@@ -214,7 +216,7 @@ namespace ScheduleCreator.Controllers
                 ViewBag.dayReCheck = dayReCheck;
             }
             else
-                ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
+                ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false, false };
             return View(section);
         }
 
@@ -227,19 +229,19 @@ namespace ScheduleCreator.Controllers
         {
             // Get values for rest of fields based of id
             // coursePrefix,courseNumber
-            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList()[0];
-            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList()[0];
+            section.coursePrefix = (from c in db.Courses where c.course_id == section.course_id select c.coursePrefix).ToList().FirstOrDefault();
+            section.courseNumber = (from c in db.Courses where c.course_id == section.course_id select c.courseNumber).ToList().FirstOrDefault();
 
             // buildingPrefix,roomNumber
-            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList()[0];
-            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList()[0];
+            section.buildingPrefix = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.buildingPrefix).ToList().FirstOrDefault();
+            section.roomNumber = (from cl in db.Classrooms where cl.classroom_id == section.classroom_id select cl.roomNumber).ToList().FirstOrDefault();
 
             // instructorWNumber
-            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList()[0];
+            section.instructorWNumber = (from i in db.Instructors where i.instructor_id == section.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
             // semesterType,semesterYear
-            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList()[0];
-            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList()[0];
+            section.semesterType = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterType).ToList().FirstOrDefault();
+            section.semesterYear = (from s in db.Semesters where s.semester_id == section.semester_id select s.semesterYear).ToList().FirstOrDefault();
 
             // Replace selection with shortened form
             section.block = Section.BlockTypes[section.block];
