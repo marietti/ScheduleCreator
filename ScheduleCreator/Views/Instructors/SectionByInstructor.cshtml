@@ -27,15 +27,17 @@
         background: #EEEEEE;
     }
 </style>
+<div><h2>Sections By Instructor</h2></div>
 
-<div style="width:100%">
-    <div class="col-lg-4 col-md-5">
-        <h2>Sections By Instructor</h2>
-    </div>
-    <div class="col-lg-offset-4 col-md-offset-2 col-lg-4 col-md-5">
-        @ViewBag.semester_id;
-    </div>
-</div>
+<select onChange="window.location.assign(this.value)" class="form-control">
+    <option selected="selected">Select Semester</option>
+    @foreach (ScheduleCreator.Models.Semester s in ViewBag.semester_id)
+    {
+    <option value=@Url.Action("SectionByInstructor", "Instructors", new { id = s.semester_id })>@s.semesterType @s.semesterYear</option>
+    }
+</select>
+
+
 
 <div class="panel-group">
     @foreach (var item in Model)
@@ -43,11 +45,11 @@
 
         decimal totalHrs = 0;
 
-            foreach (var hrs in item.Sections)
-            {
-    totalHrs += hrs.creditLoad != null ? (decimal)hrs.creditLoad : 0;
-    totalHrs += hrs.creditOverload != null ? (decimal)hrs.creditOverload : 0;
-            }
+        foreach (var hrs in item.Sections)
+        {
+            totalHrs += hrs.creditLoad != null ? (decimal)hrs.creditLoad : 0;
+            totalHrs += hrs.creditOverload != null ? (decimal)hrs.creditOverload : 0;
+        }
 
 
         foreach (var hrs in item.InstructorReleases)
@@ -62,7 +64,7 @@
                 <div class="panel-heading row" style="width:100%">
                     <div class="col-lg-3 col-md-4 col-sm-12">
                         <h3 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse-@Html.DisplayFor(modelItem => item.instructor_id)"><h3>@Html.DisplayFor(modelItem => item.instructorLastName), @Html.DisplayFor(modelItem => item.instructorFirstName)</h3></a>
+                            <a data-toggle="collapse" href="#collapse-@Html.DisplayFor(modelItem => item.instructor_id)">@Html.DisplayFor(modelItem => item.instructorLastName), @Html.DisplayFor(modelItem => item.instructorFirstName)</a>
                         </h3>
                     </div>
 

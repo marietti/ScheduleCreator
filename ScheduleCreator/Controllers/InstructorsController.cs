@@ -41,10 +41,10 @@ namespace ScheduleCreator.Controllers
                 //instructorList = from i in db.Instructors where 
                 foreach (Instructor instructor in instructorList)
                 {
-                    var InstructorNewList = from s in db.Sections select s;
+                    /*var InstructorNewList = from s in db.Sections select s;
                     InstructorNewList = InstructorNewList.Where(s => s.instructor_id == instructor.instructor_id && s.semester_id == semesterId);
-                    instructor.Sections = InstructorNewList.ToList();
-                    /*if (instructor.Sections != null)
+                    instructor.Sections = InstructorNewList.ToList();*/
+                    if (instructor.Sections != null)
                     {
                         foreach (Section section in instructor.Sections)
                         {
@@ -58,30 +58,12 @@ namespace ScheduleCreator.Controllers
                             instructor.Sections.Remove(section);
                         }
                         tempSectionList.Clear();
-                    }*/
+                    }
                 }
             }
-            ViewBag.semester_id = new SelectList(
-               from s in db.Semesters
-               orderby s.startDate descending
-               select new { s.semester_id, s.semesterType, s.semesterYear, fullName = s.semesterType + " " + s.semesterYear },
-               "semester_id", "fullName");
+            ViewBag.semester_id = db.Semesters.ToList();
             return View(instructorList);
         }
-
-        public ActionResult InstructorCalendar(int? id)
-        {
-            int semesterId;
-            if (id == null)
-            {
-                semesterId = ((db.Semesters.ToList()).Last()).semester_id;
-            }
-            else
-            {
-                semesterId = (int)id;
-            }
-            List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
-            List<Section> tempSectionList = new List<Section>();
 
         public ActionResult InstructorCalendar()
         {
