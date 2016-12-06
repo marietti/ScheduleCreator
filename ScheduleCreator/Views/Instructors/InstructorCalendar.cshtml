@@ -18,6 +18,7 @@
     <div class="col-lg-4 col-md-5 col-md-offset-2 col-lg-offset-4">
         <h3 style="text-align:center">Select Semester</h3>
         <select onChange="window.location.assign(this.value)" class="form-control" style="float:right">
+
             @foreach (ScheduleCreator.Models.Semester s in ViewBag.semesterList)
             {
                 if (s == ViewBag.CurrentSemester)
@@ -35,14 +36,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-2" id="calendar-nav">
-
-            @foreach (var Instructor in Model)
-            {
-                <input type="radio" name="cal-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
-            }
+        <div >
+            @Html.DropDownList("instructor_id", null, htmlAttributes: new { id = "cal1-nav", @class = "form-control", onclick = "showCalendar('cal', this.value)" })
         </div>
-        <div class="col-lg-10" style="max-height: 450px; overflow-y: auto">
+        <div class="col-lg-10" style="max-height: 400px; overflow-y: auto">
 
             @foreach (var Instructor in Model)
             {
@@ -52,17 +49,10 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-lg-2" id="calendar-nav">
-
-            @foreach (var Instructor in Model)
-            {
-                if (true)
-                {
-                    <input type="radio" name="cal2-instructor" value="@Instructor.instructor_id" onclick="showCalendar('cal2', this.value)" /> @(Instructor.instructorLastName + ", " + Instructor.instructorFirstName)<br />
-                }
-            }
+        <div >
+            @Html.DropDownList("instructor_id", null, htmlAttributes: new { id = "cal2-nav", @class = "form-control", onclick = "showCalendar('cal2', this.value)" })
         </div>
-        <div class="col-lg-10" style="max-height: 450px; overflow-y: auto">
+        <div class="col-lg-10" style="max-height: 400px; overflow-y: auto">
 
             @foreach (var Instructor in Model)
             {
@@ -71,56 +61,59 @@
         </div>
     </div>
 </div>
-    <script>
+<script>
 
+@foreach (var Instructor in Model) {
+<text>
+    var temp = $('.@Instructor.instructor_id');
+    var eventObjects = @Html.Raw(ViewBag.instructorEvents[@Instructor.instructor_id]);
+    temp = generateCalendars(eventObjects);
+    </text>
+}
+    showCalendar("cal", @Model.ElementAt(0).instructor_id)
+    showCalendar("cal2", @Model.ElementAt(1).instructor_id)
+    $("#cal2-nav").val("@Model.ElementAt(1).instructor_id")
 
-    @foreach (var Instructor in Model) {
-    <text>
-        var temp = $('.@Instructor.instructor_id');
-        var eventObjects = @Html.Raw(ViewBag.instructorEvents[@Instructor.instructor_id]);
-        temp = generateCalendars(eventObjects);
-        </text>
+    function generateCalendars(eventObjects){
+        return temp.easycal({
+            startDate: '01-01-1900', // OR 31/10/2104
+            timeFormat: 'hh:mm a',
+            columnDateFormat: 'ddd',
+            minTime: '06:00:00',
+            maxTime: '23:00:00',
+            slotDuration: 30,
+            timeGranularity: 15,
+
+            dayClick: function(el, startTime) {
+                //alert('Slot selected: ' + startTime);
+            },
+
+            eventClick: function(eventId) {
+                window.location = "@Url.Action("Edit", "Sections")/" + eventId;
+            },
+
+            events: eventObjects,
+
+            overlapColor: '#F00',
+            overlapTextColor: '#FFF',
+            overlapTitle: 'Multiple'
+        });
     }
 
-        function generateCalendars(eventObjects){
-            return temp.easycal({
-                startDate: '01-01-1900', // OR 31/10/2104
-                timeFormat: 'hh:mm a',
-                columnDateFormat: 'ddd',
-                minTime: '06:00:00',
-                maxTime: '23:00:00',
-                slotDuration: 30,
-                timeGranularity: 15,
-
-                dayClick: function(el, startTime) {
-                    //alert('Slot selected: ' + startTime);
-                },
-                eventClick: function(eventId) {
-                    window.location = '../Sections/Edit/'+eventId;
-                },
-
-                events: eventObjects,
-
-                overlapColor: '#F00',
-                overlapTextColor: '#FFF',
-                overlapTitle: 'Multiple'
-            });
+    var lastCal;
+    var lastCal2;
+    function showCalendar(cal, instId)
+    {
+        var name = cal + "-" + instId;
+        if (cal == 'cal'){
+            $("#" + lastCal).hide();
+            lastCal = name;
         }
-
-        var lastCal;
-        var lastCal2;
-        function showCalendar(cal, instId)
-        {
-            var name = cal + "-" + instId;
-            if (cal == 'cal'){
-                $("#" + lastCal).hide();
-                lastCal = name;
-            }
-            else{
-                $("#" + lastCal2).hide();
-                lastCal2 = name;
-            }
-            document.getElementById(name).style.display = "block";
+        else{
+            $("#" + lastCal2).hide();
+            lastCal2 = name;
         }
+        document.getElementById(name).style.display = "block";
+    }
 
-    </script>
+</script>

@@ -25,7 +25,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult SectionByInstructor(int? id)
         {
             int semesterId;
-            var semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
+            List<Semester> semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
             ViewBag.semesterList = semsterList;
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace ScheduleCreator.Controllers
         public ActionResult InstructorCalendar(int? id)
         {
             int semesterId;
-            var semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
+            List<Semester> semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
             ViewBag.semesterList = semsterList;
             if (id == null)
             {
@@ -78,7 +78,15 @@ namespace ScheduleCreator.Controllers
             }
             ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
             ViewBag.instructorEvents = Event.GetInstructorEvents(db.Instructors.ToList());
-            return View(db.Instructors.ToList());
+
+            ViewBag.instructor_id = new SelectList(
+                 from i in db.Instructors
+                 orderby i.instructorLastName, i.instructorFirstName
+                 select new { i.instructor_id, i.instructorFirstName, i.instructorLastName, fullName = i.instructorLastName + ", " + i.instructorFirstName },
+                 "instructor_id", "fullName");
+
+            List<Instructor> instructorList = (from i in db.Instructors orderby i.instructorLastName, i.instructorFirstName select i).ToList();
+            return View(instructorList);
         }
 
         // GET: Instructors/Details/5

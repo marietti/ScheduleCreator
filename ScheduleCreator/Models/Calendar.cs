@@ -64,11 +64,11 @@ namespace ScheduleCreator.Models
             Dictionary<int, string> instructorEvents = new Dictionary<int, string>();
             foreach (Instructor instructor in Instructors)
             {
+                List<Event> events = new List<Event>();
                 foreach (Section section in instructor.Sections)
                 {
                     if (section.daysTaught != null)
                     {
-                        List<Event> events = new List<Event>();
                         foreach (char day in section.daysTaught)
                         {
                             string daysToAdd = "0";
@@ -92,11 +92,10 @@ namespace ScheduleCreator.Models
                             Event temp = new Event(id, title, start, end);
                             events.Add(temp);
                         }
-                        string jsonEvents = JsonConvert.SerializeObject(events);
-                        instructorEvents.Add(section.section_id, jsonEvents);
-
                     }
                 }
+                string jsonEvents = JsonConvert.SerializeObject(events);
+                instructorEvents.Add(instructor.instructor_id, jsonEvents);
             }
             return instructorEvents;
         }
