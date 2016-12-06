@@ -65,7 +65,7 @@ namespace ScheduleCreator.Controllers
             ViewBag.block = new SelectList(Section.BlockTypes.Keys.ToList());
             ViewBag.courseType = new SelectList(Section.CourseTypes.Keys.ToList());
 
-            ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
+            ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false, false };
 
             return View();
         }
@@ -216,7 +216,7 @@ namespace ScheduleCreator.Controllers
                 ViewBag.dayReCheck = dayReCheck;
             }
             else
-                ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false };
+                ViewBag.dayReCheck = new List<bool>() { false, false, false, false, false, false };
             return View(section);
         }
 

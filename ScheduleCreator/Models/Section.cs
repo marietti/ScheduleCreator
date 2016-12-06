@@ -19,7 +19,7 @@ namespace ScheduleCreator.Models
         public static Dictionary<string, string> CourseTypes = new Dictionary<string, string> { { "Traditional", "TRAD" }, { "Online", "ONL" }, { "Hybrid", "HYB" } };
         public static Dictionary<string, string> BlockTypes = new Dictionary<string, string> { { "Semester", "S" }, { "First Block", "FB" }, { "Second Block", "SB" } };
         // A list of the posible characters for daysTaught
-        public static List<string> days = new List<string> {"M", "T", "W", "R", "F"};
+        public static List<string> days = new List<string> {"M", "T", "W", "R", "F", "S"};
 
         public int section_id { get; set; }
         [Required(ErrorMessage = "Course is required")]

@@ -167,10 +167,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\ClassroomsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
@@ -179,13 +176,11 @@
     <Compile Include="Controllers\InstructorProgramsController.cs" />
     <Compile Include="Controllers\InstructorReleasesController.cs" />
     <Compile Include="Controllers\InstructorsController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SectionsController.cs" />
     <Compile Include="Controllers\SemestersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Building.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
@@ -196,7 +191,6 @@
     <Compile Include="Models\Course.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instructor.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
@@ -206,7 +200,6 @@
     <Compile Include="Models\InstructorRelease.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Program.cs">
       <DependentUpon>ScheduleCreatorModel.tt</DependentUpon>
     </Compile>
@@ -242,11 +235,9 @@
     <Content Include="Content\calendar.css" />
     <Content Include="Content\calendar.min.css" />
     <Content Include="Content\easycal.css" />
-    <Content Include="Content\easycal.js" />
-    <Content Include="Content\jquery.min.js" />
-    <Content Include="Content\moment.min.js" />
-    <Content Include="Content\underscore.min.js" />
-    <Content Include="Content\simple-sidebar.css" />
+    <Content Include="Scripts\easycal.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -281,8 +272,6 @@
     </Content>
     <None Include="Properties\PublishProfiles\Osiris For 3750.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\calendar.js" />
-    <Content Include="Scripts\calendar.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\clear-modal.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -301,7 +290,6 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Content\Course_Scheduler.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -318,26 +306,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Buildings\Create.cshtml" />
     <Content Include="Views\Buildings\Delete.cshtml" />
     <Content Include="Views\Buildings\Details.cshtml" />

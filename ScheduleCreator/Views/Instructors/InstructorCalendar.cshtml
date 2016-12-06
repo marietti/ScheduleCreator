@@ -4,11 +4,11 @@
     ViewBag.Title = "Instructor Calendar";
 }
 
-<link rel="stylesheet" type="text/css" href="~/Content/easycal.css">
-@Scripts.Render("~/bundles/jquery")
-<script type="text/javascript" src="~/Content/underscore.min.js"></script>
-<script type="text/javascript" src="~/Content/moment.min.js"></script>
-<script type="text/javascript" src="~/Content/easycal.js"></script>
+@Styles.Render("~/Content/easycal.css")
+
+@Scripts.Render("~/Scripts/underscore.min.js")
+@Scripts.Render("~/Scripts/moment.min.js")
+@Scripts.Render("~/Scripts/easycal.js")
 
 <div class="container" style="vertical-align:central; margin:5px;">
     <div class="col-lg-4 col-md-5">

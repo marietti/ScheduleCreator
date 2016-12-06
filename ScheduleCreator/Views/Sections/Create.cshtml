@@ -30,7 +30,14 @@
                     <option value=""></option>
                     @foreach (SelectListItem item in ViewBag.classroom_id)
                     {
-                        <option value=@item.Value>@item.Text</option>
+                        if (item.Selected)
+                        {
+                            <option selected="selected" value=@item.Value>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value=@item.Value>@item.Text</option>
+                        }
                     }
                 </select>
                 @Html.ValidationMessageFor(model => model.classroom_id, "", new { @class = "text-danger" })
@@ -44,7 +51,14 @@
                     <option value=""></option>
                     @foreach (SelectListItem item in ViewBag.instructor_id)
                     {
-                        <option value=@item.Value>@item.Text</option>
+                        if (item.Selected)
+                        {
+                            <option selected="selected" value=@item.Value>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value=@item.Value>@item.Text</option>
+                        }
                     }
                 </select>
                 @Html.ValidationMessageFor(model => model.instructor_id, "", new { @class = "text-danger" })
@@ -58,7 +72,14 @@
                     <option value=""></option>
                     @foreach (SelectListItem item in ViewBag.semester_id)
                     {
-                        <option value=@item.Value>@item.Text</option>
+                        if (item.Selected)
+                        {
+                            <option selected="selected" value=@item.Value>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value=@item.Value>@item.Text</option>
+                        }
                     }
                 </select>
                 @Html.ValidationMessageFor(model => model.semester_id, "", new { @class = "text-danger" })
@@ -76,11 +97,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.daysTaught, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="M" checked="@(ViewBag.dayReCheck.FirstOrDefault() == true)" /> M</label>
-                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="T" checked="@(ViewBag.dayReCheck[1] == true)" /> T</label>
-                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="W" checked="@(ViewBag.dayReCheck[2] == true)" /> W</label>
-                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="R" checked="@(ViewBag.dayReCheck[3] == true)" /> R</label>
-                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="F" checked="@(ViewBag.dayReCheck[4] == true)" /> F</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="M" checked="@ViewBag.dayReCheck[0]" /> M</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="T" checked="@ViewBag.dayReCheck[1]" /> T</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="W" checked="@ViewBag.dayReCheck[2]" /> W</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="R" checked="@ViewBag.dayReCheck[3]" /> R</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="F" checked="@ViewBag.dayReCheck[4]" /> F</label>
+                <label class="checkbox-inline"><input type="checkbox" name="dayChecks" value="S" checked="@ViewBag.dayReCheck[5]" /> S</label>
                 @Html.ValidationMessageFor(model => model.daysTaught, "", new { @class = "text-danger" })
             </div>
         </div>
