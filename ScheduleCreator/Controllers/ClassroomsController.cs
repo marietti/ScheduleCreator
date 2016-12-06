@@ -20,11 +20,7 @@ namespace ScheduleCreator.Controllers
             var classrooms = db.Classrooms.Include(c => c.Building);
             return View(classrooms.ToList());
         }
-        public ActionResult SectionByClassroom()
-        {
-            var classrooms = db.Classrooms.Include(c => c.Building);
-            return View(classrooms.ToList());
-        }
+       
 
         // GET: Classrooms/Details/5
         public ActionResult Details(int? id)

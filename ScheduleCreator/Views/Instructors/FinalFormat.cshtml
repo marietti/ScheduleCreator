@@ -1,0 +1,130 @@
+﻿@model IEnumerable<ScheduleCreator.Models.Instructor>
+
+@{
+    ViewBag.Title = "Final Format";
+}
+<script type="text/javascript">
+    function printData()
+    {
+        var divToPrint = document.getElementById("FinalFormat");
+        newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    }
+   
+    $('button').on('click', function(){
+        printData();
+    } )
+</script>
+
+<h2>Final Format </h2>
+
+<div>
+    <input type="button" onclick="javascript:printData()" value="Print"/>
+</div>
+<br/>
+<table id="FinalFormat" class="table table-hover " border="1" >
+    <tr bgcolor="#778899">
+        <th>
+            Instructor
+        </th>
+        <th>
+            Course
+        </th>
+        <th>
+            CRN
+        </th>
+        <th colspan="2">
+            Hours
+        </th>
+        <th>
+            Days
+        </th>
+        <th>
+            Room
+        </th>
+        <th>
+            Max
+        </th>
+        <th>
+            Credit Hours
+        </th>
+        <th>
+            Campus
+        </th>
+        <th>
+            Pay
+        </th>
+        <th>
+            Load/Overload
+        </th>
+        <th>
+            Hours Required
+        </th>
+    </tr>
+
+    @foreach (var instructor in Model)
+    {
+        <tr BGCOLOR="D3D3D3">
+            <td colspan="12">
+                <strong> @Html.DisplayFor(modelItem => instructor.instructorLastName), @Html.DisplayFor(modelItem => instructor.instructorFirstName)</strong>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => instructor.hoursRequired)
+            </td>
+        </tr>
+        foreach (var section in instructor.Sections)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink("Edit Section", "Edit", "Sections", new { @id = section.section_id }, null)
+                </td>
+                <td>
+                    <a href="../Courses/Edit/@Html.DisplayFor(sectionItem => section.Course.course_id)">@Html.DisplayFor(sectionItem => section.coursePrefix)@Html.DisplayFor(sectionItem => section.courseNumber)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.crn)
+                </td>
+                <td>
+                    @(section.courseStartTime.ToString())
+                </td>
+                <td>
+                    @(section.courseEndTime.ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.daysTaught)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.buildingPrefix)-@Html.DisplayFor(sectionItem => section.roomNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.sectionCapacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.Course.defaultCredits)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.Classroom.Building.campusPrefix)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.pay)
+                </td>
+                <td>
+                    @Html.DisplayFor(sectionItem => section.creditLoad) / @Html.DisplayFor(sectionItem => section.creditOverload)
+                </td>
+                <td></td>
+            </tr>
+        }
+        <tr>
+            @foreach(var release in instructor.InstructorReleases)
+            {
+                <td>Release Hours</td>
+                <td colspan="12">@release.releaseDescription -- @release.totalReleaseHours Units Release</td>
+            }
+        </tr>
+
+    }
+
+</table>
+
