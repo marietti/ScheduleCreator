@@ -11,6 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     public partial class Semester
     {
@@ -26,10 +27,20 @@ namespace ScheduleCreator.Models
         }
     
         public int semester_id { get; set; }
-        [Required(ErrorMessage = "Smester Type is required")]
+
+        [DisplayName("Type")]
+        [Required(ErrorMessage = "Semester Type is required")]
         public string semesterType { get; set; }
+
+        [DisplayName("Year")]
         public int semesterYear { get; set; }
+
+        [DisplayName("Start Date")]
+        [Required(ErrorMessage = "Start Date is required")]
         public System.DateTime startDate { get; set; }
+
+        [DisplayName("End Date")]
+        [Required(ErrorMessage = "End Date is required")]
         public System.DateTime endDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
