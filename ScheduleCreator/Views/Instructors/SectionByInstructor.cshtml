@@ -27,16 +27,28 @@
         background: #EEEEEE;
     }
 </style>
-<div><h2>Sections By Instructor</h2></div>
+<div class="container" style="vertical-align:central; margin:5px;">
+    <div class="col-lg-4 col-md-5">
+        <h2>@ViewBag.Title</h2>
+    </div>
 
-<select onChange="window.location.assign(this.value)" class="form-control">
-    @foreach (ScheduleCreator.Models.Semester s in ViewBag.semester_id)
-    {
-    <option value=@Url.Action("SectionByInstructor", "Instructors", new { id = s.semester_id })>@s.semesterType @s.semesterYear</option>
-    }
-</select>
-
-
+    <div class="col-lg-4 col-md-5 col-md-offset-2 col-lg-offset-4">
+        <h3 style="text-align:center">Select Semester</h3>
+        <select onChange="window.location.assign(this.value)" class="form-control" style="float:right">
+            @foreach (ScheduleCreator.Models.Semester s in ViewBag.semesterList)
+            {
+                if (s == ViewBag.CurrentSemester)
+                {
+                    <option value=@Url.Action("SectionByInstructor", "Instructors", new { id = s.semester_id }) selected="selected">@s.semesterType @s.semesterYear</option>
+                }
+                else
+                {
+                    <option value=@Url.Action("SectionByInstructor", "Instructors", new { id = s.semester_id })>@s.semesterType @s.semesterYear</option>
+                }
+            }
+        </select>
+    </div>
+</div>
 
 <div class="panel-group">
     @foreach (var item in Model)

@@ -25,25 +25,24 @@ namespace ScheduleCreator.Controllers
         public ActionResult SectionByInstructor(int? id)
         {
             int semesterId;
+            var semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
+            ViewBag.semesterList = semsterList;
             if (id == null)
             {
-                semesterId = ((db.Semesters.ToList()).Last()).semester_id;
+                semesterId = semsterList.Last().semester_id;
             }
             else
             {
                 semesterId = (int)id;
             }
+            ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
             List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
             List<Section> tempSectionList = new List<Section>();
 
             if (db.Instructors != null)
             {
-                //instructorList = from i in db.Instructors where 
                 foreach (Instructor instructor in instructorList)
                 {
-                    /*var InstructorNewList = from s in db.Sections select s;
-                    InstructorNewList = InstructorNewList.Where(s => s.instructor_id == instructor.instructor_id && s.semester_id == semesterId);
-                    instructor.Sections = InstructorNewList.ToList();*/
                     if (instructor.Sections != null)
                     {
                         foreach (Section section in instructor.Sections)
@@ -61,14 +60,23 @@ namespace ScheduleCreator.Controllers
                     }
                 }
             }
-            ViewBag.semester_id = (from s in db.Semesters
-                                  orderby s.startDate descending
-                                  select s).ToList();
             return View(instructorList);
         }
 
-        public ActionResult InstructorCalendar()
+        public ActionResult InstructorCalendar(int? id)
         {
+            int semesterId;
+            var semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
+            ViewBag.semesterList = semsterList;
+            if (id == null)
+            {
+                semesterId = semsterList.Last().semester_id;
+            }
+            else
+            {
+                semesterId = (int)id;
+            }
+            ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
             ViewBag.instructorEvents = Event.GetInstructorEvents(db.Instructors.ToList());
             return View(db.Instructors.ToList());
         }
