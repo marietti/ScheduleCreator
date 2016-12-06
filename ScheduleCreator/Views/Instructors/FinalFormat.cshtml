@@ -3,15 +3,29 @@
 @{
     ViewBag.Title = "Final Format";
 }
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript" src="tableExport.js"></script>
-<script type="text/javascript" src="jquery.base63.js"></script>
+<script type="text/javascript">
+    function printData()
+    {
+        var divToPrint = document.getElementById("FinalFormat");
+        newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    }
+   
+    $('button').on('click', function(){
+        printData();
+    } )
+</script>
 
 <h2>Final Format </h2>
 
-
-<table id="FinalFormat" class="table" border="1">
-    <tr>
+<div>
+    <input type="button" onclick="javascript:printData()" value="Print"/>
+</div>
+<br/>
+<table id="FinalFormat" class="table table-hover " border="1" >
+    <tr bgcolor="#778899">
         <th>
             Instructor
         </th>
@@ -52,7 +66,7 @@
 
     @foreach (var instructor in Model)
     {
-        <tr>
+        <tr BGCOLOR="D3D3D3">
             <td colspan="12">
                 <strong> @Html.DisplayFor(modelItem => instructor.instructorLastName), @Html.DisplayFor(modelItem => instructor.instructorFirstName)</strong>
             </td>
@@ -114,6 +128,3 @@
 
 </table>
 
-<div>
-    <a href="#" onclick="$('#FinalFormat').tableExport({ type: 'excel', escape: 'false' });">Download to Excel</a>
-</div>
