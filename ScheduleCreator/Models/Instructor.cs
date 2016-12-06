@@ -11,6 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
@@ -25,14 +26,27 @@ namespace ScheduleCreator.Models
         }
     
         public int instructor_id { get; set; }
+
+        [DisplayName("W Number")]
+        [StringLength(9)]
         [Required(ErrorMessage = "Instructor wnumber is required")]
         [Remote("IsWnumberTaken", "Instructors")]
         public string instructorWNumber { get; set; }
+
+        [DisplayName("First Name")]
+        [StringLength(50)]
         [Required(ErrorMessage = "Instructor first name is required")]
         public string instructorFirstName { get; set; }
+
+        [DisplayName("Last Name")]
+        [StringLength(50)]
         [Required(ErrorMessage = "Instructor last name is required")]
         public string instructorLastName { get; set; }
-        public decimal hoursRequired { get; set; }
+
+        [DisplayName("Hours Required")]
+        public Nullable<decimal> hoursRequired { get; set; }
+
+        [DisplayName("Active")]
         public string active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

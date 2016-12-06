@@ -11,6 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     public partial class Building
@@ -22,13 +23,22 @@ namespace ScheduleCreator.Models
         }
 
         public int building_id { get; set; }
+
+        [DisplayName("Building Prefix")]
+        [StringLength(10)]
         [Required(ErrorMessage = "A Building Prefix is required")]
         [Remote("IsBuildingTaken", "Buildings", AdditionalFields = "campusPrefix")]
         public string buildingPrefix { get; set; }
-        [Required(ErrorMessage = "A Building Name is required")]
-        public string buildingName { get; set; }
+
+        [DisplayName("Campus Prefix")]
+        [StringLength(10)]
         [Required(ErrorMessage = "A Campus Prefix is required")]
         public string campusPrefix { get; set; }
+
+        [DisplayName("Name")]
+        [StringLength(100)]
+        [Required(ErrorMessage = "A Building Name is required")]
+        public string buildingName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Classroom> Classrooms { get; set; }

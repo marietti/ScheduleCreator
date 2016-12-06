@@ -11,6 +11,7 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     public partial class Course
@@ -22,17 +23,31 @@ namespace ScheduleCreator.Models
         }
     
         public int course_id { get; set; }
+
+        [DisplayName("Program")]
         public int program_id { get; set; }
+        public string programPrefix { get; set; }
+
+        [DisplayName("Prefix")]
+        [StringLength(10)]
         [Required(ErrorMessage = "Course prefix is required")]
         [Remote("IsCourseTaken", "Courses", AdditionalFields = "program_id,courseNumber")]
         public string coursePrefix { get; set; }
+
+        [DisplayName("Course Number")]
+        [StringLength(10)]
         [Required(ErrorMessage = "Course number is required")]
         public string courseNumber { get; set; }
-        public string programPrefix { get; set; }
+
+        [DisplayName("Name")]
+        [StringLength(100)]
         [Required(ErrorMessage = "Course name is required")]
         public string courseName { get; set; }
-        [Required(ErrorMessage = "Default credits is required")]
+
+        [DisplayName("Default Credits")]
         public Nullable<decimal> defaultCredits { get; set; }
+
+        [DisplayName("Active")]
         public string active { get; set; }
     
         public virtual Program Program { get; set; }

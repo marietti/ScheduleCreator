@@ -11,17 +11,28 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     public partial class InstructorRelease
     {
         public int instructorRelease_id { get; set; }
+
+        [DisplayName("Instructor")]
         public int instructor_id { get; set; }
+
+        [DisplayName("Semester")]
         public int semester_id { get; set; }
-        [Required(ErrorMessage = "Instructor wnumber is required")]
+        
         public string instructorWNumber { get; set; }
         public string semesterType { get; set; }
         public int semesterYear { get; set; }
+
+        [DisplayName("Description")]
+        [StringLength(255)]
+        [Required(ErrorMessage = "Description is required")]
         public string releaseDescription { get; set; }
+
+        [DisplayName("Total Release Hours")]
         public Nullable<decimal> totalReleaseHours { get; set; }
     
         public virtual Instructor Instructor { get; set; }

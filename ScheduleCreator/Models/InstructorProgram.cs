@@ -11,15 +11,19 @@ namespace ScheduleCreator.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     public partial class InstructorProgram
     {
         public int instructorProgram_id { get; set; }
+
+        [DisplayName("Program")]
         public int program_id { get; set; }
+
+        [DisplayName("Instrctor")]
         public int instructor_id { get; set; }
-        [Required(ErrorMessage = "Program Prefix is required")]
+        
         public string programPrefix { get; set; }
-        [Required(ErrorMessage = "Instructor wnumber is required")]
         public string instructorWNumber { get; set; }
     
         public virtual Instructor Instructor { get; set; }
