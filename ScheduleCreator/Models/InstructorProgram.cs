@@ -12,14 +12,14 @@ namespace ScheduleCreator.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class InstructorProgram
     {
         public int instructorProgram_id { get; set; }
         public int program_id { get; set; }
         public int instructor_id { get; set; }
-        [Required(ErrorMessage = "Program Prefix is required")]
         public string programPrefix { get; set; }
-        [Required(ErrorMessage = "Instructor wnumber is required")]
         public string instructorWNumber { get; set; }
     
         public virtual Instructor Instructor { get; set; }
