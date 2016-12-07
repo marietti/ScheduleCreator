@@ -61,11 +61,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("program_id", "The program has already been created");
+                    ModelState.AddModelError("maxCreditsAllowed", "The program has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("maxCreditsAllowed", e.InnerException.InnerException.Message);
                 }
             }
 
@@ -136,19 +136,6 @@ namespace ScheduleCreator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        public JsonResult IsProgramTaken([Bind(Prefix = "programPrefix")] string programPrefix, [Bind(Prefix = "programName")] string programName)
-        {
-            if (!string.IsNullOrEmpty(programPrefix) && !string.IsNullOrEmpty(programName))
-            {
-                foreach (Program p in db.Programs.ToList())
-                {
-                    if ((p.programPrefix == programPrefix) && (p.programName == programName))
-                        return Json("The program and program name aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

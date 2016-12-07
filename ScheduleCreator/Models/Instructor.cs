@@ -30,7 +30,6 @@ namespace ScheduleCreator.Models
         [DisplayName("W Number")]
         [StringLength(9)]
         [Required(ErrorMessage = "Instructor wnumber is required")]
-        [Remote("IsWnumberTaken", "Instructors")]
         public string instructorWNumber { get; set; }
 
         [DisplayName("First Name")]

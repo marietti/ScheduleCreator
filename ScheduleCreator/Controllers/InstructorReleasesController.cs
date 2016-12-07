@@ -77,11 +77,11 @@ namespace ScheduleCreator.Controllers
             catch (Exception e) {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("instructor_id", "The instructor has already been assigned release time for that semester");
+                    ModelState.AddModelError("totalReleaseHours", "The instructor has already been assigned release time for that semester");
                 }
                 else
                 {
-                    ModelState.AddModelError("instructor_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("totalReleaseHours", e.InnerException.InnerException.Message);
                 }
             }
 

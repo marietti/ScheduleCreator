@@ -61,11 +61,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("building_id", "The building has already been created");
+                    ModelState.AddModelError("campusPrefix", "The building has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("building_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("campusPrefix", e.InnerException.InnerException.Message);
                 }
             }
 
@@ -136,20 +136,6 @@ namespace ScheduleCreator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public JsonResult IsBuildingTaken([Bind(Prefix = "campusPrefix")] string campusPrefix, [Bind(Prefix = "buildingPrefix")] string buildingPrefix)
-        {
-            if (!string.IsNullOrEmpty(campusPrefix) && !string.IsNullOrEmpty(buildingPrefix))
-            {
-                foreach(Building b in db.Buildings.ToList())
-                {
-                    if ((b.buildingPrefix == buildingPrefix) && (b.campusPrefix == campusPrefix))
-                        return Json("The building prefix and campus prefix aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

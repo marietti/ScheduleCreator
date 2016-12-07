@@ -134,11 +134,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("instructor_id", "The instructor has already been created");
+                    ModelState.AddModelError("active", "The instructor has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("instructor_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("active", e.InnerException.InnerException.Message);
                 }
             }
 
@@ -216,19 +216,6 @@ namespace ScheduleCreator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        public JsonResult IsWnumberTaken([Bind(Prefix = "instructorWNumber")] string instructorWNumber)
-        {
-            if (!string.IsNullOrEmpty(instructorWNumber))
-            {
-                foreach (Instructor i in db.Instructors.ToList())
-                {
-                    if (i.instructorWNumber == instructorWNumber)
-                        return Json("The instructor wnumber aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

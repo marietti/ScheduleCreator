@@ -71,11 +71,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("course_id", "The course has already been created");
+                    ModelState.AddModelError("active", "The course has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("course_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("active", e.InnerException.InnerException.Message);
                 }
             }
 
@@ -173,19 +173,6 @@ namespace ScheduleCreator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        public JsonResult IsCourseTaken([Bind(Prefix = "coursePrefix")] string coursePrefix, [Bind(Prefix = "program_id")] int program_id, [Bind(Prefix = "courseNumber")] string courseNumber)
-        {
-            if (!string.IsNullOrEmpty(coursePrefix) && !string.IsNullOrEmpty(courseNumber))
-            {
-                foreach (Course c in db.Courses.ToList())
-                {
-                    if ((c.program_id == program_id) && (c.coursePrefix == coursePrefix) && (c.courseNumber == courseNumber))
-                        return Json("The program, course prefix and course number already exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

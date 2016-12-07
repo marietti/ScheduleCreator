@@ -115,11 +115,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("section_id", "The section has already been created");
+                    ModelState.AddModelError("comments", "The section has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("section_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("comments", e.InnerException.InnerException.Message);
                 }
             }
 

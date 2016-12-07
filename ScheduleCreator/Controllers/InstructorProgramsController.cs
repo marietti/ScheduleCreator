@@ -78,11 +78,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("program_id", "The instructor has already been assigned to that program");
+                    ModelState.AddModelError("instructor_id", "The instructor has already been assigned to that program");
                 }
                 else
                 {
-                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("instructor_id", e.InnerException.InnerException.Message);
                 }
             }
 
