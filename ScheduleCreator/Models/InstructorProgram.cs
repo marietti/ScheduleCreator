@@ -22,7 +22,7 @@ namespace ScheduleCreator.Models
         [DisplayName("Program")]
         public int program_id { get; set; }
 
-        [DisplayName("Instrctor")]
+        [DisplayName("Instructor")]
         public int instructor_id { get; set; }
         
         public string programPrefix { get; set; }
