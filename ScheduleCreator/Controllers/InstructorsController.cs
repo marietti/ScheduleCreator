@@ -21,9 +21,22 @@ namespace ScheduleCreator.Controllers
         {
             return View(db.Instructors.ToList());
         }
-        public ActionResult SemesterSchedule()
+        public ActionResult SemesterSchedule(int? id)
         {
-            return View(db.Instructors.ToList());
+            int semesterId;
+            List<Semester> semsterList = (from s in db.Semesters orderby s.startDate descending select s).ToList();
+            ViewBag.semesterList = semsterList;
+            if (id == null)
+            {
+                semesterId = semsterList.Last().semester_id;
+            }
+            else
+            {
+                semesterId = (int)id;
+            }
+            ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
+
+            return View(FilterBySemester(semesterId));
         }
         public ActionResult SectionByInstructor(int? id)
         {
@@ -39,31 +52,8 @@ namespace ScheduleCreator.Controllers
                 semesterId = (int)id;
             }
             ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
-            List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
-            List<Section> tempSectionList = new List<Section>();
-
-            if (db.Instructors != null)
-            {
-                foreach (Instructor instructor in instructorList)
-                {
-                    if (instructor.Sections != null)
-                    {
-                        foreach (Section section in instructor.Sections)
-                        {
-                            if (section.semester_id != semesterId)
-                            {
-                                tempSectionList.Add(section);
-                            }
-                        }
-                        foreach (Section section in tempSectionList)
-                        {
-                            instructor.Sections.Remove(section);
-                        }
-                        tempSectionList.Clear();
-                    }
-                }
-            }
-            return View(instructorList);
+            
+            return View(FilterBySemester(semesterId));
         }
 
         public ActionResult InstructorCalendar(int? id)
@@ -216,6 +206,35 @@ namespace ScheduleCreator.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private List<Instructor> FilterBySemester(int semesterId)
+        {
+            List<Instructor> instructorList = new List<Instructor>(db.Instructors.ToList());
+            List<Section> tempSectionList = new List<Section>();
+
+            if (db.Instructors != null)
+            {
+                foreach (Instructor instructor in instructorList)
+                {
+                    if (instructor.Sections != null)
+                    {
+                        foreach (Section section in instructor.Sections)
+                        {
+                            if (section.semester_id != semesterId)
+                            {
+                                tempSectionList.Add(section);
+                            }
+                        }
+                        foreach (Section section in tempSectionList)
+                        {
+                            instructor.Sections.Remove(section);
+                        }
+                        tempSectionList.Clear();
+                    }
+                }
+            }
+            return instructorList;
         }
     }
 }

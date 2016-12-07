@@ -18,7 +18,31 @@
     } )
 </script>
 
-<h2>Final Format </h2>
+<div class="container" style="vertical-align:central; margin:5px;">
+    <div class="col-lg-4 col-md-5">
+        <h2>@ViewBag.Title</h2>
+    </div>
+
+    <div class="col-lg-4 col-md-5 col-md-offset-2 col-lg-offset-4">
+        <h4 style="text-align:center">Select Semester</h4>
+        <select onChange="window.location.assign(this.value)" class="form-control" style="float:right">
+
+            @foreach (ScheduleCreator.Models.Semester s in ViewBag.semesterList)
+            {
+                if (s == ViewBag.CurrentSemester)
+                {
+                    <option value=@Url.Action("SemesterSchedule", "Instructors", new { id = s.semester_id }) selected="selected">@s.semesterType @s.semesterYear</option>
+                }
+                else
+                {
+                    <option value=@Url.Action("SemesterSchedule", "Instructors", new { id = s.semester_id })>@s.semesterType @s.semesterYear</option>
+                }
+            }
+        </select>
+    </div>
+</div>
+
+
 
 <div>
     <input type="button" onclick="javascript:printData()" value="Print"/>
@@ -35,7 +59,7 @@
         <th>
             CRN
         </th>
-        <th colspan="2">
+        <th>
             Hours
         </th>
         <th>
@@ -67,7 +91,7 @@
     @foreach (var instructor in Model)
     {
         <tr BGCOLOR="D3D3D3">
-            <td colspan="12">
+            <td colspan="11">
                 <strong> @Html.DisplayFor(modelItem => instructor.instructorLastName), @Html.DisplayFor(modelItem => instructor.instructorFirstName)</strong>
             </td>
             <td>
@@ -87,10 +111,12 @@
                     @Html.DisplayFor(sectionItem => section.crn)
                 </td>
                 <td>
-                    @(section.courseStartTime.ToString())
-                </td>
-                <td>
-                    @(section.courseEndTime.ToString())
+                    @if (section.courseStartTime != null && section.courseEndTime != null)
+                    {
+                        <text>
+                            @(((DateTime)section.courseStartTime).ToString("hh:MM tt")) - @(((DateTime)section.courseEndTime).ToString("hh:MM tt"))
+                        </text>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(sectionItem => section.daysTaught)
