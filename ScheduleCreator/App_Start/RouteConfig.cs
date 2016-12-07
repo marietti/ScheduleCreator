@@ -16,7 +16,7 @@ namespace ScheduleCreator
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Instructors", action = "SectionByInstructor", id = UrlParameter.Optional }
             );
         }
     }
