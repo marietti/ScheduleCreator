@@ -58,11 +58,25 @@ namespace ScheduleCreator.Controllers
             course.programPrefix = (from p in db.Programs where p.program_id == course.program_id select p.programPrefix).ToList().FirstOrDefault();
 
             course.active = active ? "Y" : "N";
-            if (ModelState.IsValid)
+            try
             {
-                db.Courses.Add(course);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Courses.Add(course);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("course_id", "The course has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("course_id", e.InnerException.InnerException.Message);
+                }
             }
 
             ViewBag.program_id = new SelectList(

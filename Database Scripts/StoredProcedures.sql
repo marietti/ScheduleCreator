@@ -1,5 +1,4 @@
---USE ScheduleCreator
-USE [3750User]
+USE ScheduleCreator
 
 --- Delete Test Data
 DELETE Section WHERE courseNumber = '1410'
@@ -477,7 +476,7 @@ BEGIN
 		IF (@instructorTimeOverlap > 0)
 		-- The instructor is already teaching a section that the inserted one would overlap with
 			BEGIN
-				RAISERROR('The instructor is already teaching a section at this time', 10, 5)
+				RAISERROR('The instructor is already teaching a section at this time', 11, 5)
 				ROLLBACK TRANSACTION
 				RETURN
 			END
@@ -498,7 +497,7 @@ BEGIN
 		IF (@ClassroomTimeOverlap > 0)
 		-- The Classroom is already being used 
 			BEGIN
-				RAISERROR('The classroom is already being used at this time', 9, 4)
+				RAISERROR('The classroom is already being used at this time', 12, 6)
 				ROLLBACK TRANSACTION
 				RETURN
 			END
@@ -526,7 +525,7 @@ BEGIN
 
 	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
 	BEGIN
-		RAISERROR('Instructor is now overloaded on credits', 8, 3)
+		RAISERROR('Instructor is now overloaded on credits', 13, 3)
 	END
 END
 GO
@@ -562,6 +561,6 @@ BEGIN
 
 	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
 	BEGIN
-		RAISERROR('Instructor is now overloaded on credits', 8, 3)
+		RAISERROR('Instructor is now overloaded on credits', 13, 3)
 	END
 END

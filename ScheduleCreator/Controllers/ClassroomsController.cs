@@ -59,11 +59,26 @@ namespace ScheduleCreator.Controllers
             classroom.buildingPrefix = (from b in db.Buildings where b.building_id == classroom.building_id select b.buildingPrefix).ToList().FirstOrDefault();
 
             classroom.active = active ? "Y" : "N";
-            if (ModelState.IsValid)
+
+            try
             {
-                db.Classrooms.Add(classroom);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Classrooms.Add(classroom);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("classroom_id", "The classroom has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("classroom_id", e.InnerException.InnerException.Message);
+                }
             }
 
             ViewBag.building_id = new SelectList(

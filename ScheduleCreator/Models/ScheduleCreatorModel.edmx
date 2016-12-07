@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ScheduleCreator.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="building_id" />
@@ -24,8 +24,8 @@
           <Property Name="roomNumber" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="classroomCapacity" Type="int" Nullable="false" />
           <Property Name="computers" Type="int" Nullable="false" />
-          <Property Name="availableFromTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="availableToTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="availableFromTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="availableToTime" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="active" Type="nvarchar" MaxLength="4" Nullable="false" />
         </EntityType>
         <EntityType Name="Course">
@@ -49,7 +49,7 @@
           <Property Name="instructorWNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
           <Property Name="instructorFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="instructorLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="hoursRequired" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="hoursRequired" Type="decimal" Precision="18" Scale="0" />
           <Property Name="active" Type="nvarchar" MaxLength="5" Nullable="false" />
         </EntityType>
         <EntityType Name="InstructorProgram">
@@ -82,7 +82,7 @@
           <Property Name="program_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="programPrefix" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="programName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="maxCreditsAllowed" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Section">
           <Key>
@@ -102,8 +102,8 @@
           <Property Name="semesterYear" Type="int" />
           <Property Name="crn" Type="nvarchar" MaxLength="10" />
           <Property Name="daysTaught" Type="nvarchar" MaxLength="10" />
-          <Property Name="courseStartTime" Type="time" Precision="7" />
-          <Property Name="courseEndTime" Type="time" Precision="7" />
+          <Property Name="courseStartTime" Type="datetime2" Precision="7" />
+          <Property Name="courseEndTime" Type="datetime2" Precision="7" />
           <Property Name="block" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="courseType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="pay" Type="nvarchar" MaxLength="50" />
@@ -119,8 +119,8 @@
           <Property Name="semester_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="semesterType" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="semesterYear" Type="int" Nullable="false" />
-          <Property Name="startDate" Type="date" Nullable="false" />
-          <Property Name="endDate" Type="date" Nullable="false" />
+          <Property Name="startDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="endDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <Association Name="FK_Classroom_Building_id">
           <End Role="Building" Type="Self.Building" Multiplicity="1" />
@@ -311,7 +311,7 @@
           <Parameter Name="creditOverload" Type="decimal" Mode="In" />
           <Parameter Name="comments" Type="nvarchar" Mode="In" />
         </Function>
-        <EntityContainer Name="ScheduleCreatorStoreContainer">
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classroom" EntityType="Self.Classroom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
@@ -362,10 +362,11 @@
             <End Role="Section" EntitySet="Section" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ScheduleCreator" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="building_id" />
@@ -386,8 +387,8 @@
           <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="classroomCapacity" Type="Int32" Nullable="false" />
           <Property Name="computers" Type="Int32" Nullable="false" />
-          <Property Name="availableFromTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="availableToTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="availableFromTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="availableToTime" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="active" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Building" Relationship="Self.FK_Classroom_Building_id" FromRole="Classroom" ToRole="Building" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Classroom_id" FromRole="Classroom" ToRole="Section" />
@@ -415,7 +416,7 @@
           <Property Name="instructorWNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="instructorFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="instructorLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="hoursRequired" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="hoursRequired" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="active" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="InstructorPrograms" Relationship="Self.FK_InstructorProgram_Instructor_id" FromRole="Instructor" ToRole="InstructorProgram" />
           <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Instructor_id" FromRole="Instructor" ToRole="InstructorRelease" />
@@ -455,7 +456,7 @@
           <Property Name="program_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="programPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="programName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="maxCreditsAllowed" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="maxCreditsAllowed" Type="Decimal" Precision="18" Scale="0" />
           <NavigationProperty Name="Courses" Relationship="Self.FK_Course_Program_id" FromRole="Program" ToRole="Course" />
           <NavigationProperty Name="InstructorPrograms" Relationship="Self.FK_InstructorProgram_Program_id" FromRole="Program" ToRole="InstructorProgram" />
         </EntityType>
@@ -477,8 +478,8 @@
           <Property Name="semesterYear" Type="Int32" />
           <Property Name="crn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="daysTaught" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="courseStartTime" Type="Time" Precision="7" />
-          <Property Name="courseEndTime" Type="Time" Precision="7" />
+          <Property Name="courseStartTime" Type="DateTime" Precision="7" />
+          <Property Name="courseEndTime" Type="DateTime" Precision="7" />
           <Property Name="block" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="courseType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="pay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -498,8 +499,8 @@
           <Property Name="semester_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="semesterType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="semesterYear" Type="Int32" Nullable="false" />
-          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="InstructorReleases" Relationship="Self.FK_InstructorRelease_Semester_id" FromRole="Semester" ToRole="InstructorRelease" />
           <NavigationProperty Name="Sections" Relationship="Self.FK_Section_Semester_id" FromRole="Semester" ToRole="Section" />
         </EntityType>
@@ -727,9 +728,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ScheduleCreatorStoreContainer" CdmEntityContainer="ScheduleCreatorEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ScheduleCreatorEntities">
           <EntitySetMapping Name="Buildings">
-            <EntityTypeMapping TypeName="ScheduleCreator.Building">
+            <EntityTypeMapping TypeName="Model.Building">
               <MappingFragment StoreEntitySet="Building">
                 <ScalarProperty Name="building_id" ColumnName="building_id" />
                 <ScalarProperty Name="buildingPrefix" ColumnName="buildingPrefix" />
@@ -739,7 +740,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Classrooms">
-            <EntityTypeMapping TypeName="ScheduleCreator.Classroom">
+            <EntityTypeMapping TypeName="Model.Classroom">
               <MappingFragment StoreEntitySet="Classroom">
                 <ScalarProperty Name="classroom_id" ColumnName="classroom_id" />
                 <ScalarProperty Name="building_id" ColumnName="building_id" />
@@ -754,7 +755,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="ScheduleCreator.Course">
+            <EntityTypeMapping TypeName="Model.Course">
               <MappingFragment StoreEntitySet="Course">
                 <ScalarProperty Name="course_id" ColumnName="course_id" />
                 <ScalarProperty Name="program_id" ColumnName="program_id" />
@@ -768,7 +769,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Instructors">
-            <EntityTypeMapping TypeName="ScheduleCreator.Instructor">
+            <EntityTypeMapping TypeName="Model.Instructor">
               <MappingFragment StoreEntitySet="Instructor">
                 <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
                 <ScalarProperty Name="instructorWNumber" ColumnName="instructorWNumber" />
@@ -780,7 +781,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InstructorPrograms">
-            <EntityTypeMapping TypeName="ScheduleCreator.InstructorProgram">
+            <EntityTypeMapping TypeName="Model.InstructorProgram">
               <MappingFragment StoreEntitySet="InstructorProgram">
                 <ScalarProperty Name="instructorProgram_id" ColumnName="instructorProgram_id" />
                 <ScalarProperty Name="program_id" ColumnName="program_id" />
@@ -791,7 +792,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="InstructorReleases">
-            <EntityTypeMapping TypeName="ScheduleCreator.InstructorRelease">
+            <EntityTypeMapping TypeName="Model.InstructorRelease">
               <MappingFragment StoreEntitySet="InstructorRelease">
                 <ScalarProperty Name="instructorRelease_id" ColumnName="instructorRelease_id" />
                 <ScalarProperty Name="instructor_id" ColumnName="instructor_id" />
@@ -805,7 +806,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Programs">
-            <EntityTypeMapping TypeName="ScheduleCreator.Program">
+            <EntityTypeMapping TypeName="Model.Program">
               <MappingFragment StoreEntitySet="Program">
                 <ScalarProperty Name="program_id" ColumnName="program_id" />
                 <ScalarProperty Name="programPrefix" ColumnName="programPrefix" />
@@ -815,7 +816,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sections">
-            <EntityTypeMapping TypeName="ScheduleCreator.Section">
+            <EntityTypeMapping TypeName="Model.Section">
               <MappingFragment StoreEntitySet="Section">
                 <ScalarProperty Name="section_id" ColumnName="section_id" />
                 <ScalarProperty Name="course_id" ColumnName="course_id" />
@@ -844,7 +845,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Semesters">
-            <EntityTypeMapping TypeName="ScheduleCreator.Semester">
+            <EntityTypeMapping TypeName="Model.Semester">
               <MappingFragment StoreEntitySet="Semester">
                 <ScalarProperty Name="semester_id" ColumnName="semester_id" />
                 <ScalarProperty Name="semesterType" ColumnName="semesterType" />
@@ -854,11 +855,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="usp_addClassroom" FunctionName="ScheduleCreator.Store.usp_addClassroom" />
-          <FunctionImportMapping FunctionImportName="usp_addCourse" FunctionName="ScheduleCreator.Store.usp_addCourse" />
-          <FunctionImportMapping FunctionImportName="usp_addInstructorProgram" FunctionName="ScheduleCreator.Store.usp_addInstructorProgram" />
-          <FunctionImportMapping FunctionImportName="usp_addInstructorRelease" FunctionName="ScheduleCreator.Store.usp_addInstructorRelease" />
-          <FunctionImportMapping FunctionImportName="usp_addSection" FunctionName="ScheduleCreator.Store.usp_addSection" />
+          <FunctionImportMapping FunctionImportName="usp_addClassroom" FunctionName="Model.Store.usp_addClassroom" />
+          <FunctionImportMapping FunctionImportName="usp_addCourse" FunctionName="Model.Store.usp_addCourse" />
+          <FunctionImportMapping FunctionImportName="usp_addInstructorProgram" FunctionName="Model.Store.usp_addInstructorProgram" />
+          <FunctionImportMapping FunctionImportName="usp_addInstructorRelease" FunctionName="Model.Store.usp_addInstructorRelease" />
+          <FunctionImportMapping FunctionImportName="usp_addSection" FunctionName="Model.Store.usp_addSection" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

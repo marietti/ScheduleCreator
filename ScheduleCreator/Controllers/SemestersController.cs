@@ -49,11 +49,26 @@ namespace ScheduleCreator.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "semester_id,semesterType,semesterYear,startDate,endDate")] Semester semester)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                db.Semesters.Add(semester);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Semesters.Add(semester);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("semester_id", "The semester has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("semester_id", e.InnerException.InnerException.Message);
+                }
             }
 
             ViewBag.semesterType = new SelectList(Semester.SemesterTypes, semester.semesterType);

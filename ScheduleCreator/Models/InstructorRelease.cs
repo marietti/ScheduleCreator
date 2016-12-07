@@ -13,6 +13,8 @@ namespace ScheduleCreator.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class InstructorRelease
     {
         public int instructorRelease_id { get; set; }
@@ -22,7 +24,6 @@ namespace ScheduleCreator.Models
 
         [DisplayName("Semester")]
         public int semester_id { get; set; }
-        
         public string instructorWNumber { get; set; }
         public string semesterType { get; set; }
         public int semesterYear { get; set; }

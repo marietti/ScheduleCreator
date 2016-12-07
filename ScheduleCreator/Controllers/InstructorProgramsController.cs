@@ -65,13 +65,27 @@ namespace ScheduleCreator.Controllers
             // instructorWNumber
             instructorProgram.instructorWNumber = (from i in db.Instructors where i.instructor_id == instructorProgram.instructor_id select i.instructorWNumber).ToList().FirstOrDefault();
 
-            if (ModelState.IsValid)
+            try
             {
-                db.InstructorPrograms.Add(instructorProgram);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.InstructorPrograms.Add(instructorProgram);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("program_id", "The instructor has already been assigned to that program");
+                }
+                else
+                {
+                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                }
+            }
+
             ViewBag.program_id = new SelectList(
                  from p in db.Programs
                  orderby p.programPrefix

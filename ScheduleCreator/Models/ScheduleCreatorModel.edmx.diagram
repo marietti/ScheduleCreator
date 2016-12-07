@@ -4,26 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c56f88970d12473eb61f06d80eecd326" Name="Diagram1">
-        <EntityTypeShape EntityType="ScheduleCreator.Building" Width="1.5" PointX="1.5" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Classroom" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Course" Width="1.5" PointX="0.75" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Instructor" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.InstructorProgram" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.InstructorRelease" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Program" Width="1.5" PointX="1.5" PointY="20" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Section" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ScheduleCreator.Semester" Width="1.5" PointX="0.75" PointY="23.375" IsExpanded="true" />
-        <AssociationConnector Association="ScheduleCreator.FK_Classroom_Building_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_Section_Classroom_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_Course_Program_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_Section_Course_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_InstructorProgram_Instructor_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_InstructorRelease_Instructor_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_Section_Instructor_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_InstructorProgram_Program_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_InstructorRelease_Semester_id" ManuallyRouted="false" />
-        <AssociationConnector Association="ScheduleCreator.FK_Section_Semester_id" ManuallyRouted="false" />
+      <Diagram DiagramId="c9f36b1fc2c94093a79df6afb31b0693" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Building" Width="1.5" PointX="1.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Classroom" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Course" Width="1.5" PointX="0.75" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Instructor" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.InstructorProgram" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.InstructorRelease" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Program" Width="1.5" PointX="1.5" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Section" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Semester" Width="1.5" PointX="0.75" PointY="23.375" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Classroom_Building_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Section_Classroom_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Course_Program_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Section_Course_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_InstructorProgram_Instructor_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_InstructorRelease_Instructor_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Section_Instructor_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_InstructorProgram_Program_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_InstructorRelease_Semester_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Section_Semester_id" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

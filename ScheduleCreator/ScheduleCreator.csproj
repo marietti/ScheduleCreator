@@ -235,13 +235,6 @@
     <Content Include="Content\calendar.css" />
     <Content Include="Content\calendar.min.css" />
     <Content Include="Content\easycal.css" />
-    <Content Include="Scripts\easycal.js" />
-    <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\underscore.min.js" />
-    <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Models\ScheduleCreatorModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
@@ -252,6 +245,13 @@
       <DependentUpon>ScheduleCreatorModel.edmx</DependentUpon>
       <LastGenOutput>ScheduleCreatorModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\easycal.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\underscore.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

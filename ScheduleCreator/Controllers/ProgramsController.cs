@@ -48,11 +48,25 @@ namespace ScheduleCreator.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "program_id,programPrefix,ProgramName,maxCreditsAllowed")] Program Program)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Programs.Add(Program);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Programs.Add(Program);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("program_id", "The program has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                }
             }
 
             return View(Program);

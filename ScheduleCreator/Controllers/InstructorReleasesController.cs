@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ScheduleCreator.Models;
+using System.Data.SqlClient;
 
 namespace ScheduleCreator.Controllers
 {
@@ -65,13 +66,25 @@ namespace ScheduleCreator.Controllers
             // semesterType,semesterYear
             instructorRelease.semesterType = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterType).ToList().FirstOrDefault();
             instructorRelease.semesterYear = (from s in db.Semesters where s.semester_id == instructorRelease.semester_id select s.semesterYear).ToList().FirstOrDefault();
-
-            if (ModelState.IsValid)
-            {
-                db.InstructorReleases.Add(instructorRelease);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            try {
+                if (ModelState.IsValid)
+                {
+                    db.InstructorReleases.Add(instructorRelease);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            catch (Exception e) {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("instructor_id", "The instructor has already been assigned release time for that semester");
+                }
+                else
+                {
+                    ModelState.AddModelError("instructor_id", e.InnerException.InnerException.Message);
+                }
+            }
+
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName
@@ -130,6 +143,7 @@ namespace ScheduleCreator.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors
                  orderby i.instructorLastName, i.instructorFirstName

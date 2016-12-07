@@ -121,11 +121,25 @@ namespace ScheduleCreator.Controllers
         public ActionResult Create([Bind(Include = "instructor_id,instructorWNumber,instructorFirstName,instructorLastName,hoursRequired")] Instructor instructor, bool active)
         {
             instructor.active = active ? "Y" : "N";
-            if (ModelState.IsValid)
+            try
             {
-                db.Instructors.Add(instructor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Instructors.Add(instructor);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("instructor_id", "The instructor has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("instructor_id", e.InnerException.InnerException.Message);
+                }
             }
 
             ViewBag.active = active;
