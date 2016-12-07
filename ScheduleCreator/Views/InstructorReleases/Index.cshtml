@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ScheduleCreator.Models.InstructorRelease>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Instructor Releases";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,7 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.instructorWNumber)
+            Instructor
         </th>
         <th>
             @Html.DisplayNameFor(model => model.semesterType)
@@ -27,9 +27,6 @@
             @Html.DisplayNameFor(model => model.totalReleaseHours)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Instructor.instructorWNumber)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Semester.semesterType)
         </th>
         <th></th>
@@ -38,7 +35,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.instructorWNumber)
+            @Html.DisplayFor(modelItem => item.Instructor.instructorLastName), @Html.DisplayFor(modelItem => item.Instructor.instructorFirstName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.semesterType)
@@ -51,9 +48,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.totalReleaseHours)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Instructor.instructorWNumber)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Semester.semesterType)
