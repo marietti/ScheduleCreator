@@ -1,4 +1,4 @@
-USE [3750User]
+USE ScheduleCreator
 
 BEGIN TRANSACTION
 

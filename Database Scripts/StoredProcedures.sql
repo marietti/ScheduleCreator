@@ -1,5 +1,4 @@
---USE ScheduleCreator
-USE [3750User]
+USE ScheduleCreator
 
 --- Delete Test Data
 DELETE Section WHERE courseNumber = '1410'
