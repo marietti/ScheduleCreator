@@ -71,11 +71,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("course_id", "The course has already been created");
+                    ModelState.AddModelError("active", "The course has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("course_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("active", e.InnerException.InnerException.Message);
                 }
             }
 

@@ -61,11 +61,11 @@ namespace ScheduleCreator.Controllers
             {
                 if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
                 {
-                    ModelState.AddModelError("program_id", "The program has already been created");
+                    ModelState.AddModelError("maxCreditsAllowed", "The program has already been created");
                 }
                 else
                 {
-                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                    ModelState.AddModelError("maxCreditsAllowed", e.InnerException.InnerException.Message);
                 }
             }
 
