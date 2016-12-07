@@ -52,10 +52,12 @@ namespace ScheduleCreator.Models
         public string daysTaught { get; set; }
 
         [DisplayName("Start Time")]
-        public Nullable<System.TimeSpan> courseStartTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> courseStartTime { get; set; }
 
         [DisplayName("End Time")]
-        public Nullable<System.TimeSpan> courseEndTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> courseEndTime { get; set; }
 
         [DisplayName("Block")]
         [Required(ErrorMessage = "Block is required")]

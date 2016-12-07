@@ -37,10 +37,12 @@ namespace ScheduleCreator.Models
 
         [DisplayName("Start Date")]
         [Required(ErrorMessage = "Start Date is required")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime startDate { get; set; }
 
         [DisplayName("End Date")]
         [Required(ErrorMessage = "End Date is required")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime endDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
