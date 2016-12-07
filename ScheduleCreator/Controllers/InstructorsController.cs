@@ -21,7 +21,7 @@ namespace ScheduleCreator.Controllers
         {
             return View(db.Instructors.ToList());
         }
-        public ActionResult FinalFormat()
+        public ActionResult SemesterSchedule()
         {
             return View(db.Instructors.ToList());
         }

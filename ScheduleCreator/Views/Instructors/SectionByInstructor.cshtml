@@ -27,11 +27,15 @@
         background: #EEEEEE;
     }
 </style>
+<div>
+    <br/>
+    <button bgcolor="#d3d3d3" class="btn btn-lg btn-default col-md-offset-10">@Html.ActionLink("Semester Schedule", "SemesterSchedule", "Instructors")</button>
+</div>
 <div class="container" style="vertical-align:central; margin:5px;">
     <div class="col-lg-4 col-md-5">
         <h2>@ViewBag.Title</h2>
     </div>
-
+    
     <div class="col-lg-4 col-md-5 col-md-offset-2 col-lg-offset-4">
         <h3 style="text-align:center">Select Semester</h3>
         <select onChange="window.location.assign(this.value)" class="form-control" style="float:right">
