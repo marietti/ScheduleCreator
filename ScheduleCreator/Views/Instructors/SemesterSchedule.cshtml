@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<ScheduleCreator.Models.Instructor>
 
 @{
-    ViewBag.Title = "Final Format";
+    ViewBag.Title = "Semester Schedule";
 }
 <script type="text/javascript">
     function printData()
     {
-        var divToPrint = document.getElementById("FinalFormat");
+        var divToPrint = document.getElementById("SemesterSchedule");
         newWin = window.open("");
         newWin.document.write(divToPrint.outerHTML);
         newWin.print();
@@ -24,7 +24,7 @@
     <input type="button" onclick="javascript:printData()" value="Print"/>
 </div>
 <br/>
-<table id="FinalFormat" class="table table-hover " border="1" >
+<table id="SemesterSchedule" class="table table-hover " border="1" >
     <tr bgcolor="#778899">
         <th>
             Instructor
