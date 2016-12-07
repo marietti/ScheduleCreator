@@ -70,7 +70,7 @@ namespace ScheduleCreator.Controllers
                 semesterId = (int)id;
             }
             ViewBag.CurrentSemester = ((from s in db.Semesters where s.semester_id == semesterId select s).ToList()).First();
-            ViewBag.instructorEvents = Event.GetInstructorEvents(db.Instructors.ToList());
+            ViewBag.instructorEvents = Event.GetInstructorEvents(db.Instructors.ToList(), semesterId);
 
             ViewBag.instructor_id = new SelectList(
                  from i in db.Instructors

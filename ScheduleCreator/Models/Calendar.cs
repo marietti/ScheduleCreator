@@ -59,7 +59,7 @@ namespace ScheduleCreator.Models
         /// </summary>
         /// <param name="Instructors"></param>
         /// <returns>Dictionary<int, string> instructorEvents</returns>
-        public static Dictionary<int, string> GetInstructorEvents(List<Instructor> Instructors)
+        public static Dictionary<int, string> GetInstructorEvents(List<Instructor> Instructors, int semesterId)
         {
             Dictionary<int, string> instructorEvents = new Dictionary<int, string>();
             foreach (Instructor instructor in Instructors)
@@ -67,7 +67,7 @@ namespace ScheduleCreator.Models
                 List<Event> events = new List<Event>();
                 foreach (Section section in instructor.Sections)
                 {
-                    if (section.daysTaught != null)
+                    if (section.semester_id == semesterId && section.daysTaught != null)
                     {
                         foreach (char day in section.daysTaught)
                         {
@@ -80,8 +80,8 @@ namespace ScheduleCreator.Models
                             daysToAdd = char.ToLower(day) == 's' ? "6" : daysToAdd;
 
                             string date = "0" + daysToAdd + "-01-1900";
-                            string startTime = ((DateTime) section.courseStartTime).ToString("HH:mm");
-                            string endTime = ((DateTime)section.courseEndTime).ToString("HH:mm");
+                            string startTime = section.courseStartTime != null ? ((DateTime) section.courseStartTime).ToString("HH:mm") : "";
+                            string endTime = section.courseEndTime != null ? ((DateTime)section.courseEndTime).ToString("HH:mm") : "";
                             startTime = date + " " + startTime;
                             endTime = date + " " + endTime;
 
