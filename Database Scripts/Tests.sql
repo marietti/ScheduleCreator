@@ -111,15 +111,15 @@ SELECT * FROM Section
 ------usp_addInstructorRelease Test -----------------------------------------------------
 --Should Work---
 EXEC usp_addInstructorRelease 
-	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+	@instructorWNumber='w0100007', @semesterType='Fall', @semesterYear='2017', @releaseDescription='Sabatical', @totalReleaseHours='0'
 
 --Should Fail--
 EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2017', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2017', @releaseDescription='Sabatical', @totalReleaseHours='0'
 EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+	@instructorWNumber='wXXXXXXX', @semesterType='', @semesterYear='2800', @releaseDescription='Sabatical"', @totalReleaseHours='0'
 EXEC usp_addInstructorRelease 
-	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2800', @releaseDescription='{"Sabatical": 0.0}', @totalReleaseHours='0'
+	@instructorWNumber='wXXXXXXX', @semesterType='Fall', @semesterYear='2800', @releaseDescription='Sabatical"', @totalReleaseHours='0'
 
 SELECT * FROM InstructorRelease
 

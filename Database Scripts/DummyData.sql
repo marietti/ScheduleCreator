@@ -141,7 +141,7 @@ INSERT INTO dbo.InstructorRelease
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100004'),
          (SELECT semester_id FROM Semester WHERE semesterType = 'Fall'
           AND semesterYear = 2017),
-          'W0100004', 'Fall', 2017, '{ "Sabatical" : 0.0 }', 0.0);
+          'W0100004', 'Fall', 2017, 'Sabatical', 0.0);
 
 INSERT INTO dbo.InstructorRelease
     (instructor_id, semester_id, instructorWNumber, semesterType,
@@ -149,7 +149,7 @@ INSERT INTO dbo.InstructorRelease
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100005'),
          (SELECT semester_id FROM Semester WHERE semesterType = 'Fall'
           AND semesterYear = 2017),
-          'W0100005', 'Fall', 2017, '{"Dept. Chair" : 9.0, "CS 4110" : 1.0}', 10.0);
+          'W0100005', 'Fall', 2017, 'Dept. Chair: 9.0, CS 4110 : 1', 10.0);
 
 INSERT INTO dbo.InstructorRelease
     (instructor_id, semester_id, instructorWNumber, semesterType,
@@ -157,7 +157,7 @@ INSERT INTO dbo.InstructorRelease
 VALUES ((SELECT instructor_id FROM Instructor WHERE instructorWNumber = 'W0100002'),
          (SELECT semester_id FROM Semester WHERE semesterType = 'Fall'
           AND semesterYear = 2017),
-          'W0100002', 'Fall', 2017, '{"Program Coordinator" : 6.0, "CS 1030" : 2.0}', 8.0);
+          'W0100002', 'Fall', 2017, 'Program Coordinator: 6, CS 1030: 2', 8.0);
 
 --InstructorProgram Inserts-------------------------------------------------
 INSERT INTO dbo.InstructorProgram
