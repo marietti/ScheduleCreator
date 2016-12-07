@@ -174,18 +174,5 @@ namespace ScheduleCreator.Controllers
             }
             base.Dispose(disposing);
         }
-        public JsonResult IsCourseTaken([Bind(Prefix = "coursePrefix")] string coursePrefix, [Bind(Prefix = "program_id")] int program_id, [Bind(Prefix = "courseNumber")] string courseNumber)
-        {
-            if (!string.IsNullOrEmpty(coursePrefix) && !string.IsNullOrEmpty(courseNumber))
-            {
-                foreach (Course c in db.Courses.ToList())
-                {
-                    if ((c.program_id == program_id) && (c.coursePrefix == coursePrefix) && (c.courseNumber == courseNumber))
-                        return Json("The program, course prefix and course number already exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
     }
 }

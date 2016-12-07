@@ -217,18 +217,5 @@ namespace ScheduleCreator.Controllers
             }
             base.Dispose(disposing);
         }
-        public JsonResult IsWnumberTaken([Bind(Prefix = "instructorWNumber")] string instructorWNumber)
-        {
-            if (!string.IsNullOrEmpty(instructorWNumber))
-            {
-                foreach (Instructor i in db.Instructors.ToList())
-                {
-                    if (i.instructorWNumber == instructorWNumber)
-                        return Json("The instructor wnumber aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
     }
 }

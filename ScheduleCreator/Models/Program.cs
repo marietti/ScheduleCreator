@@ -29,7 +29,6 @@ namespace ScheduleCreator.Models
         [DisplayName("Prefix")]
         [StringLength(10)]
         [Required(ErrorMessage = "Program prefix is required")]
-        [Remote("IsProgramTaken", "Programs", AdditionalFields = "programName")]
         public string programPrefix { get; set; }
 
         [DisplayName("Name")]

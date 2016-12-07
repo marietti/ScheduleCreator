@@ -31,7 +31,6 @@ namespace ScheduleCreator.Models
         [DisplayName("Prefix")]
         [StringLength(10)]
         [Required(ErrorMessage = "Course prefix is required")]
-        [Remote("IsCourseTaken", "Courses", AdditionalFields = "program_id,courseNumber")]
         public string coursePrefix { get; set; }
 
         [DisplayName("Course Number")]

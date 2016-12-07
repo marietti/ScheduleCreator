@@ -137,19 +137,5 @@ namespace ScheduleCreator.Controllers
             }
             base.Dispose(disposing);
         }
-
-        public JsonResult IsBuildingTaken([Bind(Prefix = "campusPrefix")] string campusPrefix, [Bind(Prefix = "buildingPrefix")] string buildingPrefix)
-        {
-            if (!string.IsNullOrEmpty(campusPrefix) && !string.IsNullOrEmpty(buildingPrefix))
-            {
-                foreach(Building b in db.Buildings.ToList())
-                {
-                    if ((b.buildingPrefix == buildingPrefix) && (b.campusPrefix == campusPrefix))
-                        return Json("The building prefix and campus prefix aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
     }
 }

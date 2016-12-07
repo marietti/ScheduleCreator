@@ -30,7 +30,6 @@ namespace ScheduleCreator.Models
 
         [DisplayName("Room Number")]
         [Required(ErrorMessage = "A room number is required")]
-        [Remote("IsRoomTaken", "Classrooms", AdditionalFields = "building_id")]
         public string roomNumber { get; set; }
 
         [DisplayName("Capacity")]

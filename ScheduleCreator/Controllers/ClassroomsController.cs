@@ -174,18 +174,5 @@ namespace ScheduleCreator.Controllers
             }
             base.Dispose(disposing);
         }
-        public JsonResult IsRoomTaken([Bind(Prefix = "roomNumber")] string roomNumber, [Bind(Prefix = "building_id")] int building_id)
-        {
-            if (!string.IsNullOrEmpty(roomNumber))
-            {
-                foreach (Classroom c in db.Classrooms.ToList())
-                {
-                    if ((c.building_id == building_id) && (c.roomNumber == roomNumber))
-                        return Json("The building prefix and room number aleady exists", JsonRequestBehavior.AllowGet);
-                }
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
     }
 }

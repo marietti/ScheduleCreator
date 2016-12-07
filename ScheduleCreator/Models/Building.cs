@@ -27,7 +27,6 @@ namespace ScheduleCreator.Models
         [DisplayName("Building Prefix")]
         [StringLength(10)]
         [Required(ErrorMessage = "A Building Prefix is required")]
-        [Remote("IsBuildingTaken", "Buildings", AdditionalFields = "campusPrefix")]
         public string buildingPrefix { get; set; }
 
         [DisplayName("Campus Prefix")]
