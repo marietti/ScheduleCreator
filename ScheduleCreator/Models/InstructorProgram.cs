@@ -13,6 +13,8 @@ namespace ScheduleCreator.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class InstructorProgram
     {
         public int instructorProgram_id { get; set; }
