@@ -52,10 +52,12 @@ namespace ScheduleCreator.Models
         public string daysTaught { get; set; }
 
         [DisplayName("Start Time")]
+        [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> courseStartTime { get; set; }
 
         [DisplayName("End Time")]
+        [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> courseEndTime { get; set; }
 

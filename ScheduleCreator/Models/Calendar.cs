@@ -80,8 +80,8 @@ namespace ScheduleCreator.Models
                             daysToAdd = char.ToLower(day) == 's' ? "6" : daysToAdd;
 
                             string date = "0" + daysToAdd + "-01-1900";
-                            string startTime = section.courseStartTime.ToString();
-                            string endTime = section.courseEndTime.ToString();
+                            string startTime = ((DateTime) section.courseStartTime).ToString("HH:mm");
+                            string endTime = ((DateTime)section.courseEndTime).ToString("HH:mm");
                             startTime = date + " " + startTime;
                             endTime = date + " " + endTime;
 

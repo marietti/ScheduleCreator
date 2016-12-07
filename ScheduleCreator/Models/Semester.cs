@@ -37,11 +37,13 @@ namespace ScheduleCreator.Models
 
         [DisplayName("Start Date")]
         [Required(ErrorMessage = "Start Date is required")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime startDate { get; set; }
 
         [DisplayName("End Date")]
         [Required(ErrorMessage = "End Date is required")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime endDate { get; set; }
     

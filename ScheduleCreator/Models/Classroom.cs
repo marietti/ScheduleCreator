@@ -43,12 +43,14 @@ namespace ScheduleCreator.Models
 
         [DisplayName("Available From")]
         [Required(ErrorMessage = "Avaliable from time is required")]
+        [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
         public System.DateTime availableFromTime { get; set; }
 
         [DisplayName("Available Until")]
         [Required(ErrorMessage = "Avaliable to time is required")]
-        [DisplayFormat(DataFormatString = "{0:hh\\:mm tt}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:hh:mm tt}", ApplyFormatInEditMode = true)]
         public System.DateTime availableToTime { get; set; }
 
         [DisplayName("Active")]
