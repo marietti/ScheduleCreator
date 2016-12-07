@@ -29,7 +29,7 @@
 </style>
 <div>
     <br/>
-    <button bgcolor="#d3d3d3" class="btn btn-lg btn-default col-md-offset-10">@Html.ActionLink("Semester Schedule", "SemesterSchedule", "Instructors")</button>
+    <button bgcolor="#d3d3d3" class="btn btn-lg btn-default col-md-offset-10">@Html.ActionLink("Semester Schedule", "SemesterSchedule", "Instructors", new { id=ViewBag.CurrentSemester.semester_id})</button>
 </div>
 <div class="container" style="vertical-align:central; margin:5px;">
     <div class="col-lg-4 col-md-5">
