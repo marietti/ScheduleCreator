@@ -4,6 +4,7 @@
     ViewBag.Title = "Create";
 }
 
+
 <h2>Create</h2>
 
 
@@ -50,7 +51,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.availableFromTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.availableFromTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.availableFromTime, htmlAttributes: new { id = "datetimepicker1", @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.availableFromTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,7 +59,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.availableToTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.availableToTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.availableToTime, htmlAttributes:  new { id = "datetimepicker2", @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.availableToTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -83,6 +84,28 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'LT'
+        });
+        $('#datetimepicker2').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format: 'LT'
+        });
+        $("#datetimepicker1").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+
 @section Scripts {
+    @Styles.Render("~/Content/bootstrap-datetimepicker.min.css")
+
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.min.js")
 }

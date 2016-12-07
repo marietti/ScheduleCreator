@@ -110,7 +110,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.courseStartTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.courseStartTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.courseStartTime, htmlAttributes: new { id = "datetimepicker1", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.courseStartTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -118,7 +118,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.courseEndTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.courseEndTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.courseEndTime, htmlAttributes: new { id = "datetimepicker2", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.courseEndTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -191,6 +191,28 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            format: 'LT'
+        });
+        $('#datetimepicker2').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format: 'LT'
+        });
+        $("#datetimepicker1").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+
 @section Scripts {
+    @Styles.Render("~/Content/bootstrap-datetimepicker.min.css")
+
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.min.js")
 }

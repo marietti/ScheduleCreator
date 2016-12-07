@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.semesterYear, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.semesterYear, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.semesterYear, htmlAttributes: new { id = "datetimepickerYear", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.semesterYear, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.startDate, htmlAttributes: new { id = "datetimepicker1", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.endDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.endDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.endDate, htmlAttributes: new { id = "datetimepicker2", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.endDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -59,6 +59,32 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepickerYear').datetimepicker({
+            viewMode: 'years',
+            format: 'YYYY'
+        });
+        $('#datetimepicker1').datetimepicker({
+            format: 'L'
+        });
+        $('#datetimepicker2').datetimepicker({
+            useCurrent: false, //Important! See issue #1075
+            format: 'L'
+        });
+        $("#datetimepicker1").on("dp.change", function (e) {
+            $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker2").on("dp.change", function (e) {
+            $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+
 @section Scripts {
+    @Styles.Render("~/Content/bootstrap-datetimepicker.min.css")
+
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/moment.min.js")
+    @Scripts.Render("~/Scripts/bootstrap-datetimepicker.min.js")
 }
