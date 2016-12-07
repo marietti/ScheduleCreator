@@ -530,12 +530,130 @@ BEGIN
 END
 GO
 
+DROP TRIGGER dbo.udt_sectionUpdateConflicts
+GO
+
+CREATE TRIGGER dbo.udt_sectionUpdateConflicts
+on Section
+AFTER UPDATE
+AS
+BEGIN
+
+	--One instructor can't teach two sections at the same time
+	
+		--Check if any sections are being taught at the same time by the same professor
+		DECLARE @instructorTimeOverlap int
+
+		SELECT  @instructorTimeOverlap = COUNT(*)
+		FROM Section s
+		JOIN inserted i ON s.instructor_id = i.instructor_id
+		WHERE ((i.courseStartTime >= s.courseStartTime AND i.courseStartTime <= s.courseEndTime)
+		OR (i.courseEndTime >= s.courseStartTime AND i.courseEndTime <= s.courseEndTime)
+		OR (i.courseStartTime <= s.courseStartTime AND i.courseEndTime >= s.courseEndTime))
+		AND (i.section_id != s.section_id)
+		AND (i.daysTaught LIKE s.daysTaught)
+		AND (i.semester_id = s.semester_id)
+
+		
+		IF (@instructorTimeOverlap > 0)
+		-- The instructor is already teaching a section that the inserted one would overlap with
+			BEGIN
+				RAISERROR('The instructor is already teaching a section at this time', 11, 5)
+				ROLLBACK TRANSACTION
+				RETURN
+			END
+
+		--Two sections can't be in the same classroom at the same time
+		DECLARE @ClassroomTimeOverlap int
+
+		SELECT  @ClassroomTimeOverlap = COUNT(*)
+		FROM Section s
+		JOIN inserted i ON s.classroom_id = i.classroom_id
+		WHERE ((i.courseStartTime >= s.courseStartTime AND i.courseStartTime <= s.courseEndTime)
+		OR (i.courseEndTime >= s.courseStartTime AND i.courseEndTime <= s.courseEndTime)
+		OR (i.courseStartTime <= s.courseStartTime AND i.courseEndTime >= s.courseEndTime))
+		AND (i.section_id != s.section_id)
+		AND (i.daysTaught LIKE s.daysTaught)
+		AND (i.semester_id = s.semester_id)
+
+		IF (@ClassroomTimeOverlap > 0)
+		-- The Classroom is already being used 
+			BEGIN
+				RAISERROR('The classroom is already being used at this time', 12, 6)
+				ROLLBACK TRANSACTION
+				RETURN
+			END
+
+	--Insturctor can't go over the absolute max credit load
+	--Not the most elegent solution, but it's serviceable
+	DECLARE @CreditLoad int
+	DECLARE @ReleaseCredits int
+	DECLARE @ProgramMax int
+
+	SELECT @CreditLoad = SUM(s.creditLoad) 
+	FROM Section s
+	JOIN inserted i on s.instructor_id = i.instructor_id
+	WHERE s.instructor_id = i.instructor_id GROUP BY s.instructor_id
+
+	SELECT @ReleaseCredits = r.totalReleaseHours
+	FROM InstructorRelease r
+	JOIN inserted i on r.instructor_id = i.instructor_id
+	WHERE r.semester_id = i.semester_id
+
+	SELECT @ProgramMax = p.maxCreditsAllowed
+	FROM Program p
+	JOIN InstructorProgram ip on ip.program_id = p.program_id
+	JOIN inserted i on i.instructor_id = ip.instructor_id
+
+	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
+	BEGIN
+		RAISERROR('Instructor is now overloaded on credits', 13, 3)
+	END
+END
+GO
+
 DROP TRIGGER dbo.udt_creditOverloadCheck
 GO
 
 CREATE TRIGGER dbo.udt_creditOverloadCheck
 on InstructorRelease
 AFTER INSERT
+AS
+BEGIN
+	--Insturctor can't go over the absolute max credit load
+	--Not the most elegent solution, but it's serviceable
+	DECLARE @CreditLoad int
+	DECLARE @ReleaseCredits int
+	DECLARE @ProgramMax int
+
+	SELECT @CreditLoad = SUM(s.creditLoad) 
+	FROM Section s
+	JOIN inserted i on s.instructor_id = i.instructor_id
+	WHERE s.instructor_id = i.instructor_id GROUP BY s.instructor_id
+
+	SELECT @ReleaseCredits = r.totalReleaseHours
+	FROM InstructorRelease r
+	JOIN inserted i on r.instructor_id = i.instructor_id
+	WHERE r.semester_id = i.semester_id
+
+	SELECT @ProgramMax = p.maxCreditsAllowed
+	FROM Program p
+	JOIN InstructorProgram ip on ip.program_id = p.program_id
+	JOIN inserted i on i.instructor_id = ip.instructor_id
+
+	IF ( @CreditLoad + @ReleaseCredits > @ProgramMax)
+	BEGIN
+		RAISERROR('Instructor is now overloaded on credits', 13, 3)
+	END
+END
+GO
+
+DROP TRIGGER dbo.udt_creditOverloadUpdateCheck
+GO
+
+CREATE TRIGGER dbo.udt_creditOverloadUpdateCheck
+on InstructorRelease
+AFTER UPDATE
 AS
 BEGIN
 	--Insturctor can't go over the absolute max credit load
