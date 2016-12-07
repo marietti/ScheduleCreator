@@ -48,11 +48,25 @@ namespace ScheduleCreator.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "building_id,buildingPrefix,buildingName,campusPrefix")] Building building)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Buildings.Add(building);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Buildings.Add(building);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("building_id", "The building has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("building_id", e.InnerException.InnerException.Message);
+                }
             }
 
             return View(building);

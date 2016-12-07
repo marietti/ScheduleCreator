@@ -74,7 +74,17 @@ namespace ScheduleCreator.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch { ModelState.AddModelError("program_id", "The instructor has already been assigned to that program");}
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("program_id", "The instructor has already been assigned to that program");
+                }
+                else
+                {
+                    ModelState.AddModelError("program_id", e.InnerException.InnerException.Message);
+                }
+            }
 
             ViewBag.program_id = new SelectList(
                  from p in db.Programs

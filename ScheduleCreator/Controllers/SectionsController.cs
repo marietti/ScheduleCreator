@@ -102,11 +102,25 @@ namespace ScheduleCreator.Controllers
             if (dayChecks != null)
                 dayChecks.ForEach(day => section.daysTaught += day);
 
-            if (ModelState.IsValid)
+            try
             {
-                db.Sections.Add(section);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Sections.Add(section);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException.InnerException.Message.Contains("UNIQUE KEY constraint"))
+                {
+                    ModelState.AddModelError("section_id", "The section has already been created");
+                }
+                else
+                {
+                    ModelState.AddModelError("section_id", e.InnerException.InnerException.Message);
+                }
             }
 
             ViewBag.classroom_id = new SelectList(
